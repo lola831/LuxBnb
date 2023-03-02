@@ -1,7 +1,8 @@
 # `AirBnB Clone`
 
 ## Database Schema Design
-![Screen Shot 2023-03-01 at 4 15 55 PM](https://user-images.githubusercontent.com/110120745/222298033-373096a1-5994-4c25-a5be-2a9cf9690a42.png)
+
+![Screen Shot 2023-03-01 at 5 00 45 PM](https://user-images.githubusercontent.com/110120745/222303966-55eaecd2-1960-470f-b60c-232b823dba7c.png)
 
 
 ## API Documentation
