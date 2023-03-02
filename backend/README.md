@@ -2,8 +2,11 @@
 
 ## Database Schema Design
 
-`<insert database schema design here>`
 
+
+
+LINK TO SCHEMA DESIGN:
+<iframe width="560" height="315" src='https://dbdiagram.io/embed/63e2c92b296d97641d7f316c'> </iframe>
 
 ## API Documentation
 
