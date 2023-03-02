@@ -1,12 +1,8 @@
 # `AirBnB Clone`
 
 ## Database Schema Design
+![Screen Shot 2023-03-01 at 4 15 55 PM](https://user-images.githubusercontent.com/110120745/222298033-373096a1-5994-4c25-a5be-2a9cf9690a42.png)
 
-
-
-
-LINK TO SCHEMA DESIGN:
-<iframe width="560" height="315" src='https://dbdiagram.io/embed/63e2c92b296d97641d7f316c'> </iframe>
 
 ## API Documentation
 
