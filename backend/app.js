@@ -5,6 +5,7 @@ const cors = require('cors');
 const csurf = require('csurf');
 const helmet = require('helmet');
 const cookieParser = require('cookie-parser');
+const { ValidationError } = require('sequelize');
 
 const { environment } = require('./config');
 const isProduction = environment === 'production';
@@ -42,5 +43,45 @@ if (!isProduction) {
   );
 
 app.use(routes); // Connect all the routes
+
+// error handling middleware goes after the routes!
+
+//this error will show if we dont hit any of the routes above
+// 404 error handler:
+app.use((_req, _res, next) => { //underscores before req/res just mean we dont use these arguments in our cb function
+  const err = new Error("The requested resource couldn't be found.");
+  err.title = "Resource Not Found";
+  err.errors = { message: "The requested resource couldn't be found." }; //push errors into array
+  err.status = 404;
+  next(err);
+});
+
+// Process sequelize errors
+//catches sequelize  database validation errors
+app.use((err, _req, _res, next) => {
+  // check if error is a Sequelize error:
+  if (err instanceof ValidationError) {
+    let errors = {};
+    for (let error of err.errors) {
+      errors[error.path] = error.message;
+    }
+    err.title = 'Validation error';
+    err.errors = errors;
+  }
+  next(err);
+});
+
+// Error formatter
+app.use((err, _req, res, _next) => {
+  res.status(err.status || 500);  //if no err.status already set to default 500
+  console.error(err);   //used for developers..comment out in production
+  res.json({ // in our response include:
+    title: err.title || 'Server Error', //if no err.title default to 'server error'
+    message: err.message,
+    errors: err.errors, // send the errors themselves (which are often an array of errors)
+    stack: isProduction ? null : err.stack //only going to provide the stack in the respomse if we are not in production
+    // if were in production(if its true) the stack property will be set to null
+  });
+});
 
 module.exports = app;
