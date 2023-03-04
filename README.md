@@ -5,7 +5,7 @@
 ![Screen Shot 2023-03-01 at 5 00 45 PM](https://user-images.githubusercontent.com/110120745/222303966-55eaecd2-1960-470f-b60c-232b823dba7c.png)
 
 
-## API Documentation
+## API Documentation.
 
 ## USER AUTHENTICATION/AUTHORIZATION
 
