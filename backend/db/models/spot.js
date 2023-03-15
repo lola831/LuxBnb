@@ -22,7 +22,7 @@ module.exports = (sequelize, DataTypes) => {
         models.Review,
           { foreignKey: 'spotId', onDelete: 'CASCADE', hooks: true }
       );
-      Review.hasMany(
+      Spot.hasMany(
         models.SpotImage,
           { foreignKey: 'spotId', onDelete: 'CASCADE', hooks: true }
       );
