@@ -44,12 +44,29 @@ router.post(
       //check if user already exists with email
       const existingEmail = await User.findOne({ where: { email: email }});
       if (existingEmail) {
-        return res.json(403, {
-          message: 'User already exists',
-          statusCode: 403,
+        const err = new Error('User already exists');
+        err.status = 403;
+        res.json({
+          message: err.message,
+          statusCode: err.status,
           errors: [
-          "User with that email already exists"
+            'User with that email already exists'
           ]
+        })
+      }
+
+      //check if user already exists with username
+      const existingUsername = await User.findOne({ where: { username: username }});
+      if (existingUsername) {
+
+        const err = new Error('User already exists');
+        err.status = 403;
+        res.json({
+          message: err.message,
+          statusCode: err.status,
+          errors: [
+              "User with that username already exists"
+          ]   // ??????? how to use errors array
         })
       }
 

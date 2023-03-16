@@ -5,8 +5,10 @@ const { restoreUser } = require("../../utils/auth.js");
 
 router.use(restoreUser); // all routes get passed through this global middleware first (utils/auth.js)
 
+//log-in(creates session), log-out(ends session)
 router.use('/session', sessionRouter);
 
+//sign up
 router.use('/users', usersRouter);
 
 router.post('/test', (req, res) => {
