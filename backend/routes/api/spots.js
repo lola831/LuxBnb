@@ -7,25 +7,24 @@ const router = express.Router();
 
 
 router.get('/', async (req, res, next) => {
-    const allSpots = await Spot.findAll({
+    const Spots = await Spot.findAll({
        include: [
         { model: Review, attributes: ['stars'] },
         { model: SpotImage, attributes: ['url'] }
        ]
     });
-    //console.log(allSpots)
+   // console.log("ALLSPOTSSSSS: ",allSpots)
+    for (let i = 0; i < Spots.length; i++) {
+        const rating = Spots[i].dataValues.Reviews[0].dataValues.stars;
+        const image = Spots[i].dataValues.SpotImages[0].dataValues.url;
+        Spots[i].dataValues.avgRating = rating;
+        Spots[i].dataValues.previewImage = image;
+        delete Spots[i].dataValues.Reviews;
+        delete Spots[i].dataValues.SpotImages;
+    }
 
-   const rating = allSpots[0].dataValues.Reviews[0].dataValues.stars;
-   const image = allSpots[0].dataValues.SpotImages[0].dataValues.url;
 
-
-    //console.log(allSpots[0].dataValues.Reviews[0].dataValues.stars);
-    allSpots[0].dataValues.avgRating = rating;
-    delete allSpots[0].dataValues.Reviews;
-    allSpots[0].dataValues.previewImage = image;
-    delete allSpots[0].dataValues.SpotImages;
-    //const Spots = {};
-
+    const allSpots = {Spots};
 
 
     return res.json(allSpots)
