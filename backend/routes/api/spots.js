@@ -1,6 +1,6 @@
 const express = require('express');
 const { Op, json } = require("sequelize");
-const { Spot, Review, SpotImage, User  } = require('../../db/models');
+const { Spot, Review, SpotImage, User, sequelize  } = require('../../db/models');
 const { setTokenCookie, restoreUser } = require('../../utils/auth');
 const router = express.Router();
 const { check, validationResult } = require('express-validator');
@@ -13,7 +13,7 @@ const handleValidation = (req, _res, next) => {
       validationErrors
         .array()
         .forEach(error => errors[error.param] = error.msg);
-        console.log("ERRORS: ", errors)
+
       errors.message = "Validation Error";
       next(errors);
     }
@@ -51,15 +51,36 @@ const validateSpotCreate = [
     handleValidation
   ];
 
+  // CREATE IMAGE FOR SPOT
+  router.post('/:spotId/images', async (req, res) => {
+    const {spotId} = req.params.spotId;
+    const checkSpot = await Spot.findOne({ where: { id: req.params.spotId}});
+    if (!checkSpot) {
+        return res.json(404, { message: "Spot couldn't be found", "statusCode": 404 })
+    }
+
+    const newSpotImage = await SpotImage.create({
+        spotId: req.params.spotId,
+        url: req.body.url,
+        preview: req.body.preview
+    });
+
+    delete newSpotImage.dataValues.createdAt;
+    delete newSpotImage.dataValues.updatedAt;
+    delete newSpotImage.dataValues.spotId;
+
+    return res.json(newSpotImage.dataValues)
+  });
 
 router.get('/', async (req, res, next) => {
+
     const Spots = await Spot.findAll({
        include: [
         { model: Review, attributes: ['stars'] },
         { model: SpotImage, attributes: ['url'] }
        ]
     });
-   // console.log("ALLSPOTSSSSS: ",allSpots)
+
     for (let i = 0; i < Spots.length; i++) {
         const rating = Spots[i].dataValues.Reviews[0].dataValues.stars;
         const image = Spots[i].dataValues.SpotImages[0].dataValues.url;
@@ -72,14 +93,11 @@ router.get('/', async (req, res, next) => {
     return res.json(allSpots)
 });
 
-router.post('/', restoreUser,  async (req,res) => {
+router.post('/', async (req,res) => {
     const { user } = req;
-   // console.log("UUUUUUSER: ")
-    console.log(user)
-
     const userId = user.dataValues.id;
     const { address, city, state, country, lat, lng, name, description, price } = req.body;
-    //console.log("USERRRRID: ", userId)
+
     const newSpot = await Spot.create({
         ownerId: userId,
         address: address,
@@ -92,32 +110,47 @@ router.post('/', restoreUser,  async (req,res) => {
         description: description,
         price: price
     });
-   // console.log("NEWWWSPOT: ",newSpot)
     let values = newSpot.dataValues;
-   // console.log("vallluees:   ",values)
-
-    return res.json( 201, {
-        id: newSpot.id,
-        ownerId: newSpot.ownerId,
-        address: newSpot.address,
-        city: newSpot.city,
-        state: newSpot.state,
-        country: newSpot.country,
-        lat: newSpot.lat,
-        lng: newSpot.lng,
-        name: newSpot.name,
-        description: newSpot.description,
-        price: newSpot.price,
-        createdAt: newSpot.createdAt,
-        updatedAt: newSpot.updatedAt
-
-    })
-
+    return res.json( 201, newSpot.dataValues)
 });
 
 router.get('/current', async (req, res, next) => {
-    const { id } = req.body.Spots[0].id;
-    console.log("REQ PARAMSSSSSSS: ", id );
+    const userId = req.user.dataValues.id;
+    const Spots = await Spot.findAll({
+        where: { ownerId: userId},
+        include: [
+            { model: Review, attributes: ['stars'] },
+            { model: SpotImage, attributes: ['url'] }
+        ]
+    });
+
+    console.log("SPOTTTSSSS: ")
+    console.log(Spots)
+
+    let avgRating = 0;
+    //get url
+    for (let i = 0; i < Spots.length; i++) {
+    const url = Spots[i].dataValues.SpotImages;
+    if (url.length) {
+        Spots[i].dataValues.previewImage = url[0].dataValues.url;
+    }else {
+        Spots[i].dataValues.previewImage = null;
+    }
+    const rating = Spots[i].dataValues.Reviews;
+    if(rating.length) {
+        for (let j = 0; j < rating.length; j++) {
+            avgRating += rating[i].stars;
+        }
+        Spots[i].dataValues.avgRating = avgRating;
+    }else{
+        Spots[i].dataValues.avgRating = null;
+    }
+      delete Spots[i].dataValues.Reviews;
+      delete Spots[i].dataValues.SpotImages;
+    }
+
+
+    return res.json({Spots})
 
 });
 
