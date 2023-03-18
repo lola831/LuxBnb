@@ -47,14 +47,14 @@ module.exports = (sequelize, DataTypes) => {
         allowNull: false,
       },
       lat: {
-        type: DataTypes.INTEGER,
+        type: DataTypes.DECIMAL,
         //allowNull: false,
         validate: {
           isNumeric: true, //how specific # of decimals?
         }
       },
       lng: {
-        type: DataTypes.INTEGER,
+        type: DataTypes.DECIMAL,
         //allowNull: false,
         validate: {
           isNumeric: true, //how specific # of decimals?
