@@ -72,49 +72,7 @@ const validateSpotCreate = [
     return res.json(newSpotImage.dataValues)
   });
 
-router.get('/', async (req, res, next) => {
-
-    const Spots = await Spot.findAll({
-       include: [
-        { model: Review, attributes: ['stars'] },
-        { model: SpotImage, attributes: ['url'] }
-       ]
-    });
-
-    for (let i = 0; i < Spots.length; i++) {
-        const rating = Spots[i].dataValues.Reviews[0].dataValues.stars;
-        const image = Spots[i].dataValues.SpotImages[0].dataValues.url;
-        Spots[i].dataValues.avgRating = rating;
-        Spots[i].dataValues.previewImage = image;
-        delete Spots[i].dataValues.Reviews;
-        delete Spots[i].dataValues.SpotImages;
-    }
-    const allSpots = {Spots};
-    return res.json(allSpots)
-});
-
-router.post('/', async (req,res) => {
-    const { user } = req;
-    const userId = user.dataValues.id;
-    const { address, city, state, country, lat, lng, name, description, price } = req.body;
-
-    const newSpot = await Spot.create({
-        ownerId: userId,
-        address: address,
-        city: city,
-        state: state,
-        country: country,
-        lat: lat,
-        lng: lng,
-        name: name,
-        description: description,
-        price: price
-    });
-    let values = newSpot.dataValues;
-    return res.json( 201, newSpot.dataValues)
-});
-
-router.get('/current', async (req, res, next) => {
+  router.get('/current', async (req, res, next) => {
     const userId = req.user.dataValues.id;
     const Spots = await Spot.findAll({
         where: { ownerId: userId},
@@ -138,10 +96,11 @@ router.get('/current', async (req, res, next) => {
     }
     const rating = Spots[i].dataValues.Reviews;
     if(rating.length) {
+        avgRating = 0;
         for (let j = 0; j < rating.length; j++) {
             avgRating += rating[i].stars;
         }
-        Spots[i].dataValues.avgRating = avgRating;
+        Spots[i].dataValues.avgRating = avgRating/rating.length;
     }else{
         Spots[i].dataValues.avgRating = null;
     }
@@ -153,6 +112,66 @@ router.get('/current', async (req, res, next) => {
     return res.json({Spots})
 
 });
+
+router.get('/', async (req, res, next) => {
+
+    const Spots = await Spot.findAll({
+       include: [
+        { model: Review, attributes: ['stars'] },
+        { model: SpotImage, attributes: ['url'] }
+       ]
+    });
+    // console.log("SPOOOOTSSSS:");
+    // console.log("SPOTTTSSSS: ")
+    // console.log(Spots)
+
+    let avgRating = 0;
+    //get url
+    for (let i = 0; i < Spots.length; i++) {
+    const url = Spots[i].dataValues.SpotImages;
+    if (url.length) {
+        Spots[i].dataValues.previewImage = url[0].dataValues.url;
+    }else {
+        Spots[i].dataValues.previewImage = null;
+    }
+    const rating = Spots[i].dataValues.Reviews;
+    if(rating.length) {
+        avgRating = 0;
+        for (let j = 0; j < rating.length; j++) {
+            avgRating += rating[j].dataValues.stars;
+        }
+        Spots[i].dataValues.avgRating = avgRating/rating.length;
+    }else{
+        Spots[i].dataValues.avgRating = null;
+    }
+      delete Spots[i].dataValues.Reviews;
+      delete Spots[i].dataValues.SpotImages;
+    }
+    return res.json({Spots})
+});
+
+router.post('/', async (req,res) => {
+    const { user } = req;
+    const userId = user.dataValues.id;
+    const { address, city, state, country, lat, lng, name, description, price } = req.body;
+
+    const newSpot = await Spot.create({
+        ownerId: userId,
+        address: address,
+        city: city,
+        state: state,
+        country: country,
+        lat: lat,
+        lng: lng,
+        name: name,
+        description: description,
+        price: price
+    });
+    let values = newSpot.dataValues;
+    return res.json( 201, newSpot.dataValues)
+});
+
+
 
 
 module.exports = router;
