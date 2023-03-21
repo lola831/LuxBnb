@@ -51,6 +51,25 @@ const validateSpotCreate = [
     handleValidation
   ];
 
+  router.put('/:spotId', async (req, res) => {
+    const spot = await Spot.findOne({where: {id: req.params.spotId}});
+    spot.set({
+        "address": req.body.address,
+        "country": "United States of America",
+        "city": req.body.city,
+        "state": req.body.state,
+        "lng": req.body.lng,
+        "lat": req.body.lat,
+        "name": req.body.name,
+        "description": req.body.description,
+        "price": req.body.price,
+      });
+
+      await spot.save();
+      return res.json(spot)
+
+  })
+
 
 
   // CREATE IMAGE FOR SPOT
