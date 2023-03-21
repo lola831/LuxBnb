@@ -51,6 +51,8 @@ const validateSpotCreate = [
     handleValidation
   ];
 
+
+
   // CREATE IMAGE FOR SPOT
   router.post('/:spotId/images', async (req, res) => {
     const {spotId} = req.params.spotId;
@@ -70,6 +72,44 @@ const validateSpotCreate = [
     delete newSpotImage.dataValues.spotId;
 
     return res.json(newSpotImage.dataValues)
+  });
+
+
+  router.get('/:spotId', async (req, res) => {
+    const spotId = req.params.spotId;
+    const spot = await Spot.findOne({
+      where: { id:spotId },
+      include: [
+        {model: SpotImage, attributes: ["id", "url", "preview"]},
+        {model: User, attributes: ["id", "firstName", "lastName"]},
+        {model: Review}
+      ]
+    });
+    if (!spot) {
+      return res.json(404, {
+        message: "Spot couldn't be found",
+        statusCode: 404
+      })
+    }
+
+    spot.dataValues.Owner = spot.dataValues.User;
+
+    spot.dataValues.numReviews = spot.dataValues.Reviews.length;
+
+    if(spot.dataValues.Reviews.length) {
+      let avg = 0;
+      for(let i = 0; i < spot.dataValues.Reviews.length; i++) {
+        avg += spot.dataValues.Reviews[i].dataValues.stars
+      }
+
+      spot.dataValues.avgStarRating = avg/spot.dataValues.Reviews.length;
+    }else {
+      spot.dataValues.avgStarRating = null;
+    }
+
+    delete spot.dataValues.User;
+   delete spot.dataValues.Reviews;
+    return res.json(spot)
   });
 
   router.get('/current', async (req, res, next) => {
