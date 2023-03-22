@@ -59,14 +59,34 @@ app.use((_req, _res, next) => { //underscores before req/res just mean we dont u
 // Process sequelize errors
 //catches sequelize  database validation errors
 app.use((err, _req, _res, next) => {
+  (console.log("IN APP.JS PROCESS SEQUELIZE ERRORS MIDDLEARE"))
   // check if error is a Sequelize error:
   if (err instanceof ValidationError) {
-    let errors = {};
-    for (let error of err.errors) {
-      errors[error.path] = error.message;
-    }
-    err.title = 'Validation error';
-    err.errors = errors;
+    console.log("inhehfsdkgfkglfjhgfjhjagfgjfgs")
+    let errObj = {};
+    err.errors.forEach(e => {
+      let newKey = e.path;
+      let newVal = e.message;
+      errObj[newKey] = newVal;
+    })
+
+    err.message = 'Validation Error';
+    err.errors = errObj;
+    err.status = 400;
+
+    return res.json({
+      // title: err.title || 'Server Error',
+      message: err.message,
+      errors: err.errors,
+      statusCode: err.status
+      // stack: isProduction ? null : err.stack
+    })
+
+    // for (let error of err.errors) {
+    //   errors[error.path] = error.message;
+    // }
+    // err.title = 'Validation error';
+    // err.errors = errors;
   }
   next(err);
 });
@@ -75,11 +95,12 @@ app.use((err, _req, _res, next) => {
 app.use((err, _req, res, _next) => {
   res.status(err.status || 500);  //if no err.status already set to default 500
   console.error(err);   //used for developers..comment out in production
-  res.json({ // in our response include:
-    title: err.title || 'Server Error', //if no err.title default to 'server error'
+ return res.json({ // in our response include:
+    //title: err.title || 'Server Error', //if no err.title default to 'server error'
     message: err.message,
     errors: err.errors, // send the errors themselves (which are often an array of errors)
-    stack: isProduction ? null : err.stack //only going to provide the stack in the respomse if we are not in production
+    statusCode: err.status,
+   // stack: isProduction ? null : err.stack //only going to provide the stack in the respomse if we are not in production
     // if were in production(if its true) the stack property will be set to null
   });
 });

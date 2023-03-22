@@ -5,6 +5,7 @@ const { User } = require('../../db/models');
 
 const { check } = require('express-validator');
 const { handleValidationErrors } = require('../../utils/validation');
+const { ValidationError } = require('sequelize')
 
 const router = express.Router();
 
@@ -31,7 +32,7 @@ const validateSignup = [
       .exists({ checkFalsy: true })
       .isLength({ min: 6 })
       .withMessage('Password must be 6 characters or more.'),
-    handleValidationErrors
+     handleValidationErrors
   ];
 
 // Sign up
@@ -39,6 +40,7 @@ router.post(
     '/',
     validateSignup,
     async (req, res, next) => {
+
       const { firstName, lastName, email, password, username } = req.body;
 
       //check if user already exists with email

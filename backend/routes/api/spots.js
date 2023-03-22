@@ -5,22 +5,12 @@ const { setTokenCookie, restoreUser } = require('../../utils/auth');
 const router = express.Router();
 const { check, validationResult } = require('express-validator');
 const { handleValidationErrors } = require('../../utils/validation');
+const { ValidationError } = require('sequelize')
+const {validateReview} = require('./reviews.js')
 
-const handleValidation = (req, _res, next) => {
-    const validationErrors = validationResult(req);
-    if (!validationErrors.isEmpty()) { //checks if errors array is empty
-      const errors = {};
-      validationErrors
-        .array()
-        .forEach(error => errors[error.param] = error.msg);
 
-      errors.message = "Validation Error";
-      next(errors);
-    }
-    return json(errors)
-  };
 
-const validateSpotCreate = [
+const validateSpot = [
     check('address')
         .exists({checkFalsy: true})
         .withMessage('Street address is required'),
@@ -48,11 +38,116 @@ const validateSpotCreate = [
     check('price')
       .exists({ checkFalsy: true })
       .withMessage('Price per day is required'),
-    handleValidation
+    handleValidationErrors
   ];
 
-  router.put('/:spotId', async (req, res) => {
+
+
+  router.get('/current', async (req, res, next) => {
+    console.log("current ------------->")
+    const userId = req.user.dataValues.id;
+    const Spots = await Spot.findAll({
+        where: { ownerId: userId},
+        include: [
+            { model: Review, attributes: ['stars'] },
+            { model: SpotImage, attributes: ['url'] }
+        ]
+    });
+
+    // console.log("SPOTTTSSSS: ")
+    // console.log(Spots)
+
+    let avgRating = 0;
+    //get url
+    for (let i = 0; i < Spots.length; i++) {
+    const url = Spots[i].dataValues.SpotImages;
+    if (url.length) {
+        Spots[i].dataValues.previewImage = url[0].dataValues.url;
+    }else {
+        Spots[i].dataValues.previewImage = null;
+    }
+    const rating = Spots[i].dataValues.Reviews;
+    if(rating.length) {
+        avgRating = 0;
+        console.log("rating: ",rating[0].dataValues.stars)
+        for (let j = 0; j < rating.length; j++) {
+            avgRating += rating[j].dataValues.stars;
+        }
+        Spots[i].dataValues.avgRating = avgRating/rating.length;
+    }else{
+        Spots[i].dataValues.avgRating = null;
+    }
+      delete Spots[i].dataValues.Reviews;
+      delete Spots[i].dataValues.SpotImages;
+    }
+
+
+    return res.json({Spots})
+
+});
+
+
+//create review for spot with spot id
+router.post('/:spotId/reviews', validateReview,async (req, res, next) => {
+  const {spotId} = req.params.spotId;
+  console.log("here: ", req.params.spotId)
+
+  const spot = await Spot.findOne({where: {id: spotId}});
+  if (!spot) {
+    const err = new Error("Invalid credentials");
+    err.statusCode = 401;
+    return res.json({
+      "message": "Invalid credentials",
+    "statusCode": 401
+    })
+  }
+
+  await Review.create({
+    spotId: req.params.spotId,
+    userId: req.user.id,
+    review: req.body.review,
+    stars: req.body.stars,
+  });
+
+  const newReview = await Review.findOne({where: { review: req.body.review }});
+  return res.json(201,newReview)
+
+});
+
+
+// CREATE IMAGE FOR SPOT
+router.post('/:spotId/images', async (req, res) => {
+  const {spotId} = req.params.spotId;
+  const checkSpot = await Spot.findOne({ where: { id: req.params.spotId}});
+  if (!checkSpot) {
+      return res.json(404, { message: "Spot couldn't be found", "statusCode": 404 })
+  }
+
+  const newSpotImage = await SpotImage.create({
+      spotId: req.params.spotId,
+      url: req.body.url,
+      preview: req.body.preview
+  });
+
+  delete newSpotImage.dataValues.createdAt;
+  delete newSpotImage.dataValues.updatedAt;
+  delete newSpotImage.dataValues.spotId;
+
+  return res.json(newSpotImage.dataValues)
+});
+
+
+  router.put('/:spotId', validateSpot, async (req, res) => {
     const spot = await Spot.findOne({where: {id: req.params.spotId}});
+    if (!spot) {
+      const err = new Error("Spot Spot couldn't be found");
+      err.statusCode = 404;
+      return res.json({
+        "message": "Spot couldn't be found",
+        "statusCode": 404
+      })
+
+    }
     spot.set({
         "address": req.body.address,
         "country": "United States of America",
@@ -72,29 +167,10 @@ const validateSpotCreate = [
 
 
 
-  // CREATE IMAGE FOR SPOT
-  router.post('/:spotId/images', async (req, res) => {
-    const {spotId} = req.params.spotId;
-    const checkSpot = await Spot.findOne({ where: { id: req.params.spotId}});
-    if (!checkSpot) {
-        return res.json(404, { message: "Spot couldn't be found", "statusCode": 404 })
-    }
-
-    const newSpotImage = await SpotImage.create({
-        spotId: req.params.spotId,
-        url: req.body.url,
-        preview: req.body.preview
-    });
-
-    delete newSpotImage.dataValues.createdAt;
-    delete newSpotImage.dataValues.updatedAt;
-    delete newSpotImage.dataValues.spotId;
-
-    return res.json(newSpotImage.dataValues)
-  });
 
 
-  router.get('/:spotId', async (req, res) => {
+
+  router.get('/:spotId',async (req, res) => {
     const spotId = req.params.spotId;
     const spot = await Spot.findOne({
       where: { id:spotId },
@@ -131,46 +207,6 @@ const validateSpotCreate = [
     return res.json(spot)
   });
 
-  router.get('/current', async (req, res, next) => {
-    const userId = req.user.dataValues.id;
-    const Spots = await Spot.findAll({
-        where: { ownerId: userId},
-        include: [
-            { model: Review, attributes: ['stars'] },
-            { model: SpotImage, attributes: ['url'] }
-        ]
-    });
-
-    console.log("SPOTTTSSSS: ")
-    console.log(Spots)
-
-    let avgRating = 0;
-    //get url
-    for (let i = 0; i < Spots.length; i++) {
-    const url = Spots[i].dataValues.SpotImages;
-    if (url.length) {
-        Spots[i].dataValues.previewImage = url[0].dataValues.url;
-    }else {
-        Spots[i].dataValues.previewImage = null;
-    }
-    const rating = Spots[i].dataValues.Reviews;
-    if(rating.length) {
-        avgRating = 0;
-        for (let j = 0; j < rating.length; j++) {
-            avgRating += rating[i].stars;
-        }
-        Spots[i].dataValues.avgRating = avgRating/rating.length;
-    }else{
-        Spots[i].dataValues.avgRating = null;
-    }
-      delete Spots[i].dataValues.Reviews;
-      delete Spots[i].dataValues.SpotImages;
-    }
-
-
-    return res.json({Spots})
-
-});
 
 router.get('/', async (req, res, next) => {
 
@@ -209,7 +245,7 @@ router.get('/', async (req, res, next) => {
     return res.json({Spots})
 });
 
-router.post('/', async (req,res) => {
+router.post('/', validateSpot, async (req,res) => {
     const { user } = req;
     const userId = user.dataValues.id;
     const { address, city, state, country, lat, lng, name, description, price } = req.body;
