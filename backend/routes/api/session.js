@@ -40,7 +40,11 @@ router.post('/', validateLogin, async (req, res, next) => {
         "status code": 401});
     }
 
-    await setTokenCookie(res, user);
+    let token = await setTokenCookie(res, user);
+
+    delete user.dataValues.createdAt;
+    delete user.dataValues.updatedAt;
+    user.dataValues.token = token;
 
     return res.json({
       user: user

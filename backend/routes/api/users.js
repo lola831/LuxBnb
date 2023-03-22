@@ -48,7 +48,7 @@ router.post(
       if (existingEmail) {
         const err = new Error('User already exists');
         err.status = 403;
-        res.json({
+        res.json(403,{
           message: err.message,
           statusCode: err.status,
           errors: [
@@ -63,7 +63,7 @@ router.post(
 
         const err = new Error('User already exists');
         err.status = 403;
-        res.json({
+        res.json(403,{
           message: err.message,
           statusCode: err.status,
           errors: [

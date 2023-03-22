@@ -1,11 +1,12 @@
 const express = require('express');
 const { Op, json } = require("sequelize");
-const { Spot, Review, SpotImage, User, sequelize } = require('../../db/models');
+const { Spot, Review, SpotImage, User, ReviewImage, sequelize } = require('../../db/models');
 const { setTokenCookie, restoreUser } = require('../../utils/auth');
 const router = express.Router();
 const { check, validationResult } = require('express-validator');
 const { handleValidationErrors } = require('../../utils/validation');
-const { ValidationError } = require('sequelize')
+const { ValidationError } = require('sequelize');
+const { ResultWithContext } = require('express-validator/src/chain');
 // const { validateReview } = require('./reviews.js')
 
 
@@ -96,17 +97,26 @@ router.get('/current', async (req, res, next) => {
 
 //create review for spot with spot id
 router.post('/:spotId/reviews', validateReview, async (req, res, next) => {
-  console.log("here")
-  const { spotId } = req.params.spotId;
-  console.log("here: ", req.params.spotId)
-
+  const spotId = req.params.spotId;
+console.log("spot id: ", spotId)
   const spot = await Spot.findOne({ where: { id: req.params.spotId} });
+  console.log("Spot: ", spot)
   if (!spot) {
-    const err = new Error("Invalid credentials");
-    err.statusCode = 401;
-    return res.json({
-      "message": "Invalid credentials",
-      "statusCode": 401
+    const err = new Error("Spot couldn't be found");
+    return res.json(404,{
+      "message": "Spot couldn't be found",
+      "statusCode": 404
+    })
+  }
+
+  const checkReview = await Review.findAll({where:
+    {spotId: req.params.spotId, userId: req.user.id}});
+    console.log("checkReview: ",checkReview)
+  if(checkReview.length) {
+    const err = new Error('User already has a review for this spot');
+    return res.json(403,{
+      "message": "User already has a review for this spot",
+      "statusCode": 403
     })
   }
 
@@ -150,7 +160,7 @@ router.put('/:spotId', validateSpot, async (req, res) => {
   if (!spot) {
     const err = new Error("Spot Spot couldn't be found");
     err.statusCode = 404;
-    return res.json({
+    return res.json(404,{
       "message": "Spot couldn't be found",
       "statusCode": 404
     })
@@ -175,7 +185,27 @@ router.put('/:spotId', validateSpot, async (req, res) => {
 
 
 
+router.get('/:spotId/reviews', async (req, res, next) => {
+  const spot = await Spot.findOne({where: {id: req.params.spotId}});
 
+  if (!spot) {
+    return res.json(404, {
+      message: "Spot couldn't be found",
+      statusCode: 404
+    })
+  }
+
+  const Reviews = await Review.findAll({
+    where: {spotId: req.params.spotId},
+    include: [
+      {model: User, attributes: ['id', 'firstName', 'lastName']},
+      {model: ReviewImage, attributes: ['id', 'url'] }
+    ]
+  })
+
+  const returnReview = {Reviews}
+  return res.json(returnReview)
+})
 
 
 router.get('/:spotId', async (req, res) => {
