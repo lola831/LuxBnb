@@ -18,19 +18,14 @@ const validateBooking = [
     .exists({checkFalsy: true})
     .isDate()
     .withMessage('Must have a start date'),
+    check('endDate').custom((value, { req }) => {
+      if(new Date(value) <= new Date(req.body.startDate)) {
+          throw new Error ('endDate cannot come before startDate');
+      }
+      return true;
+  }),
   handleValidationErrors
 ];
-
-const validateBookingDates = [
-  check('endDate').toDate(),
-  check('startDate').toDate().custom((startDate, { req }) => {
-      if (startDate.getTime() > req.body.end.getTime()) {
-          throw new Error('start date must be before end date');
-      }
-      return true
-  })
-];
-
 
 const validateReview = [
   check('review')
@@ -111,13 +106,21 @@ router.get('/current', async (req, res, next) => {
   return res.json({ Spots })
 });
 
-router.post('/:spotId/bookings', validateBooking, validateBookingDates, async (req, res, next) => {
+router.post('/:spotId/bookings', validateBooking, async (req, res, next) => {
   const spot = await Spot.findOne({ where: { id: req.params.spotId} });
   if (!spot) {
     const err = new Error("Spot couldn't be found");
     return res.json(404,{
       "message": "Spot couldn't be found",
       "statusCode": 404
+    })
+  }
+
+  console.log(spot.dataValues.ownerId, req.user.id )
+  if(spot.dataValues.ownerId === req.user.id) {
+    const err = new Error("Owner cannot book spot")
+    return res.json(403, {
+      message: "Owner cant book spot"
     })
   }
   //booking conflict check
@@ -215,7 +218,7 @@ router.post('/:spotId/images', async (req, res) => {
 router.put('/:spotId', validateSpot, async (req, res) => {
   const spot = await Spot.findOne({ where: { id: req.params.spotId } });
   if (!spot) {
-    const err = new Error("Spot Spot couldn't be found");
+    const err = new Error("Spot couldn't be found");
     err.statusCode = 404;
     return res.json(404,{
       "message": "Spot couldn't be found",
@@ -225,7 +228,7 @@ router.put('/:spotId', validateSpot, async (req, res) => {
   }
   spot.set({
     "address": req.body.address,
-    "country": "United States of America",
+    "country": req.body.country,
     "city": req.body.city,
     "state": req.body.state,
     "lng": req.body.lng,
@@ -264,6 +267,32 @@ router.get('/:spotId/reviews', async (req, res, next) => {
   return res.json(returnReview)
 })
 
+router.get('/:spotId/bookings', async(req, res, next) => {
+  const spot = await Spot.findOne({where: {id: req.params.spotId}});
+
+  if (!spot) {
+    return res.json(404, {
+      message: "Spot couldn't be found",
+      statusCode: 404
+    })
+  }
+
+  let Bookings = {};
+  if (req.user.id === spot.dataValues.ownerId) {
+     Bookings = await Booking.findAll({
+      where: {spotId: req.params.spotId},
+      include: [{model: User, attributes: ['id', 'firstName', 'lastName']  }]
+    });
+  }else {
+       Bookings = await Booking.findAll({
+        where: {spotId: req.params.spotId},
+        attributes: ['spotId', 'startDate', 'endDate']
+      });
+  }
+
+  returnBookings = {Bookings}
+  return res.json(returnBookings)
+})
 
 router.get('/:spotId', async (req, res) => {
   const spotId = req.params.spotId;
