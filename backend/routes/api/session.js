@@ -5,6 +5,8 @@ const { User } = require('../../db/models');
 
 const { check } = require('express-validator');
 const { handleValidationErrors } = require('../../utils/validation');
+const { ValidationError } = require('sequelize')
+
 
 const router = express.Router();
 
@@ -27,14 +29,22 @@ router.post('/', validateLogin, async (req, res, next) => {
     const user = await User.login({ credential, password });
 
     if (!user) {
-      const err = new Error('Login failed');
+      // const err = new Error('Login failed');
+      // err.status = 401;
+      // err.title = 'Login failed';
+      // err.errors = { credential: 'The provided credentials were invalid.' };
+      // return next(err);
+      const err = new Error("Invalid credentials");
       err.status = 401;
-      err.title = 'Login failed';
-      err.errors = { credential: 'The provided credentials were invalid.' };
-      return next(err);
+      return res.json(401,{"message": "Invalid credentials",
+        "status code": 401});
     }
 
-    await setTokenCookie(res, user);
+    let token = await setTokenCookie(res, user);
+
+    delete user.dataValues.createdAt;
+    delete user.dataValues.updatedAt;
+    user.dataValues.token = token;
 
     return res.json({
       user: user
