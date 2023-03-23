@@ -5,7 +5,8 @@ const { setTokenCookie, restoreUser } = require('../../utils/auth');
 const router = express.Router();
 const { check } = require('express-validator');
 const { handleValidationErrors } = require('../../utils/validation');
-const { ValidationError } = require('sequelize')
+const { ValidationError } = require('sequelize');
+const e = require('express');
 
 
 
@@ -86,6 +87,30 @@ router.post('/:reviewId/images', async(req, res, next) => {
 
     return res.json(newReviewImage)
 });
+
+router.put('/:reviewId', validateReview, async (req, res, next) => {
+    const review = await Review.findByPk(req.params.reviewId);
+
+    if(!review) {
+        const err = new Error("Review couldn't be found");
+        return res.json(404,
+            {"message": "Review couldn't be found",
+            "statusCode": 404}
+        )
+    }
+
+   if(!(review.dataValues.userId === req.user.id)) {
+    const err = new Error("Review must belong to current user");
+    return res.json(403,{
+        "message": "Review must belong to current user",
+        "statusCode": 403
+    })
+   }
+
+   return res.json(review)
+
+
+})
 
 
 
