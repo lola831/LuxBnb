@@ -1,6 +1,6 @@
 const express = require('express');
 const { Op, json } = require("sequelize");
-const { Spot, Review, SpotImage, User, ReviewImage, sequelize } = require('../../db/models');
+const { Spot, Review, SpotImage, User, ReviewImage, Booking, sequelize } = require('../../db/models');
 const { setTokenCookie, restoreUser } = require('../../utils/auth');
 const router = express.Router();
 const { check, validationResult } = require('express-validator');
@@ -9,6 +9,27 @@ const { ValidationError } = require('sequelize');
 const { ResultWithContext } = require('express-validator/src/chain');
 // const { validateReview } = require('./reviews.js')
 
+const validateBooking = [
+  check('endDate')
+    .exists({checkFalsy: true})
+    .isDate()
+    .withMessage('Must have an end date'),
+  check('startDate')
+    .exists({checkFalsy: true})
+    .isDate()
+    .withMessage('Must have a start date'),
+  handleValidationErrors
+];
+
+const validateBookingDates = [
+  check('endDate').toDate(),
+  check('startDate').toDate().custom((startDate, { req }) => {
+      if (startDate.getTime() > req.body.end.getTime()) {
+          throw new Error('start date must be before end date');
+      }
+      return true
+  })
+];
 
 
 const validateReview = [
@@ -56,7 +77,6 @@ const validateSpot = [
 
 
 router.get('/current', async (req, res, next) => {
-  console.log("current ------------->")
   const userId = req.user.dataValues.id;
   const Spots = await Spot.findAll({
     where: { ownerId: userId },
@@ -66,7 +86,7 @@ router.get('/current', async (req, res, next) => {
     ]
   });
   let avgRating = 0;
-  //get url
+
   for (let i = 0; i < Spots.length; i++) {
     const url = Spots[i].dataValues.SpotImages;
     if (url.length) {
@@ -88,11 +108,48 @@ router.get('/current', async (req, res, next) => {
     delete Spots[i].dataValues.Reviews;
     delete Spots[i].dataValues.SpotImages;
   }
-
-
   return res.json({ Spots })
-
 });
+
+router.post('/:spotId/bookings', validateBooking, validateBookingDates, async (req, res, next) => {
+  const spot = await Spot.findOne({ where: { id: req.params.spotId} });
+  if (!spot) {
+    const err = new Error("Spot couldn't be found");
+    return res.json(404,{
+      "message": "Spot couldn't be found",
+      "statusCode": 404
+    })
+  }
+  //booking conflict check
+  const checkBooking = await Booking.findAll({where: {
+    [Op.or]: [
+    {startDate: {[Op.between]: [req.body.startDate, req.body.endDate]}},
+    {endDate: {[Op.between]: [req.body.startDate, req.body.endDate]}}]
+  }});
+  //booking conflict error
+  if (checkBooking.length) {
+    const err = new Error("Booking conflict");
+    return res.json(403, {
+      "message": "Sorry, this spot is already booked for the specified dates",
+      "statusCode": 403,
+      "errors": [
+        "Start date conflicts with an existing booking",
+        "End date conflicts with an existing booking"
+      ]
+    })
+  }
+
+  const newBooking = await Booking.create({
+    spotId: req.params.spotId,
+    userId: req.user.id,
+    startDate: req.body.startDate,
+    endDate: req.body.endDate,
+  });
+
+ // const newReview = await Review.findOne({ where: { userId: req.user.id, spotId: req.params.spotId } });
+  return res.json(newBooking)
+
+})
 
 
 //create review for spot with spot id
