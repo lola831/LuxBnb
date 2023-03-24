@@ -334,15 +334,36 @@ router.get('/:spotId', async (req, res) => {
 
 router.get('/', async (req, res, next) => {
 
-  const Spots = await Spot.findAll({
+  let query = {
+    where:{},
+    include: []
+  }
+
+  const page = req.query.page === undefined ? 0 : parseInt(req.query.page);
+  const size = req.query.size === undefined ? 20 : parseInt(req.query.size);
+
+  query.limit = size;
+  query.offset = size * (page - 1);
+
+  let { minLat, maxLat, minLng, minPrice, maxPrice } = req.query;
+
+  if(minLat) query.where.minLat = minLat;
+  if(maxLat) query.where.maxLat = maxLat;
+  if(minLng) query.where.minLng = minLng;
+  if(minPrice) query.where.minPrice = minPrice;
+  if(maxPrice) query.where.maxPrice = maxPrice;
+
+  const Spots = await Spot.findAndCountAll(query,{
     include: [
       { model: Review, attributes: ['stars'] },
       { model: SpotImage, attributes: ['url'] }
     ]
   });
   // console.log("SPOOOOTSSSS:");
-  // console.log("SPOTTTSSSS: ")
-  // console.log(Spots)
+  console.log("SPOTTTSSSS: ")
+  console.log(Spots.rows)
+  let spotsArray = Spots.rows;
+  
 
   let avgRating = 0;
   //get url
@@ -366,6 +387,22 @@ router.get('/', async (req, res, next) => {
     delete Spots[i].dataValues.Reviews;
     delete Spots[i].dataValues.SpotImages;
   }
+
+  console.log("SPots: ",Spots)
+  const array = [];
+  Spots.rows.forEach(spot => {
+    console.log("spot")
+  })
+
+  const returnSpots = {Spots};
+  console.log(returnSpots)
+  returnSpots.page = page;
+  returnSpots.size = size;
+  // Spots[i].dataValues.page = page;
+  // Spots[i].dataValues.size = size;
+
+console.log("PAGEEEEEEE: ", page)
+
   return res.json({ Spots })
 });
 
@@ -390,7 +427,31 @@ router.post('/', validateSpot, async (req, res) => {
   return res.json(201, newSpot.dataValues)
 });
 
+router.delete('/:spotId', async (req, res, next) => {
+  const spot = await Spot.findOne({where: {id: req.params.spotId}});
+  if(!spot) {
+    return res.json(404, {
+        message: "Spot couldn't be found",
+        statusCode: 404
+      })
+  };
 
+  if(req.user.id !== spot.dataValues.ownerId) {
+    return res.json(403, {
+      message: "You are not authorized to delete this spot",
+      statusCode: 403
+    })
+  }
+  console.log(req.user.id)
+
+  await spot.destroy();
+
+  return res.json({
+    "message": "Successfully deleted",
+    "statusCode": 200
+  });
+
+})
 
 
 module.exports = router;

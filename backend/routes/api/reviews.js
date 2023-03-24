@@ -106,12 +106,36 @@ router.put('/:reviewId', validateReview, async (req, res, next) => {
         "statusCode": 403
     })
    }
-
-   return res.json(review)
-
+   return res.json(review);
 
 })
 
+
+router.delete('/:reviewId', async (req, res, next) => {
+    const review = await Review.findOne({where: {id: req.params.reviewId}});
+
+    if(!review) {
+        return res.json(404, {
+            message: "Review couldn't be found",
+            statusCode: 404
+          })
+    };
+
+    if (req.user.id !== review.dataValues.userId) {
+        return res.json(403, {
+            "message": "You are not authorized to delete this review"
+        })
+    }
+
+    await review.destroy();
+
+return res.json({
+    "message": "Successfully deleted",
+    "statusCode": 200
+  });
+
+
+})
 
 
 
