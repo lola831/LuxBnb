@@ -66,7 +66,7 @@ router.put('/:bookingId', validateBooking, async (req, res, next) => {
       })
    }
 
-   const date = new Date();
+   let date = new Date();
    //booking is in the past
    if (date > req.body.endDate){
     const err = new Error("Past bookings cant be modified")
@@ -104,6 +104,55 @@ router.put('/:bookingId', validateBooking, async (req, res, next) => {
   await booking.save();
   return res.json(booking)
 
+})
+
+router.delete('/:bookingId', async (req, res, next) => {
+  const booking = await Booking.findOne({where: {id: req.params.bookingId}});
+  //console.log(booking)
+
+
+  if(!booking) {
+    return res.json(404, {
+        message: "Booking couldn't be found",
+        statusCode: 404
+      })
+  }
+
+  const startDate = booking.dataValues.startDate;
+  let date = new Date();
+if(startDate <= date) {
+  const err = new Error("Bookings that have been started can't be deleted");
+  res.status(403)
+  return res.json(
+    {
+      "message": "Bookings that have been started can't be deleted",
+      "statusCode": 403
+    })
+}
+
+const bookingUser = booking.dataValues.userId;
+const spot = await Spot.findOne({where: {id: booking.dataValues.spotId }});
+const owner = spot.dataValues.ownerId;
+console.log("owner: ",owner)
+console.log("req user: ",req.user.id)
+
+console.log(bookingUser)
+if(req.user.id !== owner || req.user.id !== bookingUser) {
+  const err = new Error("You are not authorized to delete the booking");
+  res.status(403)
+  return res.json(
+    {
+      "message": "You are not authorized to delete the booking",
+      "statusCode": 403
+    })
+}
+
+await booking.destroy();
+
+return res.json({
+    "message": "Successfully deleted",
+    "statusCode": 200
+  });
 })
 
 
