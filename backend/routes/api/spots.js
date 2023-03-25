@@ -38,33 +38,6 @@ const validateReview = [
   handleValidationErrors
 ]
 
-const validateQuery = [
-  check('page')
-    .isInt({ min: 0 })
-    .withMessage('Page must be greater than or equal to 0'),
-  check('size')
-    .isInt({ min: 0 })
-    .withMessage('Size must be greater than or equal to 0'),
-  check('minLat')
-    .isDecimal()
-    .withMessage('Maximum latitude is invalid'),
-  check('maxLat')
-    .isDecimal()
-    .withMessage('Minimun latitude is invalid'),
-  check('maxLng')
-    .isDecimal()
-    .withMessage('Maximum longitude is invalid'),
-  check('minLng')
-    .isDecimal()
-    .withMessage('Minimun longitude is invalid'),
-  check('maxPrice')
-    .isInt({ min: 0 })
-    .withMessage('Maximum price must be greater than or equal to 0'),
-  check('minPrice')
-    .isInt({ min: 0 })
-    .withMessage('Minimum price must be greater than or equal to 0'),
-  handleValidationErrors
-]
 
 const validateSpot = [
   check('address')
@@ -364,45 +337,133 @@ router.get('/:spotId', async (req, res) => {
 });
 
 
-router.get('/', validateQuery, async (req, res, next) => {
+router.get('/', async (req, res, next) => {
 
   let query = {
     where: {},
-    include: [{ model: SpotImage, attributes: ['url'] }]
+    include: [{ model: SpotImage, attributes: ['url'] },
+  {model: Review, attributes: ['stars']}]
   }
 
-  const page = req.query.page === undefined ? 0 : parseInt(req.query.page);
-  const size = req.query.size === undefined ? 20 : parseInt(req.query.size);
+  //const page = req.query.page === undefined ? 0 : parseInt(req.query.page);
+  //const size = req.query.size === undefined ? 20 : parseInt(req.query.size);
 
-  query.limit = size;
-  query.offset = size * (page - 1);
+  // query.limit = size;
+  // query.offset = size * (page - 1);
 
-  let { minLat, maxLat, maxLng, minLng, minPrice, maxPrice } = req.query;
+  let { page, size, minLat, maxLat, maxLng, minLng, minPrice, maxPrice } = req.query;
+  let errorArry = [];
+  if(page) {
+    if (page < 0) {
+      errorArry.push('Page must be greater than or equal to 0');
+    }else {
+      //query.where.page = page
+      page = req.query.page === undefined ? 0 : parseInt(req.query.page);
+      if(size) {
+        if(size < 0) {
+          errorArry.push('Size must be greater than or equal to 0');
+        }else {
+         // query.where.size = size;
+         size = req.query.size === undefined ? 20 : parseInt(req.query.size);
+          query.limit = size;
+          query.offset = size * (page - 1);
+        }
+      }
+    }
+  }
+  if (minLat) {
+    if(minLat.isNaN()) {
+      errorArry.push('Minimum latitude is invalid');
+    }else{
+      query.where.minLat = minLat;
+    }
+  }
+  if (maxLat){
+    if(maxLat.isNaN()) {
+      errorArry.push('Maximum latitude is invalid');
+    }else{
+      query.where.maxLat = maxLat;
+    }
+  }
 
-  if (minLat) query.where.minLat = minLat;
-  if (maxLat) query.where.maxLat = maxLat;
-  if (minLng) query.where.minLng = minLng;
-  if (maxLng) query.where.maxLng = maxLng;
-  if (minPrice) query.where.minPrice = minPrice;
-  if (maxPrice) query.where.maxPrice = maxPrice;
+  if (minLng){
+    if(minLng.isNaN()) {
+      errorArry.push('Minimum longitude is invalid');
+    }else{
+      query.where.minLng = minLng;
+    }
+  }
+  if (maxLng) {
+    if(maxLng.isNaN()) {
+      errorArry.push('Maximum longitude is invalid');
+    }else{
+      query.where.maxLng = maxLng;
+    }
+  }
 
-  let returnedSpots = await Spot.findAndCountAll(query);
+  if (minPrice) {
+    if(minPrice < 0) {
+      errorArry.push('Maximum price must be greater than or equal to 0');
+    }else{
+      query.where.minPrice = minPrice;
+    }
+  }
+  if (maxPrice) {
+    if(maxPrice < 0) {
+      errorArry.push('Minimum price must be greater than or equal to 0')
+    }else {
+      query.where.maxPrice = maxPrice;
+    }
+  }
+
+  if (errorArry.length) {
+    const err = {
+      message: "Valdidation Error",
+      statusCode: 400,
+      errors: errorArry
+    }
+    return res.json(400, err);
+  }
+
+  //let returnedSpots = await Spot.findAndCountAll(query);
+  let returnedSpots = await Spot.findAll(query)
+  console.log("HEEEREEEEE", returnedSpots)
 
   let Spots = [];
-
-  for (let i = 0; i < returnedSpots.rows.length; i++) {
-    Spots.push(returnedSpots.rows[i].dataValues);
+ if (returnedSpots.length) {
+  for (let i = 0; i < returnedSpots.length; i++) {
+    Spots.push(returnedSpots[i].dataValues)
   }
+}
+let avgRating = null;
 
-  Spots.forEach(spot => {
-    if(spot.SpotImages.length)
-    {spot.previewImage = spot.SpotImages[0].dataValues.url};
+Spots.forEach(spot => {
+
+    if(spot.SpotImages.length){
+      spot.previewImage = spot.SpotImages[0].dataValues.url
+
+    //  console.log("waaaaasaaaaaa: ",spot)
+
+
+      if(spot.Reviews.length) {
+        avgRating = 0;
+        spot.Reviews.forEach(review => {
+          avgRating += review.dataValues.stars;
+        });
+        console.log("divide by ",spot.Reviews.length)
+        console.log("avg: ", avgRating)
+      }
+      spot.avgRating = avgRating / spot.Reviews.length;
+    };
     delete spot.SpotImages;
+    delete spot.Reviews;
   })
 
   let newSpots = { Spots };
-  newSpots.size = returnedSpots.rows.length;
-  newSpots.page = page;
+  if(page && size ) {
+    newSpots.size = returnedSpots.length;
+    newSpots.page = page;
+  }
 
   return res.json(newSpots)
 
