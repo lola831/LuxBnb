@@ -37,11 +37,12 @@ router.get('/current', async (req, res, next) => {
             },
         ]
     });
-
-    Bookings.forEach(booking => {
-      booking.dataValues.Spot.dataValues.previewImage = booking.dataValues.Spot.dataValues.SpotImages[0].dataValues.previewImage;
-       delete booking.dataValues.Spot.dataValues.SpotImages;
-    })
+    if(Bookings.length) {
+      Bookings.forEach(booking => {
+        booking.dataValues.Spot.dataValues.previewImage = booking.dataValues.Spot.dataValues.SpotImages[0].dataValues.previewImage;
+         delete booking.dataValues.Spot.dataValues.SpotImages;
+      })
+    }
 
     const returnBookings = {Bookings};
     return res.json(returnBookings)

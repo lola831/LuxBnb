@@ -114,6 +114,15 @@ router.put('/:reviewId', validateReview, async (req, res, next) => {
         "statusCode": 403
     })
    }
+
+   review.set({
+    "review": req.body.review,
+    "stars": req.body.stars
+   });
+
+   await review.save();
+   
+
    return res.json(review);
 
 })
