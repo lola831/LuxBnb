@@ -34,12 +34,20 @@ router.get('/current', async(req,res,next) => {
             {model: ReviewImage, attributes: ['id', 'url']}
         ]
     });
+    //console.log(Reviews)
 
-    for (let i = 0; i < Reviews.length; i++) {
-        let url = Reviews[i].dataValues.Spot.SpotImages[0].dataValues.url;
-        Reviews[i].dataValues.Spot.dataValues.previewImage = url;
-        delete Reviews[i].dataValues.Spot.dataValues.SpotImages;
+    if(Reviews.length) {
+
+        for (let i = 0; i < Reviews.length; i++) {
+            if(Reviews[i].dataValues.Spot.dataValues.SpotImages.length) {
+                console.log(Reviews[0].dataValues.Spot.dataValues.SpotImages)
+                let url = Reviews[i].dataValues.Spot.dataValues.SpotImages[0].dataValues.url;
+                Reviews[i].dataValues.Spot.dataValues.previewImage = url;
+            }
+            delete Reviews[i].dataValues.Spot.dataValues.SpotImages;
+        }
     }
+
     const returnReviews = {Reviews}
     return res.json(returnReviews)
 })
@@ -106,12 +114,36 @@ router.put('/:reviewId', validateReview, async (req, res, next) => {
         "statusCode": 403
     })
    }
-
-   return res.json(review)
-
+   return res.json(review);
 
 })
 
+
+router.delete('/:reviewId', async (req, res, next) => {
+    const review = await Review.findOne({where: {id: req.params.reviewId}});
+
+    if(!review) {
+        return res.json(404, {
+            message: "Review couldn't be found",
+            statusCode: 404
+          })
+    };
+
+    if (req.user.id !== review.dataValues.userId) {
+        return res.json(403, {
+            "message": "You are not authorized to delete this review"
+        })
+    }
+
+    await review.destroy();
+
+return res.json({
+    "message": "Successfully deleted",
+    "statusCode": 200
+  });
+
+
+})
 
 
 

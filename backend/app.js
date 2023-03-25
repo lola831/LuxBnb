@@ -20,27 +20,27 @@ app.use(express.json());
 
 // Security Middleware
 if (!isProduction) {
-    // enable cors only in development
-    app.use(cors());
-  }
+  // enable cors only in development
+  app.use(cors());
+}
 
-  // helmet helps set a variety of headers to better secure your app
-  app.use(
-    helmet.crossOriginResourcePolicy({
-      policy: "cross-origin"
-    })
-  );
+// helmet helps set a variety of headers to better secure your app
+app.use(
+  helmet.crossOriginResourcePolicy({
+    policy: "cross-origin"
+  })
+);
 
-  // Set the _csrf token and create req.csrfToken method
-  app.use(
-    csurf({
-      cookie: {
-        secure: isProduction,
-        sameSite: isProduction && "Lax",
-        httpOnly: true
-      }
-    })
-  );
+// Set the _csrf token and create req.csrfToken method
+app.use(
+  csurf({
+    cookie: {
+      secure: isProduction,
+      sameSite: isProduction && "Lax",
+      httpOnly: true
+    }
+  })
+);
 
 app.use(routes); // Connect all the routes
 
@@ -62,7 +62,7 @@ app.use((err, req, res, next) => {
   (console.log("IN APP.JS PROCESS SEQUELIZE ERRORS MIDDLEARE"))
   // check if error is a Sequelize error:
   if (err instanceof ValidationError) {
-    console.log("inhehfsdkgfkglfjhgfjhjagfgjfgs")
+
     let errObj = {};
     err.errors.forEach(e => {
       let newKey = e.path;
@@ -95,12 +95,12 @@ app.use((err, req, res, next) => {
 app.use((err, _req, res, _next) => {
   res.status(err.status || 500);  //if no err.status already set to default 500
   console.error(err);   //used for developers..comment out in production
- return res.json({ // in our response include:
+  return res.json({ // in our response include:
     //title: err.title || 'Server Error', //if no err.title default to 'server error'
     message: err.message,
     errors: err.errors, // send the errors themselves (which are often an array of errors)
     statusCode: err.status,
-   // stack: isProduction ? null : err.stack //only going to provide the stack in the respomse if we are not in production
+    // stack: isProduction ? null : err.stack //only going to provide the stack in the respomse if we are not in production
     // if were in production(if its true) the stack property will be set to null
   });
 });
