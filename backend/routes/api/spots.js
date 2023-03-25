@@ -442,9 +442,6 @@ Spots.forEach(spot => {
     if(spot.SpotImages.length){
       spot.previewImage = spot.SpotImages[0].dataValues.url
 
-    //  console.log("waaaaasaaaaaa: ",spot)
-
-
       if(spot.Reviews.length) {
         avgRating = 0;
         spot.Reviews.forEach(review => {

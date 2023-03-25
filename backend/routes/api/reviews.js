@@ -34,12 +34,20 @@ router.get('/current', async(req,res,next) => {
             {model: ReviewImage, attributes: ['id', 'url']}
         ]
     });
+    //console.log(Reviews)
 
-    for (let i = 0; i < Reviews.length; i++) {
-        let url = Reviews[i].dataValues.Spot.SpotImages[0].dataValues.url;
-        Reviews[i].dataValues.Spot.dataValues.previewImage = url;
-        delete Reviews[i].dataValues.Spot.dataValues.SpotImages;
+    if(Reviews.length) {
+
+        for (let i = 0; i < Reviews.length; i++) {
+            if(Reviews[i].dataValues.Spot.dataValues.SpotImages.length) {
+                console.log(Reviews[0].dataValues.Spot.dataValues.SpotImages)
+                let url = Reviews[i].dataValues.Spot.dataValues.SpotImages[0].dataValues.url;
+                Reviews[i].dataValues.Spot.dataValues.previewImage = url;
+            }
+            delete Reviews[i].dataValues.Spot.dataValues.SpotImages;
+        }
     }
+
     const returnReviews = {Reviews}
     return res.json(returnReviews)
 })

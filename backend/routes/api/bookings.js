@@ -135,17 +135,10 @@ const spot = await Spot.findOne({where: {id: booking.dataValues.spotId }});
 const owner = spot.dataValues.ownerId;
 console.log("owner: ",owner)
 console.log("req user: ",req.user.id)
+console.log("booking user: ", bookingUser)
 
 console.log(bookingUser)
-if(req.user.id !== owner || req.user.id !== bookingUser) {
-  const err = new Error("You are not authorized to delete the booking");
-  res.status(403)
-  return res.json(
-    {
-      "message": "You are not authorized to delete the booking",
-      "statusCode": 403
-    })
-}
+if(req.user.id === owner || req.user.id === bookingUser) {
 
 await booking.destroy();
 
@@ -153,6 +146,15 @@ return res.json({
     "message": "Successfully deleted",
     "statusCode": 200
   });
+}
+const err = new Error("You are not authorized to delete the booking");
+res.status(403)
+return res.json(
+  {
+    "message": "You are not authorized to delete the booking",
+    "statusCode": 403
+  })
+
 })
 
 
