@@ -40,6 +40,8 @@ export const login = (user) => async (dispatch) => {
   return response;
 };
 
+
+
 export const signup = (user) => async (dispatch) => {
   console.log("IN SIGNUP THUNK", user)
     const { username, firstName, lastName, email, password } = user;
@@ -56,6 +58,18 @@ export const signup = (user) => async (dispatch) => {
     const data = await response.json();
     console.log("IN SIGNUP THUNK BEFORE DISPATCH", data)
     dispatch(setUser(data));
+    return response;
+  };
+
+  export const logout = () => async (dispatch) => {
+    const response = await csrfFetch('/api/session', {
+      method: 'DELETE',
+    });
+    if(response.ok){
+      dispatch(removeUser());
+    } else {
+      throw response;
+    }
     return response;
   };
 
