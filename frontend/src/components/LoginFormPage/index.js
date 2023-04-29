@@ -24,7 +24,7 @@ function LoginFormPage() {
         if (data && data.errors) setErrors(data.errors);
       });
   }
-
+  console.log("HEREEEEE IN MY LOGIN COMPONENT")
   return (
     <form onSubmit={handleSubmit}>
       <ul>

@@ -17,6 +17,7 @@ const removeUser = () => {
   };
 };
 
+
 // restore session user thunk action
 export const restoreUser = () => async dispatch => {
     const response = await csrfFetch('/api/session');
@@ -54,7 +55,7 @@ export const signup = (user) => async (dispatch) => {
     });
     const data = await response.json();
     console.log("IN SIGNUP THUNK BEFORE DISPATCH", data)
-    dispatch(setUser(data.user));
+    dispatch(setUser(data));
     return response;
   };
 
