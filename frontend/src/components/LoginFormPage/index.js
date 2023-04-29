@@ -1,5 +1,3 @@
-//react functional component:
-
 import React, { useState } from 'react';
 import * as sessionActions from '../../store/session';
 import { useDispatch, useSelector } from 'react-redux';
@@ -26,7 +24,7 @@ function LoginFormPage() {
         if (data && data.errors) setErrors(data.errors);
       });
   }
-
+  console.log("HEREEEEE IN MY LOGIN COMPONENT")
   return (
     <form onSubmit={handleSubmit}>
       <ul>
