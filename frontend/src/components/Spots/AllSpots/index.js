@@ -16,7 +16,9 @@ const AllSpots = () => {
 
     const spotsList = allSpots.map(spot => (
       <NavLink className="spot-links" to={`/spots/${spot.id}`} >
-         <img src={`${spot.previewImage}`} />
+
+         <img src={`${spot.previewImage || null}`} alt={"spot"}/>
+
       </NavLink>
     ))
 
