@@ -8,29 +8,39 @@ const AllSpots = () => {
 
     const allSpots = useSelector(state => state.spots.allSpots)
 
-    //console.log("IN SPOTS COMPONENT", allSpots)
+    console.log("IN SPOTS COMPONENT", allSpots)
+
 
     useEffect(() => {
         dispatch(getAllSpots());
     }, [dispatch]);
 
 
+    const myStyle={
+        width: '200px',
+        height:'200px',
+        };
+
     if(allSpots) {
         return (
             <div className="spots-container">
-                <div className="spot-images">
                 {
                     allSpots.map(spot => (
-                        <>
-    
-                      <NavLink key={`${spot.id}`} className="spot-links" to={`/spots/${spot.id}`} >
-                        {/* { let url = spot.previewImage } */}
-                         <img src={`${spot.previewImage}`} />
 
+                        <>
+                        <div className="individual-spot">
+                      <NavLink key={`${spot.id}`} className="spot-links" to={`/spots/${spot.id}`} >
+                         <img style={myStyle} src={`${spot.previewImage}`} />
                       </NavLink>
+                      <div>{`${spot.city}, ${spot.state}`}</div>
+                      <div>{`${spot.avgRating}`}</div>
+                      <div>{`$${spot.price}/night`}</div>
+                      </div>
                       </>
                     ))
                 }
+                <div className="location">
+
                 </div>
             </div>
         )
