@@ -11,8 +11,12 @@ import App from "./App";
 import configureStore from "./store";
 import { restoreCSRF, csrfFetch } from "./store/csrf";
 import * as sessionActions from "./store/session";
+import { getAllSpots } from "./store/spots";
+
 
 const store = configureStore();
+
+store.dispatch(getAllSpots())
 
 if (process.env.NODE_ENV !== "production") {
   restoreCSRF();
