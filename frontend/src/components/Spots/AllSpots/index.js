@@ -9,13 +9,15 @@ const AllSpots = () => {
     const allSpots = useSelector(state => state.spots.allSpots)
 
     console.log("IN SPOTS COMPONENT", allSpots)
-    
+
     useEffect(() => {
         dispatch(getAllSpots());
     }, [dispatch]);
 
     const spotsList = allSpots.map(spot => (
-      <NavLink to={`/spots/${spot.id}`}>{spot.address}</NavLink>
+      <NavLink className="spot-links" to={`/spots/${spot.id}`} >
+         <img src={`${spot.previewImage}`} />
+      </NavLink>
     ))
 
     return (
