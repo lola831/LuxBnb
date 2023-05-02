@@ -8,25 +8,35 @@ const AllSpots = () => {
 
     const allSpots = useSelector(state => state.spots.allSpots)
 
-    console.log("IN SPOTS COMPONENT", allSpots)
+    //console.log("IN SPOTS COMPONENT", allSpots)
 
     useEffect(() => {
         dispatch(getAllSpots());
     }, [dispatch]);
 
-    const spotsList = allSpots.map(spot => (
-      <NavLink className="spot-links" to={`/spots/${spot.id}`} >
 
-         <img src={`${spot.previewImage || null}`} alt={"spot"}/>
+    if(allSpots) {
+        return (
+            <div className="spots-container">
+                <div className="spot-images">
+                {
+                    allSpots.map(spot => (
+                        <>
+    
+                      <NavLink key={`${spot.id}`} className="spot-links" to={`/spots/${spot.id}`} >
+                        {/* { let url = spot.previewImage } */}
+                         <img src={`${spot.previewImage}`} />
 
-      </NavLink>
-    ))
-
-    return (
-        <div className="allSpots">
-            {spotsList}
-        </div>
-    )
+                      </NavLink>
+                      </>
+                    ))
+                }
+                </div>
+            </div>
+        )
+    } else {
+        return null;
+    }
 
 }
 
