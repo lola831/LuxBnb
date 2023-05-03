@@ -8,9 +8,8 @@ function LoginFormModal() {
   const dispatch = useDispatch();
   const [credential, setCredential] = useState("");
   const [password, setPassword] = useState("");
-  const [errors, setErrors] = useState({});
+  const [errors, setErrors] = useState("");
   const { closeModal } = useModal();
-
   const [disabled, setDisabled] = useState(false);
 
   useEffect(() => {
@@ -21,13 +20,14 @@ function LoginFormModal() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    setErrors({});
+
+    setErrors();
     return dispatch(sessionActions.login({ credential, password }))
       .then(closeModal)
       .catch(async (res) => {
         const data = await res.json();
-        if (data && data.errors) {
-          setErrors(data.errors);
+        if (data && data.message) {
+          setErrors(data.message);
         }
       });
   };
@@ -44,7 +44,6 @@ function LoginFormModal() {
         setErrors(data.errors);
       }
     });
-
   }
 
   return (
@@ -69,8 +68,8 @@ function LoginFormModal() {
             required
           />
         </label>
-        {errors.credential && (
-          <p>{errors.credential}</p>
+        {errors && (
+          <p>{errors}</p>
         )}
          <button disabled={!disabled} type="submit">Log In</button>
       </form>
