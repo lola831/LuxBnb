@@ -8,18 +8,11 @@ const AllSpots = () => {
 
     const allSpots = useSelector(state => state.spots.allSpots)
 
-    console.log("IN SPOTS COMPONENT", allSpots)
-
+    console.log("IN SPOTS COMPONENT", allSpots);
 
     useEffect(() => {
         dispatch(getAllSpots());
     }, [dispatch]);
-
-
-    const myStyle={
-        width: '200px',
-        height:'200px',
-        };
 
     if(allSpots) {
         return (
@@ -30,7 +23,7 @@ const AllSpots = () => {
                         <>
                         <div className="individual-spot">
                       <NavLink key={`${spot.id}`} className="spot-links" to={`/spots/${spot.id}`} >
-                         <img style={myStyle} src={`${spot.previewImage}`} />
+                         <img style={{width:'200px', height:'200px'}} src={`${spot.previewImage}`} />
                       </NavLink>
                       <div>{`${spot.city}, ${spot.state}`}</div>
                       <div>{`${spot.avgRating}`}</div>
