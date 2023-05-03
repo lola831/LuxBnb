@@ -39,6 +39,7 @@ const SpotDetails = () => {
                 <div>{`$${spot.price}night `}</div>
                 <div>{`${spot.avgStarRating}`}</div>
                 <div>{`${spot.numReviews} reviews`}</div>
+                <button onClick={() => alert("Feature Coming Soon...")}>Reserve</button>
             </div>
             <div className="reviews-container">
                 <h2>{`${spot.avgStarRating} stars   ${spot.numReviews} reviews`}</h2>
