@@ -37,9 +37,11 @@ const getReviews = spotId => {
 //get all spots
 export const getAllSpots = () => async dispatch => {
     const response = await csrfFetch('/api/spots');
+   
 
     if(response.ok) {
         const spots = await response.json();
+
         dispatch(getSpots(spots));
         return spots;
 
