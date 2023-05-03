@@ -5,6 +5,9 @@ const GET_SPOTS = 'spots/GET_SPOTS';
 
 const GET_DETAILS = 'spots/GET_DETAILS';
 
+const GET_REVIEWS = 'spots/GET_REVIEWS';
+
+
 
 // action creators
 const getSpots = spots => {
@@ -17,6 +20,13 @@ const getSpots = spots => {
 const getDetails = spotId => {
   return {
     type: GET_DETAILS,
+    spotId
+  };
+};
+
+const getReviews = spotId => {
+  return {
+    type: GET_REVIEWS,
     spotId
   };
 };
@@ -49,6 +59,17 @@ export const getSpotDetails = (spotId) => async dispatch => {
   }
 }
 
+export const getSpotReviews = (spotId) => async dispatch => {
+  const response = await csrfFetch(`/api/spots/${spotId}/reviews`);
+  if(response.ok) {
+      const spotReviews = await response.json();
+      dispatch(getReviews(spotReviews));
+      return spotReviews;
+  }else {
+      return response; /// what should we return???
+  }
+}
+
 const initialState = {};
 
 const spotsReducer = (state = initialState, action) => {
@@ -61,6 +82,11 @@ const spotsReducer = (state = initialState, action) => {
      case GET_DETAILS:
       //console.log("ACTION.SPOTS", action)
           newState.spotDetails = action.spotId;
+          return newState;
+      case GET_REVIEWS:
+          console.log("ACTION.SPOTS=================", action)
+          newState.spotReviews = action.spotId.Reviews;
+
           return newState;
     default:
       return state;
