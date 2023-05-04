@@ -7,7 +7,9 @@ import './SpotDetails.css';
 const SpotDetails = () => {
     const { id } = useParams();
     const dispatch = useDispatch();
-    const spot = useSelector(state => state.spots.spotDetails);
+    const spot = useSelector(state => state.spots.spotDetails); ///gets error here
+    /**Cannot read properties of null (reading 'spotDetails')
+TypeError: Cannot read properties of null  */
     const reviews = useSelector(state => state.spots.spotReviews);
 
     //console.log("SPOOOOOOTTTTT: ", spot)
