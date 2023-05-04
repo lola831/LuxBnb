@@ -22,7 +22,7 @@ function Navigation({ isLoaded }) {
         <>
           {sessionUser && (
             <lil>
-              <NavLink exact to="/spots">Create a New Spot</NavLink>
+              <NavLink exact to="/spots/new">Create a New Spot</NavLink>
             </lil>
           )}
           <li>
