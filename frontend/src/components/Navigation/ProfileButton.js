@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
 import { useDispatch } from 'react-redux';
+import { useHistory } from 'react-router-dom';
 import * as sessionActions from '../../store/session';
 import OpenModalMenuItem from './OpenModalMenuItem';
 import LoginFormModal from '../LoginFormModal';
@@ -9,6 +10,7 @@ function ProfileButton({ user }) {
   const dispatch = useDispatch();
   const [showMenu, setShowMenu] = useState(false);
   const ulRef = useRef();
+  const history = useHistory();
 
   const openMenu = () => {
     if (showMenu) return;
@@ -33,9 +35,10 @@ function ProfileButton({ user }) {
 
   const logout = (e) => {
     e.preventDefault();
-    console.log("IN LOGOUT AFTER ON CLICK IN PROFILEBUTTON")
     dispatch(sessionActions.logout());
     closeMenu();
+    history.push('/');
+
   };
 
   const ulClassName = "profile-dropdown" + (showMenu ? "" : " hidden");
@@ -48,8 +51,8 @@ function ProfileButton({ user }) {
       <ul className={ulClassName} ref={ulRef}>
         {user ? (
           <>
-            <li>{user.username}</li>
-            <li>{user.firstName} {user.lastName}</li>
+            {/* <li>{user.username}</li> */}
+            <li>Hello, {user.firstName}</li>
             <li>{user.email}</li>
             <li>
               <button onClick={logout}>Log Out</button>

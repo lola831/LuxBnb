@@ -40,8 +40,8 @@ function LoginFormModal() {
     .then(closeModal)
     .catch(async (res) => {
       const data = await res.json();
-      if (data && data.errors) {
-        setErrors(data.errors);
+      if (data && data.message) {
+        setErrors(data.message);
       }
     });
   }
