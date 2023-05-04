@@ -7,6 +7,7 @@ const GET_DETAILS = 'spots/GET_DETAILS';
 
 const GET_REVIEWS = 'spots/GET_REVIEWS';
 
+const ADD_SPOT = 'spots/ADD_SPOT';
 
 
 // action creators
@@ -31,13 +32,20 @@ const getReviews = spotId => {
   };
 };
 
+const addSpot = spot => {
+  return {
+    type: ADD_SPOT,
+    spot
+  }
+}
+
 
 // thunks
 
 //get all spots
 export const getAllSpots = () => async dispatch => {
     const response = await csrfFetch('/api/spots');
-   
+
 
     if(response.ok) {
         const spots = await response.json();
@@ -72,7 +80,28 @@ export const getSpotReviews = (spotId) => async dispatch => {
   }
 }
 
-const initialState = {};
+export const createSpot = data => async dispatch => {
+ // console.log("HERE")
+      const response = await csrfFetch(`/api/spots`, {
+        method: 'post',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(data)
+      });
+
+      if (response.ok){
+        const spot = await response.json();
+        dispatch(addSpot(spot));
+        return spot;
+      }
+  };
+
+
+const initialState = {
+  allSpots: [],
+  spotDetails: {}
+};
 
 const spotsReducer = (state = initialState, action) => {
   //console.log("IN SPOT REDUCER")
@@ -88,8 +117,11 @@ const spotsReducer = (state = initialState, action) => {
       case GET_REVIEWS:
           console.log("ACTION.SPOTS=================", action)
           newState.spotReviews = action.spotId.Reviews;
-
           return newState;
+      case ADD_SPOT:
+        console.log("ADD SPPPPPOOOTTTT, ACTION.SPOT===>", action.spot)
+
+       return null
     default:
       return state;
   }
