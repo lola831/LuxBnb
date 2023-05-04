@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { /*useEffect, useState */} from 'react';
 import { NavLink } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import ProfileButton from './ProfileButton';
@@ -7,11 +7,6 @@ import './Navigation.css';
 function Navigation({ isLoaded }) {
 
   const sessionUser = useSelector(state => state.session.user);
-  const [loggedIn, setLoggedIn] = useState(false);
-
-  useEffect(() => {
-    if (sessionUser) setLoggedIn(true);
-  }, [sessionUser]);
 
   return (
     <ul>
@@ -21,9 +16,9 @@ function Navigation({ isLoaded }) {
       {isLoaded && (
         <>
           {sessionUser && (
-            <lil>
+            <li>
               <NavLink exact to="/spots/new">Create a New Spot</NavLink>
-            </lil>
+            </li>
           )}
           <li>
             <ProfileButton user={sessionUser} />
