@@ -11,6 +11,8 @@ const GET_REVIEWS = 'spots/GET_REVIEWS';
 
 const ADD_SPOT = 'spots/ADD_SPOT';
 
+const EDIT_SPOT = 'spots/EDIT_SPOT';
+
 
 // action creators
 const getSpots = spots => {
@@ -48,6 +50,12 @@ const addSpot = spot => {
   }
 }
 
+const editSpot = spot => {
+  return {
+    type: EDIT_SPOT,
+    spot
+  }
+}
 
 // thunks
 
@@ -122,6 +130,23 @@ export const createSpot = data => async dispatch => {
       }
   };
 
+  export const modifySpot = (spot) => async dispatch => {
+    // console.log("HERE")
+         const response = await csrfFetch(`/api/spots//${spot.id}`, {
+           method: 'put',
+           headers: {
+             'Content-Type': 'application/json'
+           },
+           body: JSON.stringify(spot)
+         });
+
+         if (response.ok){
+           const spot = await response.json();
+           dispatch(editSpot(spot));
+           return spot;
+         }
+     };
+
 
 const initialState = {
   allSpots: [],
@@ -150,6 +175,8 @@ const spotsReducer = (state = initialState, action) => {
       case ADD_SPOT:
         console.log("ADD SPPPPPOOOTTTT, ACTION.SPOT===>", action.spot)
        return null
+      case EDIT_SPOT:
+        console.log("in EDIT SPOT REDUCER", action.spot)
     default:
       return state;
   }

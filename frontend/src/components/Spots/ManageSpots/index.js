@@ -18,7 +18,7 @@ const ManageSpots = () => {
 
     const noSpots = () => {
         if (!userSpots.length) {
-            console.log("in no spots")
+            console.log("in NOOOOOOOOOOOOOOO spots")
             return (
                 <>
                 <Link to='/spots/new'>
@@ -33,18 +33,23 @@ const ManageSpots = () => {
         return (
             <>
             <h2>Manage Your Spots</h2>
+            <Link to='/spots/new'>
+                    <button>Create A New Spot</button>
+                </Link>
             {noSpots()}
-            <di>
+            <div>
             {
                     userSpots.map(spot => (
 
                         <>
                         <div className="individual-spot">
                       <NavLink key={`${spot.id}`} className="spot-links" to={`/spots/${spot.id}`} >
-                         <img style={{width:'200px', height:'200px'}} src={`${spot.previewImage}`} />
+                         <img style={{width:'200px', height:'200px'}} alt="" src={`${spot.previewImage}`} />
                       </NavLink>
                       <div>{`${spot.city}, ${spot.state}`}</div>
+                      <NavLink to={`/spots/${spot.id}/edit`}>
                       <button>Update</button>
+                      </NavLink>
                       <button>Delete</button>
                       <div>{`${spot.avgRating}`}</div>
                       <div>{`$${spot.price}/night`}</div>
@@ -52,7 +57,7 @@ const ManageSpots = () => {
                       </>
                     ))
                 }
-            </di>
+            </div>
             </>
         )
     } else {

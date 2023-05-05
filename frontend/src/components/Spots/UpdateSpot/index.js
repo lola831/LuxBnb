@@ -1,12 +1,20 @@
-import React, { useState } from 'react';
-import { useDispatch } from 'react-redux';
-import { useHistory } from 'react-router-dom';
-import { createSpot } from '../../../store/spots';
-import "./CreateSpotForm.css";
+import { useDispatch, useSelector } from "react-redux";
+import { useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
+import { getSpotDetails, modifySpot } from "../../../store/spots";
 
-const CreateSpotForm = () => {
+
+const UpdateSpot = () => {
+    const { id } = useParams();
     const dispatch = useDispatch();
-    const history = useHistory();
+    const spot = useSelector(state => state.spots.spotDetails);
+
+    console.log("SPOOOOOOTTTTT: ", spot)
+
+    useEffect(() => {
+        dispatch(getSpotDetails(id));
+        dispatch(modifySpot(spot))
+    }, [dispatch]);
 
     const [country, setCountry] = useState("");
     const [address, setAddress] = useState("");
@@ -27,6 +35,7 @@ const CreateSpotForm = () => {
                 type="text"
                 value={images[i+1]}
                 key= {i +1}
+                alt=""
                 placeholder="Image URL"
                 onChange={(e) => setImages([...images, e.target.value])}
                 />
@@ -49,22 +58,22 @@ const CreateSpotForm = () => {
             images
         }
 
-        let createdSpot;
-        createdSpot = await dispatch(createSpot(payload));
-        console.log("HERE IN HANDLESUBMIT2")
+        // let createdSpot;
+        // createdSpot = await dispatch(createSpot(payload));
+        // console.log("HERE IN HANDLESUBMIT2")
 
-        if(createdSpot) {
-            console.log("HERE IN HANDLESUBMIT3")
-            history.push(`/spots/${createdSpot.id}`);   // ????????
-            // clear form ?????
-        }
+        // if(createdSpot) {
+        //     console.log("HERE IN HANDLESUBMIT3")
+        //     history.push(`/spots/${createdSpot.id}`);   // ????????
+        //     // clear form ?????
+        // }
 
     }
 
-
-    return (
-        <>
-            <h2>Create a new Spot</h2>
+    if (spot) {
+        return (
+            <>
+            <h2>Update your Spot</h2>
             <form onSubmit={handleSubmit}>
             <div>
             <h3>Where's your place located?</h3>
@@ -75,7 +84,7 @@ const CreateSpotForm = () => {
                     <input
                     type="text"
                     value={country}
-                    placeholder="Country"
+                    placeholder={`${spot.country}`}
                     onChange={(e) => setCountry(e.target.value)}
                     required
                     />
@@ -85,7 +94,7 @@ const CreateSpotForm = () => {
                     <input
                     type="text"
                     value={address}
-                    placeholder="Address"
+                    placeholder={`${spot.address}`}
                     onChange={(e) => setAddress(e.target.value)}
                     required
                     />
@@ -95,7 +104,7 @@ const CreateSpotForm = () => {
                     <input
                     type="text"
                     value={city}
-                    placeholder="City"
+                    placeholder={`${spot.city}`}
                     onChange={(e) => setCity(e.target.value)}
                     required
                     />
@@ -106,7 +115,7 @@ const CreateSpotForm = () => {
                     <input
                     type="text"
                     value={state}
-                    placeholder="STATE"
+                    placeholder={`${spot.state}`}
                     onChange={(e) => setState(e.target.value)}
                     required
                     />
@@ -116,7 +125,7 @@ const CreateSpotForm = () => {
                     <input
                     type="text"
                     value={lat}
-                    placeholder="Latitude"
+                    placeholder={`${spot.lat}`}
                     onChange={(e) => setLat(e.target.value)}
                     />
                 </label>
@@ -126,7 +135,7 @@ const CreateSpotForm = () => {
                     <input
                     type="text"
                     value={lng}
-                    placeholder="Longitude"
+                    placeholder={`${spot.lng}`}
                     onChange={(e) => setLng(e.target.value)}
                     />
                 </label>
@@ -138,7 +147,7 @@ const CreateSpotForm = () => {
                 rows={4} cols={40}
                 minLength="30"
                 value={description}
-                placeholder="Please write at least 30 characters"
+                placeholder={`${spot.description}`}
                 onChange={(e) => setDescription(e.target.value)}
                 required
                 />
@@ -149,7 +158,7 @@ const CreateSpotForm = () => {
                     <input
                     type="text"
                     value={name}
-                    placeholder="Name of your spot"
+                    placeholder={`${spot.name}`}
                     onChange={(e) => setName(e.target.value)}
                     required
                     />
@@ -159,7 +168,7 @@ const CreateSpotForm = () => {
                 <p>Competitive pricing can help your listing stand out and rank higher in search results.</p>
                 <input
                     type="number"
-                    placeholder="Price per night (USD)"
+                    placeholder={`${spot.price}`}
                     value={price}
                     onChange={(e) => setPrice(e.target.value)}
                     required
@@ -171,7 +180,7 @@ const CreateSpotForm = () => {
                 <input
                     type="text"
                     value={images}
-                    placeholder="Preview Image URL"
+                    placeholder={`${spot.images}`}
                     onChange={(e) => setImages([...images, e.target.value])}
                     required
                 />
@@ -180,8 +189,13 @@ const CreateSpotForm = () => {
             <button type="submit">Create Spot</button>
             </form>
         </>
-    )
+        )
+    }else{
+        return (
+            <div>Loading...</div>
+        )
+    }
 
-};
+}
 
-export default CreateSpotForm;
+export default UpdateSpot;
