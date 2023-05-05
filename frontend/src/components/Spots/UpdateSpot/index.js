@@ -1,12 +1,13 @@
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useHistory, useParams } from "react-router-dom";
 import { getSpotDetails, modifySpot } from "../../../store/spots";
 
 
 const UpdateSpot = () => {
     const { id } = useParams();
     const dispatch = useDispatch();
+    const history = useHistory();
     const spot = useSelector(state => state.spots.spotDetails);
 
     console.log("SPOOOOOOTTTTT: ", spot)
@@ -58,15 +59,17 @@ const UpdateSpot = () => {
             images
         }
 
-        // let createdSpot;
-        // createdSpot = await dispatch(createSpot(payload));
-        // console.log("HERE IN HANDLESUBMIT2")
 
-        // if(createdSpot) {
-        //     console.log("HERE IN HANDLESUBMIT3")
-        //     history.push(`/spots/${createdSpot.id}`);   // ????????
-        //     // clear form ?????
-        // }
+
+        let updatedSpot;
+        updatedSpot = await dispatch(modifySpot(payload));
+        console.log("HERE IN HANDLESUBMIT2")
+
+        if(updatedSpot) {
+            console.log("HERE IN HANDLESUBMIT3")
+            history.push(`/spots/${updatedSpot.id}`);   // ????????
+            // clear form ?????
+        }
 
     }
 
