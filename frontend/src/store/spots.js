@@ -13,6 +13,11 @@ const ADD_SPOT = 'spots/ADD_SPOT';
 
 const EDIT_SPOT = 'spots/EDIT_SPOT';
 
+const DELETE_SPOT = 'spots/DELETE_SPOT';
+
+const ADD_IMAGE = 'spots/ADD_IMAGE';
+
+
 
 // action creators
 const getSpots = spots => {
@@ -57,6 +62,19 @@ const editSpot = spot => {
   }
 }
 
+const deleteSpot = spot => {
+  return {
+    type: DELETE_SPOT,
+    spot
+  }
+}
+
+const addImage = spotId => {
+  return {
+    type: ADD_IMAGE,
+    spotId
+  }
+}
 // thunks
 
 //get all spots
@@ -123,6 +141,7 @@ export const createSpot = data => async dispatch => {
         body: JSON.stringify(data)
       });
 
+
       if (response.ok){
         const spot = await response.json();
         dispatch(addSpot(spot));
@@ -132,7 +151,7 @@ export const createSpot = data => async dispatch => {
 
   export const modifySpot = (spot) => async dispatch => {
     // console.log("HERE")
-         const response = await csrfFetch(`/api/spots//${spot.id}`, {
+         const response = await csrfFetch(`/api/spots/${spot.id}`, {
            method: 'put',
            headers: {
              'Content-Type': 'application/json'
@@ -146,6 +165,41 @@ export const createSpot = data => async dispatch => {
            return spot;
          }
      };
+
+     export const removeSpot = (spot) => async dispatch => {
+      // console.log("HERE")
+           const response = await csrfFetch(`/api/spots/${spot.id}`, {
+             method: 'delete',
+             headers: {
+               'Content-Type': 'application/json'
+             },
+             body: JSON.stringify(spot)
+           });
+
+           if (response.ok){
+             const spot = await response.json();
+             dispatch(deleteSpot(spot));
+             return spot;
+           }
+       };
+
+       export const createImage = (spot) => async dispatch => {
+        // console.log("HERE")
+             const response = await csrfFetch(`/api/spots/${spot.id}`, {
+               method: 'delete',
+               headers: {
+                 'Content-Type': 'application/json'
+               },
+               body: JSON.stringify(spot)
+             });
+
+             if (response.ok){
+               const spot = await response.json();
+               dispatch(deleteSpot(spot));
+               return spot;
+             }
+         };
+
 
 
 const initialState = {
@@ -174,9 +228,14 @@ const spotsReducer = (state = initialState, action) => {
           return newState;
       case ADD_SPOT:
         console.log("ADD SPPPPPOOOTTTT, ACTION.SPOT===>", action.spot)
-       return null
+        newState.allSpots.push(action.spot);
+        return newState;
+
+      // return null
       case EDIT_SPOT:
         console.log("in EDIT SPOT REDUCER", action.spot)
+      case DELETE_SPOT:
+
     default:
       return state;
   }

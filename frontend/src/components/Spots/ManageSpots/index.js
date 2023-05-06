@@ -2,7 +2,9 @@ import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getSpotsUser } from "../../../store/spots";
 import { NavLink, Link } from "react-router-dom";
-import UpdateSpot from "../UpdateSpot";
+//import DeleteSpot from "../DeleteSpot";
+import { removeSpot } from "../../../store/spots";
+
 
 const ManageSpots = () => {
     console.log("HEEEERE IN USER")
@@ -30,6 +32,12 @@ const ManageSpots = () => {
         }
     }
 
+    const callDelete = (spot) => {
+        dispatch(removeSpot(spot));
+        // history
+
+    }
+
     if(userSpots) {
         return (
             <>
@@ -51,7 +59,10 @@ const ManageSpots = () => {
                       <NavLink to={`/spots/${spot.id}/edit`}>
                       <button>Update</button>
                       </NavLink>
-                      <button>Delete</button>
+                      <button onClick={callDelete(spot)}>Delete</button>
+                      {/* <div>
+                        <DeleteSpot spot={spot} />
+                      </div> */}
                       <div>{`${spot.avgRating}`}</div>
                       <div>{`$${spot.price}/night`}</div>
                       </div>
