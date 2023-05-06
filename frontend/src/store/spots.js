@@ -15,6 +15,8 @@ const EDIT_SPOT = 'spots/EDIT_SPOT';
 
 const DELETE_SPOT = 'spots/DELETE_SPOT';
 
+const ADD_IMAGE = 'spots/ADD_IMAGE';
+
 
 
 // action creators
@@ -67,6 +69,12 @@ const deleteSpot = spot => {
   }
 }
 
+const addImage = spotId => {
+  return {
+    type: ADD_IMAGE,
+    spotId
+  }
+}
 // thunks
 
 //get all spots
@@ -133,6 +141,7 @@ export const createSpot = data => async dispatch => {
         body: JSON.stringify(data)
       });
 
+
       if (response.ok){
         const spot = await response.json();
         dispatch(addSpot(spot));
@@ -174,6 +183,24 @@ export const createSpot = data => async dispatch => {
            }
        };
 
+       export const createImage = (spot) => async dispatch => {
+        // console.log("HERE")
+             const response = await csrfFetch(`/api/spots/${spot.id}`, {
+               method: 'delete',
+               headers: {
+                 'Content-Type': 'application/json'
+               },
+               body: JSON.stringify(spot)
+             });
+
+             if (response.ok){
+               const spot = await response.json();
+               dispatch(deleteSpot(spot));
+               return spot;
+             }
+         };
+
+
 
 const initialState = {
   allSpots: [],
@@ -201,11 +228,14 @@ const spotsReducer = (state = initialState, action) => {
           return newState;
       case ADD_SPOT:
         console.log("ADD SPPPPPOOOTTTT, ACTION.SPOT===>", action.spot)
-       return null
+        newState.allSpots.push(action.spot);
+        return newState;
+
+      // return null
       case EDIT_SPOT:
         console.log("in EDIT SPOT REDUCER", action.spot)
       case DELETE_SPOT:
-        
+
     default:
       return state;
   }

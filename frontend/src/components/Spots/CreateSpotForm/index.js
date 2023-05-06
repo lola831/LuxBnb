@@ -52,6 +52,16 @@ const CreateSpotForm = () => {
         let createdSpot;
         createdSpot = await dispatch(createSpot(payload));
         console.log("HERE IN HANDLESUBMIT2")
+        console.log("IMAGGEESSSSS",images)
+        // for (let i = 0; i < images.length; i++) {
+        //     let data = {
+        //         createSpot,
+        //         image[i],
+
+
+        //     }
+        // }
+       // const addImages = await dispatch()
 
         if(createdSpot) {
             console.log("HERE IN HANDLESUBMIT3")
