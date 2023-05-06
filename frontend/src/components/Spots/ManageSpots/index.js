@@ -2,6 +2,7 @@ import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getSpotsUser } from "../../../store/spots";
 import { NavLink, Link } from "react-router-dom";
+import UpdateSpot from "../UpdateSpot";
 
 const ManageSpots = () => {
     console.log("HEEEERE IN USER")
