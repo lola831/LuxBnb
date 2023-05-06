@@ -6,6 +6,7 @@ import { getSpotDetails, modifySpot } from "../../../store/spots";
 
 const UpdateSpot = () => {
     const { id } = useParams();
+     console.log("IDDDDDDDD", id)
     const dispatch = useDispatch();
     const history = useHistory();
     const spot = useSelector(state => state.spots.spotDetails);
@@ -14,39 +15,58 @@ const UpdateSpot = () => {
 
     useEffect(() => {
         dispatch(getSpotDetails(id));
-        dispatch(modifySpot(spot))
-    }, [dispatch]);
+        setCountry(spot.country)
+        setAddress(spot.address)
+        setCity(spot.city)
+        setState(spot.state)
+        setLat(spot.lat)
+        setLng(spot.lng)
+        setDescription(spot.description)
+        setName(spot.name)
+        setPrice(spot.price)
+        setImages(spot.SpotImages)
 
-    const [country, setCountry] = useState("");
-    const [address, setAddress] = useState("");
-    const [city, setCity] = useState("");
-    const [state, setState] = useState("");
-    const [lat, setLat] = useState("");
-    const [lng, setLng] = useState("");
+    }, [dispatch, spot.country]);
 
-    const [description, setDescription] = useState("");
-    const [name, setName] = useState("");
-    const [price, setPrice] = useState("");
-    const [images, setImages] = useState([]);
+
+        const [country, setCountry] = useState(spot?spot.country : "");
+        const [address, setAddress] = useState(spot.address);
+        const [city, setCity] = useState(spot.city);
+        const [state, setState] = useState(spot.state);
+        const [lat, setLat] = useState(spot.lat);
+        const [lng, setLng] = useState(spot.lng);
+
+        const [description, setDescription] = useState(spot.description);
+        const [name, setName] = useState(spot.name);
+        const [price, setPrice] = useState(spot.price);
+        const [images, setImages] = useState([spot.SpotImages]);
+
 
     const urlImages = [];
-    for (let i = 0; i < 5; i++) {
-         urlImages.push(
-                <input
-                type="text"
-                value={images[i+1]}
-                key= {i +1}
-                alt=""
-                placeholder="Image URL"
-                onChange={(e) => setImages([...images, e.target.value])}
-                />
-            )
+    console.log("IMAGES: ", images)
+    if(spot.SpotImages){
+        console.log("in ifffff")
+
+        for (let i = 0; i < spot?.SpotImages.length; i++) {
+             urlImages.push(
+                    <input
+                    type="text"
+                    value={spot?.SpotImages[i].url}
+                    key= {i}
+                    alt=""
+                    placeholder="Image URL"
+                    onChange={(e) => setImages([...images, e.target.value])}
+                    />
+                )
+        }
     }
+    console.log("COUNTRY======", country)
 
     const handleSubmit = async (e) => {
         e.preventDefault();
         console.log("HERE IN HANDLESUBMIT1")
         const payload = {
+            ...spot,
             country,
             address,
             city,
@@ -189,7 +209,7 @@ const UpdateSpot = () => {
                 />
                 {urlImages}
             </div>
-            <button type="submit">Create Spot</button>
+            <button type="submit">Update</button>
             </form>
         </>
         )
