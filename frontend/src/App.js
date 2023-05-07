@@ -8,6 +8,7 @@ import SpotDetails from "./components/Spots/SpotDetails";
 import CreateSpotForm from "./components/Spots/CreateSpotForm";
 import ManageSpots from "./components/Spots/ManageSpots";
 import UpdateSpot from "./components/Spots/UpdateSpot";
+import "./App.css";
 
 function App() {
   const dispatch = useDispatch();
@@ -18,8 +19,15 @@ function App() {
 
   return (
     <>
+    <div className="container">
+
+      <div className="nav">
       <Navigation isLoaded={isLoaded} />
+      </div>
+
+
       {isLoaded &&
+      <div className="main">
       <Switch>
         <Route exact path="/">
           <AllSpots />
@@ -37,7 +45,11 @@ function App() {
           <UpdateSpot />
         </Route>
       </Switch>
+      </div>
       }
+
+
+      </div>
     </>
   );
 }
