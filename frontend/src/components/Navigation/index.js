@@ -9,8 +9,8 @@ function Navigation({ isLoaded }) {
   const sessionUser = useSelector(state => state.session.user);
 
   return (
-    <div className='nav-container'>
-    <ul>
+
+    <ul className='navcontainer'>
       <div className='airbnb'>
       <li>
         <NavLink exact to="/">airbnb</NavLink>
@@ -19,7 +19,7 @@ function Navigation({ isLoaded }) {
       {isLoaded && (
         <>
           {sessionUser && (
-            <div className='create-spot'>
+            <div className='createspot'>
             <li>
               <NavLink exact to="/spots/new">Create a New Spot</NavLink>
             </li>
@@ -33,7 +33,7 @@ function Navigation({ isLoaded }) {
         </>
       )}
     </ul>
-    </div>
+
   );
 }
 

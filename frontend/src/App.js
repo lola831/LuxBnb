@@ -19,9 +19,9 @@ function App() {
 
   return (
     <>
-    <div className="container">
+    <div className="outer">
 
-      <div className="nav">
+      <div className="navigation">
       <Navigation isLoaded={isLoaded} />
       </div>
 

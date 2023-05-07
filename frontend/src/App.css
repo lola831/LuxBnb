@@ -1,22 +1,22 @@
-.container {
+.outer{
     font-family: sans-serif;
     color: black;
-    height: 100vh;
-    max-width: 1280px;
+    /* height: 100vh; */
+    /* max-width: 1280px; */
     margin: 0 auto;
     display: grid;
     grid-template-columns: 1fr;
     grid-template-rows: 1fr 6fr;
     gap: 0px 0px;
     grid-template-areas:
-        "nav"
+        "navigation"
         "main";
 }
 
-.nav {
-    grid-area: nav;
-    display: flex;
+.navigation {
+    grid-area: navigation;
     background-color: lightblue;
+
 }
 
 .main {
