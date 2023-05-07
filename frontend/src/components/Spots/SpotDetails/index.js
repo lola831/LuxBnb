@@ -5,6 +5,7 @@ import { getSpotDetails, getSpotReviews } from "../../../store/spots";
 import { getUserReviews } from "../../../store/reviews";
 import OpenModalMenuItem from "../../Navigation/OpenModalMenuItem";
 import CreateReviewForm from "../../Reviews/CreateReviewForm";
+import DeleteReviewModal from "../../Reviews/DeleteReviewModal";
 import './SpotDetails.css';
 
 const SpotDetails = () => {
@@ -27,15 +28,7 @@ TypeError: Cannot read properties of null  */
         dispatch(getUserReviews())
     }, [dispatch]);
 
-    console.log("SESSSION USER", sessionUser)
-
-
-
-
-
-
-
-
+    console.log("SESSSION USER", sessionUser);
 
     if (spot && reviews) {
         return (
@@ -62,15 +55,13 @@ TypeError: Cannot read properties of null  */
                 <div className="reviews-container">
                     <h2>{`${spot.avgStarRating} stars   ${spot.numReviews} reviews`}</h2>
                     {reviews.find(review => review.User.id !== sessionUser.id) && (
+                        <OpenModalMenuItem
+                            itemText="Post Your Review"
+                            // onItemClick={closeMenu}
+                            modalComponent={<CreateReviewForm spotId={spot.id} />}
+                        />
 
-
-                    <OpenModalMenuItem
-                    itemText="Post Your Review"
-                    // onItemClick={closeMenu}
-                    modalComponent={<CreateReviewForm spotId={spot.id}/>}
-                    />
-
-                       // <button>Post Your Review</button>
+                        // <button>Post Your Review</button>
                     )}
                     <div className="reviews">
                         {
@@ -79,6 +70,14 @@ TypeError: Cannot read properties of null  */
                                     <h3>{`${review.User.firstName}`}</h3>
                                     <h3>{`${review.createdAt}`}</h3>
                                     <p>{`${review.review}`}</p>
+                                    {
+                                        review.User.id === sessionUser.id && (
+                                            <OpenModalMenuItem
+                                                itemText="Delete"
+                                                // onItemClick={closeMenu}
+                                                modalComponent={<DeleteReviewModal review={review} />}
+                                            />
+                                        )}
                                 </>
                             ))
                         }

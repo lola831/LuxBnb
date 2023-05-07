@@ -4,6 +4,8 @@ const GET_REVIEWS = 'reviews/GET_REVIEWS'
 
 const ADD_REVIEW = 'reviews/ADD_REVIEW'
 
+const DELETE_REVIEW = 'reviews/DELETE_REVIEW'
+
 const getReviews = reviews => {
     return {
       type: GET_REVIEWS,
@@ -14,6 +16,13 @@ const getReviews = reviews => {
 const addReview = review => {
   return {
     type: ADD_REVIEW,
+    review
+  };
+};
+
+const deleteReview = review => {
+  return {
+    type: DELETE_REVIEW,
     review
   };
 };
@@ -47,7 +56,22 @@ export const getUserReviews = () => async dispatch => {
            return review;
          }
      };
+     export const removeReview = (review) => async dispatch => {
+      // console.log("HERE")
+           const response = await csrfFetch(`/api/reviews/${review.id}`, {
+             method: 'delete',
+             headers: {
+               'Content-Type': 'application/json'
+             },
+             body: JSON.stringify(review)
+           });
 
+           if (response.ok){
+             const review = await response.json();
+             dispatch(deleteReview(review));
+             return review;
+           }
+       };
 
 const initialState = {
    userReviews: [],
@@ -61,9 +85,10 @@ const initialState = {
         // newState.allReviews = {...state, userReviews: action.reviews}
         //nnneeeed to finish???
           return newState;
-
       case ADD_REVIEW:
       newState.userReviews.push(action.review)
+      case DELETE_REVIEW:
+        //neeed to fix
       default:
         return state;
     }
