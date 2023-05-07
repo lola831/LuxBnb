@@ -19,6 +19,8 @@ const ADD_IMAGE = 'spots/ADD_IMAGE';
 
 
 
+
+
 // action creators
 const getSpots = spots => {
   return {
@@ -75,6 +77,7 @@ const addImage = spotId => {
     spotId
   }
 }
+
 // thunks
 
 //get all spots
@@ -199,6 +202,7 @@ export const createSpot = data => async dispatch => {
                return spot;
              }
          };
+
 
 
 
