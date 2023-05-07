@@ -1,0 +1,11 @@
+.tooltip-container {
+    position: relative;
+    display: flex;
+    justify-content: center;
+}
+
+.tooltip{
+    position: absolute;
+    background: white;
+
+}
