@@ -1,0 +1,23 @@
+.spots-container {
+    display: grid;
+    grid-template-columns: 1fr 8fr 1fr;
+    grid-template-rows: 1fr;
+    gap: 0px 0px;
+    grid-template-areas:
+      ". spots-wrapper .";
+}
+
+.spots-wrapper {
+    display: flex;
+    flex-flow: row, wrap;
+    justify-content: space-between;
+
+}
+
+.individual-spot {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 10px;
+   
+}

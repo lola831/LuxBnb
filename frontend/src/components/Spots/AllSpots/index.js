@@ -2,6 +2,7 @@ import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getAllSpots } from "../../../store/spots";
 import { NavLink } from "react-router-dom";
+import "./AllSpots.css"
 
 const AllSpots = () => {
     const dispatch = useDispatch();
@@ -17,6 +18,7 @@ const AllSpots = () => {
     if(allSpots) {
         return (
             <div className="spots-container">
+                <div className="spots-wrapper">
                 {
                     allSpots.map(spot => (
 
@@ -34,6 +36,7 @@ const AllSpots = () => {
                 }
                 <div className="location">
 
+                </div>
                 </div>
             </div>
         )
