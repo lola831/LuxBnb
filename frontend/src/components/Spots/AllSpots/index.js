@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { getAllSpots } from "../../../store/spots";
 import { NavLink } from "react-router-dom";
 import "./AllSpots.css"
+import { ToolTip } from "../../ToolTip";
 
 const AllSpots = () => {
     const dispatch = useDispatch();
@@ -24,12 +25,21 @@ const AllSpots = () => {
 
                         <>
                         <div className="individual-spot">
+
+
+
                       <NavLink key={`${spot.id}`} className="spot-links" to={`/spots/${spot.id}`} >
+                      <ToolTip text={`${spot.name}`}>
                          <img style={{width:'200px', height:'200px'}} src={`${spot.previewImage}`} />
+                         </ToolTip>
                       </NavLink>
                       <div>{`${spot.city}, ${spot.state}`}</div>
                       <div>{`${spot.avgRating}`}</div>
                       <div>{`$${spot.price}/night`}</div>
+
+
+
+
                       </div>
                       </>
                     ))
