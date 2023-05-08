@@ -12,6 +12,7 @@
 .airbnb {
   display: flex;
   list-style: none;
+  justify-content: left;
  }
 .createspot {
   display: flex;
@@ -48,5 +49,3 @@
   .modal-button-li {
     cursor: pointer;
   }
-
- 

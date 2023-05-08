@@ -30,7 +30,7 @@ const AllSpots = () => {
 
                       <NavLink key={`${spot.id}`} className="spot-links" to={`/spots/${spot.id}`} >
                       <ToolTip text={`${spot.name}`}>
-                         <img style={{width:'200px', height:'200px'}} src={`${spot.previewImage}`} />
+                         <img style={{width:'250px', height:'250px'}} src={`${spot.previewImage}`} />
                          </ToolTip>
                       </NavLink>
                       <div>{`${spot.city}, ${spot.state}`}</div>
@@ -44,9 +44,6 @@ const AllSpots = () => {
                       </>
                     ))
                 }
-                <div className="location">
-
-                </div>
                 </div>
             </div>
         )
