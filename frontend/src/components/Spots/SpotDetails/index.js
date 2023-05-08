@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import { NavLink, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { getSpotDetails, getSpotReviews } from "../../../store/spots";
 import { getUserReviews } from "../../../store/reviews";
@@ -17,16 +17,17 @@ const SpotDetails = () => {
     /**Cannot read properties of null (reading 'spotDetails')
 TypeError: Cannot read properties of null  */
     const reviews = useSelector(state => state.spots.spotReviews);
-    const userReviews = useSelector(state => state.reviews.userReviews);
+   // const userReviews = useSelector(state => state.reviews.userReviews);
 
     //console.log("SPOOOOOOTTTTT: ", spot)
     console.log("reviews: ", reviews)
 
     useEffect(() => {
+        console.log("IN SUBMIT2222=========")
         dispatch(getSpotDetails(id));
         dispatch(getSpotReviews(id));
         dispatch(getUserReviews())
-    }, [dispatch]);
+    }, [dispatch, id]);
 
     console.log("SESSSION USER", sessionUser);
 
@@ -38,7 +39,7 @@ TypeError: Cannot read properties of null  */
                 <div className="images">
                     {
                         spot.SpotImages.map(image => (
-                            <img style={{ width: '200px', height: '200px' }} src={`${image.url}`} />
+                            <img style={{ width: '200px', height: '200px' }} src={`${image.url}`} alt=""/>
                         ))
                     }
                 </div>
@@ -54,7 +55,9 @@ TypeError: Cannot read properties of null  */
                 </div>
                 <div className="reviews-container">
                     <h2>{`${spot.avgStarRating} stars   ${spot.numReviews} reviews`}</h2>
-                    {reviews.find(review => review.User.id !== sessionUser.id) && (
+
+                    {(reviews.find(review => review.User.id !== sessionUser.id) || !reviews.length) && sessionUser.id !== spot.Owner.id && (
+
                         <OpenModalMenuItem
                             itemText="Post Your Review"
                             // onItemClick={closeMenu}
