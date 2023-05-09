@@ -1,24 +1,14 @@
-.outer{
-    font-family: sans-serif;
-    color: black;
-    margin: 0 auto;
-    display: grid;
-    grid-template-columns: 1fr;
-    grid-template-rows: 1fr 12fr;
-    gap: 0px 0px;
-    grid-template-areas:
-        "navigation"
-        "main";
+.outermost {
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-template-rows: 0.2fr 1.8fr;
+  gap: 0px 0px;
+  grid-template-areas:
+    "navcontainer"
+    "maincontainer";
+}
+.navcontainer {
+  grid-area: navcontainer;
 }
 
-.navigation {
-    grid-area: navigation;
-    background-color: white;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-
-}
-
-.main {
-    grid-area: main;
-    background-color: white;
-}
+.maincontainer { grid-area: maincontainer; }

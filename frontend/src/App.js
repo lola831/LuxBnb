@@ -19,36 +19,31 @@ function App() {
 
   return (
     <>
-
-    <div className="outer">
-
-      <div className="navigation">
-      <Navigation isLoaded={isLoaded} />
-      </div>
-
-
-      {isLoaded &&
-      <div className="main">
-      <Switch>
-        <Route exact path="/">
-          <AllSpots />
-        </Route>
-        <Route exact path="/spots/current">
-          <ManageSpots />
-        </Route>
-        <Route exact path="/spots/new">
-          <CreateSpotForm />
-        </Route>
-        <Route exact path="/spots/:id">
-          <SpotDetails />
-        </Route>
-        <Route exact path="/spots/:id/edit">
-          <UpdateSpot />
-        </Route>
-      </Switch>
-      </div>
-      }
-
+      <div className="outermost">
+        <div className="navcontainer">
+          <Navigation isLoaded={isLoaded} />
+        </div>
+        {isLoaded &&
+        <div className="maincontainer">
+            <Switch>
+              <Route exact path="/">
+                <AllSpots />
+              </Route>
+              <Route exact path="/spots/current">
+                <ManageSpots />
+              </Route>
+              <Route exact path="/spots/new">
+                <CreateSpotForm />
+              </Route>
+              <Route exact path="/spots/:id">
+                <SpotDetails />
+              </Route>
+              <Route exact path="/spots/:id/edit">
+                <UpdateSpot />
+              </Route>
+            </Switch>
+            </div>
+        }
 
       </div>
     </>

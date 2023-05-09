@@ -34,7 +34,10 @@ const AllSpots = () => {
                          </ToolTip>
                       </NavLink>
                       <div>{`${spot.city}, ${spot.state}`}</div>
-                      <div>{`${spot.avgRating}`}</div>
+                      <div>
+                      <i className="fa-sharp fa-solid fa-star"></i>
+                        {` ${spot.avgRating}`}
+                        </div>
                       <div>{`$${spot.price}/night`}</div>
 
 

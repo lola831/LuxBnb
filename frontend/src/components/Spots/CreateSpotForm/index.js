@@ -19,6 +19,8 @@ const CreateSpotForm = () => {
     const [name, setName] = useState("");
     const [price, setPrice] = useState("");
     const [images, setImages] = useState([]);
+    const [errors, setErrors] = useState({});
+
 
     const urlImages = [];
     for (let i = 0; i < 5; i++) {
@@ -50,18 +52,20 @@ const CreateSpotForm = () => {
         }
 
         let createdSpot;
-        createdSpot = await dispatch(createSpot(payload));
+        setErrors({});
+
+        createdSpot = await dispatch(createSpot(payload))
+            .catch( async (res) => {
+                const data = await res.json();
+                console.log("DATA IN RESPONSE:", data)
+                if (data && data.errors) {
+                  setErrors(data.errors);
+                }
+            })
+
         console.log("HERE IN HANDLESUBMIT2")
         console.log("IMAGGEESSSSS",images)
-        // for (let i = 0; i < images.length; i++) {
-        //     let data = {
-        //         createSpot,
-        //         image[i],
-
-
-        //     }
-        // }
-       // const addImages = await dispatch()
+            console.log("ERRRRRORRRRS," , errors)
 
         if(createdSpot) {
             console.log("HERE IN HANDLESUBMIT3")
@@ -90,6 +94,7 @@ const CreateSpotForm = () => {
                     required
                     />
                 </label>
+                {errors.country && <p>{errors.country}</p>}
                 <label>
                     Street Address
                     <input
@@ -100,6 +105,7 @@ const CreateSpotForm = () => {
                     required
                     />
                 </label>
+                {errors.address && <p>{errors.address}</p>}
                 <label>
                     City
                     <input
@@ -110,6 +116,7 @@ const CreateSpotForm = () => {
                     required
                     />
                 </label>
+                {errors.city && <p>{errors.city}</p>}
                 <p>,</p>
                 <label>
                     State
@@ -121,6 +128,7 @@ const CreateSpotForm = () => {
                     required
                     />
                 </label>
+                {errors.state && <p>{errors.state}</p>}
                 <label>
                     Latitude
                     <input
@@ -130,6 +138,7 @@ const CreateSpotForm = () => {
                     onChange={(e) => setLat(e.target.value)}
                     />
                 </label>
+                {errors.lat && <p>{errors.lat}</p>}
                 <p>,</p>
                 <label>
                     Longitude
@@ -140,6 +149,7 @@ const CreateSpotForm = () => {
                     onChange={(e) => setLng(e.target.value)}
                     />
                 </label>
+                {errors.lng && <p>{errors.lng}</p>}
             </div>
             <div>
                 <h3>Describe your place to your guests</h3>
@@ -152,6 +162,7 @@ const CreateSpotForm = () => {
                 onChange={(e) => setDescription(e.target.value)}
                 required
                 />
+                {errors.description && <p>{errors.description}</p>}
             </div>
             <div>
                 <h3>Create a title for your spot</h3>
@@ -163,6 +174,7 @@ const CreateSpotForm = () => {
                     onChange={(e) => setName(e.target.value)}
                     required
                     />
+                        {errors.name && <p>{errors.name}</p>}
             </div>
             <div>
                 <h3>Set a base price for your spot</h3>
@@ -174,6 +186,7 @@ const CreateSpotForm = () => {
                     onChange={(e) => setPrice(e.target.value)}
                     required
                 />
+                    {errors.price && <p>{errors.price}</p>}
             </div>
             <div>
                 <h3>Liven up your spot with photos</h3>
