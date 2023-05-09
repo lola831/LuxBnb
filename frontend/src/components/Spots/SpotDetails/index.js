@@ -24,7 +24,7 @@ const SpotDetails = () => {
         console.log("IN SUBMIT2222=========")
         dispatch(getSpotDetails(id));
         dispatch(getSpotReviews(id));
-       // dispatch(getUserReviews())
+        // dispatch(getUserReviews())
     }, [dispatch, id]);
 
     const checkReviews = () => {
@@ -44,7 +44,7 @@ const SpotDetails = () => {
                 <div className="images">
                     {
                         spot.SpotImages.map(image => (
-                            <img style={{ width: '200px', height: '200px' }} src={`${image.url}`} alt=""/>
+                            <img style={{ width: '200px', height: '200px' }} src={`${image.url}`} alt="" />
                         ))
                     }
                 </div>
@@ -53,46 +53,82 @@ const SpotDetails = () => {
                     <p>{`${spot.description} `}</p>
                 </div>
                 <div className="reserve-box">
-                    <div>{`$${spot.price}night `}</div>
-                    <div>{`${spot.avgStarRating}`}</div>
-                    <div>{`${spot.numReviews} reviews`}</div>
+                <div>{`$${spot.price}night `}</div>
+                {spot.numReviews > 0 ? (
+                        <>
+                            <div>
+                                <i className="fa-sharp fa-solid fa-star"></i>
+                                <span> {`${spot.avgStarRating}`} </span>
+                            </div>
+                            { spot.numReviews === 1 ? (
+                                    <div>{`${spot.numReviews} review`}</div>
+                                ) : (
+                                <div>{`${spot.numReviews} reviews`}</div>
+                                )
+                            }
+                        </>
+                    ) : (
+                        <>
+                        <div>
+                            <i className="fa-sharp fa-solid fa-star"></i>
+                            <span> New</span>
+                        </div>
+                    </>
+                    )}
                     <button onClick={() => alert("Feature Coming Soon...")}>Reserve</button>
                 </div>
-                <div className="reviews-container">
-                    <h2>{`${spot.avgStarRating} stars   ${spot.numReviews} reviews`}</h2>
-
-                    {spotReviews.length && (
+                <div>
+                    {spot.numReviews === 0 ? (
                         <>
+                            <i className="fa-sharp fa-solid fa-star"></i>
+                            <span> New</span>
+                            <div>
                             {checkReviews() && (
-                                <OpenModalButton
-                                buttonText="Post Your Review"
-                                modalComponent={<CreateReviewForm spotId={spot.id} />}
-                                />
-                            )}
-
-                         {/* <button>Post Your Review</button> */}
-
-                    <div className="reviews">
-                        {
-                            spotReviews.map(review => (
                                 <>
-                                    <h3>{`${review.User.firstName}`}</h3>
-                                    <h3>{`${review.createdAt}`}</h3>
-                                    <p>{`${review.review}`}</p>
-                                    {
-                                        review.User.id === sessionUser.id && (
-                                            <OpenModalButton
-                                                buttonText="Delete"
-                                                // onItemClick={closeMenu}
-                                                modalComponent={<DeleteReviewModal review={review} />}
-                                            />
-                                        )}
+                                    <OpenModalButton
+                                        buttonText="Post Your Review"
+                                        modalComponent={<CreateReviewForm spotId={spot.id} />}
+                                    />
+                                    <p>Be the first to post a review!</p>
                                 </>
-                            ))
-                        }
-                    </div>
+                            )}
+                            </div>
+                        </>
+                    ) : (
+                        <>
+                        <h2>{`${spot.avgStarRating} stars   ${spot.numReviews} reviews`}</h2>
+                        {spotReviews.length && (
+                            <>
+                                {checkReviews() && (
+                                    <OpenModalButton
+                                        buttonText="Post Your Review"
+                                        modalComponent={<CreateReviewForm spotId={spot.id} />}
+                                    />
+                                )}
+                                <div>
+                                    {
+                                        spotReviews.map(review => (
+                                            <>
+                                                <h3>{`${review.User.firstName}`}</h3>
+                                                <h3>{`${review.createdAt}`}</h3>
+                                                <p>{`${review.review}`}</p>
+                                                {review.User.id === sessionUser.id && (
+                                                        <OpenModalButton
+                                                            buttonText="Delete"
+                                                            // onItemClick={closeMenu}
+                                                            modalComponent={<DeleteReviewModal review={review} />}
+                                                        />
+                                                )}
+                                            </>
+                                        ))
+                                    }
+                                </div>
+                            </>
+                        )}
                     </>
-                      )}
+
+
+                    )}
                 </div>
             </>
         )

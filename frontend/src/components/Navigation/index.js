@@ -14,12 +14,15 @@ function Navigation({ isLoaded }) {
     <ul className='navcontainer'>
       <div className='airbnb'>
       <li>
-        <NavLink exact to="/">
-          <img
+        <NavLink exact to="/" style={{ textDecoration: "none"}}>
+          {/* <img
           src={logo}
           alt="logo image"
           height="150px" width="150px"
-          />
+          /> */}
+          <div style={{color: "red", fontSize: "20px"}}>
+  <i className="fa-solid fa-paw"></i><span> pawbnb</span>
+  </div>
         </NavLink>
       </li>
       </div>
@@ -28,7 +31,7 @@ function Navigation({ isLoaded }) {
           {sessionUser && (
             <div className='createspot'>
             <li>
-              <NavLink exact to="/spots/new">Create a New Spot</NavLink>
+              <NavLink exact to="/spots/new" style={{ textDecoration: "none"}}>Create a New Spot</NavLink>
             </li>
             </div>
           )}
