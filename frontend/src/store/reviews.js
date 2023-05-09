@@ -1,17 +1,26 @@
 import { csrfFetch } from './csrf';
 
-const GET_REVIEWS = 'reviews/GET_REVIEWS'
+const GET_SPOT_REVIEWS = 'reviews/GET_SPOT_REVIEWS'
+
+const GET_USER_REVIEWS = 'reviews/GET_USER_REVIEWS'
 
 const ADD_REVIEW = 'reviews/ADD_REVIEW'
 
 const DELETE_REVIEW = 'reviews/DELETE_REVIEW'
 
-const getReviews = reviews => {
+const getReviewsSpot = reviews => {
     return {
-      type: GET_REVIEWS,
+      type: GET_SPOT_REVIEWS,
       reviews
     };
 };
+
+const getReviewsUser = reviews => {
+  return {
+    type: GET_USER_REVIEWS,
+    reviews
+  }
+}
 
 const addReview = review => {
   return {
@@ -34,12 +43,23 @@ export const getUserReviews = () => async dispatch => {
     if(response.ok) {
         const reviews = await response.json();
        // console.log("reviews", reviews)
-        dispatch(getReviews(reviews));
+        dispatch(getReviewsUser(reviews));
         return reviews;
     }else {
         return response; /// what should we return???
     }
   };
+
+  export const getSpotReviews = (spotId) => async dispatch => {
+    const response = await csrfFetch(`/api/spots/${spotId}/reviews`);
+    if(response.ok) {
+        const spotReviews = await response.json();
+        dispatch(getReviewsSpot(spotReviews));
+        return spotReviews;
+    }else {
+        return response; /// what should we return???
+    }
+  }
 
   export const createReview = payload => async dispatch => {
     // console.log("HERE")
@@ -74,18 +94,24 @@ export const getUserReviews = () => async dispatch => {
        };
 
 const initialState = {
-   userReviews: [],
-
-  };
+  spotReviews: [],
+  userReviews: [],
+};
 
   const reviewsReducer = (state = initialState, action) => {
-    let newState = {...state};
+    let newState;
     switch (action.type) {
-      case GET_REVIEWS:
-        // newState.allReviews = {...state, userReviews: action.reviews}
-        //nnneeeed to finish???
+      case GET_SPOT_REVIEWS:
+        console.log("action.reviews =============", action.reviews)
+        newState = Object.assign({}, state);
+        newState.spotReviews = action.reviews.Reviews;
           return newState;
+      case GET_USER_REVIEWS:
+        newState = Object.assign({}, state);
+        newState.userReviews = action.reviews.Reviews;
+        return newState;
       case ADD_REVIEW:
+      newState.allReviews.push(action.review)
       newState.userReviews.push(action.review)
       case DELETE_REVIEW:
         //neeed to fix

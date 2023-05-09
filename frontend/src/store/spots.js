@@ -7,7 +7,7 @@ const GET_USERSPOTS = 'spots/GET_USERSPOTS';
 
 const GET_DETAILS = 'spots/GET_DETAILS';
 
-const GET_REVIEWS = 'spots/GET_REVIEWS';
+// const GET_REVIEWS = 'spots/GET_REVIEWS';
 
 const ADD_SPOT = 'spots/ADD_SPOT';
 
@@ -36,19 +36,19 @@ const getUserSpots = user => {
   };
 };
 
-const getDetails = spotId => {
+const getDetails = spot => {
   return {
     type: GET_DETAILS,
-    spotId
+    spot
   };
 };
 
-const getReviews = spotId => {
-  return {
-    type: GET_REVIEWS,
-    spotId
-  };
-};
+// const getReviews = spotId => {
+//   return {
+//     type: GET_REVIEWS,
+//     spotId
+//   };
+// }; ///----------------------changing to (in reviews) getSpotReviews
 
 const addSpot = spot => {
   return {
@@ -123,16 +123,16 @@ export const getSpotDetails = (spotId) => async dispatch => {
   }
 }
 
-export const getSpotReviews = (spotId) => async dispatch => {
-  const response = await csrfFetch(`/api/spots/${spotId}/reviews`);
-  if(response.ok) {
-      const spotReviews = await response.json();
-      dispatch(getReviews(spotReviews));
-      return spotReviews;
-  }else {
-      return response; /// what should we return???
-  }
-}
+// export const getSpotReviews = (spotId) => async dispatch => {
+//   const response = await csrfFetch(`/api/spots/${spotId}/reviews`);
+//   if(response.ok) {
+//       const spotReviews = await response.json();
+//       dispatch(getReviews(spotReviews));
+//       return spotReviews;
+//   }else {
+//       return response; /// what should we return???
+//   }
+// }
 
 export const createSpot = data => async dispatch => {
  // console.log("HERE")
@@ -223,13 +223,13 @@ const spotsReducer = (state = initialState, action) => {
       newState.userSpots = action.user.Spots;
       return newState;
      case GET_DETAILS:
-      //console.log("ACTION.SPOTS", action)
-          newState.spotDetails = action.spotId;
+      console.log("ACTION.SPOTS", action)
+          newState.spotDetails = action.spot;
           return newState;
-      case GET_REVIEWS:
-          console.log("ACTION.SPOTS=================", action)
-          newState.spotReviews = action.spotId.Reviews;
-          return newState;
+      // case GET_REVIEWS:
+      //     console.log("ACTION.SPOTS=================", action)
+      //     newState.spotReviews = action.spotId.Reviews;
+      //     return newState;
       case ADD_SPOT:
         console.log("ADD SPPPPPOOOTTTT, ACTION.SPOT===>", action.spot)
         newState.allSpots.push(action.spot);

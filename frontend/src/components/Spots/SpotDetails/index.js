@@ -1,37 +1,42 @@
 import { useEffect } from "react";
 import { useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { getSpotDetails, getSpotReviews } from "../../../store/spots";
-import { getUserReviews } from "../../../store/reviews";
+import { getSpotDetails } from "../../../store/spots";
+import { getUserReviews, getSpotReviews } from "../../../store/reviews";
 import OpenModalMenuItem from "../../Navigation/OpenModalMenuItem";
+import OpenModalButton from "../../OpenModalButton";
 import CreateReviewForm from "../../Reviews/CreateReviewForm";
 import DeleteReviewModal from "../../Reviews/DeleteReviewModal";
 import './SpotDetails.css';
 
 const SpotDetails = () => {
     const sessionUser = useSelector(state => state.session.user);
-
     const { id } = useParams();
     const dispatch = useDispatch();
-    const spot = useSelector(state => state.spots.spotDetails); ///gets error here
-    /**Cannot read properties of null (reading 'spotDetails')
-TypeError: Cannot read properties of null  */
-    const reviews = useSelector(state => state.spots.spotReviews);
-   // const userReviews = useSelector(state => state.reviews.userReviews);
+    const spot = useSelector(state => state.spots.spotDetails);
+    const spotReviews = useSelector(state => state.reviews.spotReviews);
+    //const userReviews = useSelector(state => state.reviews.userReviews);
 
-    //console.log("SPOOOOOOTTTTT: ", spot)
-    console.log("reviews: ", reviews)
-
+    console.log("SPOOOOOOTTTTT: ", spot)
+    console.log("spot reviews: ", spotReviews)
+    console.log("SESSSION USER", sessionUser);
     useEffect(() => {
         console.log("IN SUBMIT2222=========")
         dispatch(getSpotDetails(id));
         dispatch(getSpotReviews(id));
-        dispatch(getUserReviews())
+       // dispatch(getUserReviews())
     }, [dispatch, id]);
 
-    console.log("SESSSION USER", sessionUser);
+    const checkReviews = () => {
+        if (sessionUser.id !== spot.Owner.id) {
+            if (spotReviews.some(r => r.User.id === sessionUser.id) === false) return true;
+        }
+        return false
+    }
 
-    if (spot && reviews) {
+
+    if (Object.keys(spot).length) {
+        console.log("AFTERRRRRRRRRR")
         return (
             <>
                 <h2>{`${spot.name}`}</h2>
@@ -56,27 +61,28 @@ TypeError: Cannot read properties of null  */
                 <div className="reviews-container">
                     <h2>{`${spot.avgStarRating} stars   ${spot.numReviews} reviews`}</h2>
 
-                    {(reviews.find(review => review.User.id !== sessionUser.id) || !reviews.length) && sessionUser.id !== spot.Owner.id && (
+                    {spotReviews.length && (
+                        <>
+                            {checkReviews() && (
+                                <OpenModalButton
+                                buttonText="Post Your Review"
+                                modalComponent={<CreateReviewForm spotId={spot.id} />}
+                                />
+                            )}
 
-                        <OpenModalMenuItem
-                            itemText="Post Your Review"
-                            // onItemClick={closeMenu}
-                            modalComponent={<CreateReviewForm spotId={spot.id} />}
-                        />
+                         {/* <button>Post Your Review</button> */}
 
-                        // <button>Post Your Review</button>
-                    )}
                     <div className="reviews">
                         {
-                            reviews.map(review => (
+                            spotReviews.map(review => (
                                 <>
                                     <h3>{`${review.User.firstName}`}</h3>
                                     <h3>{`${review.createdAt}`}</h3>
                                     <p>{`${review.review}`}</p>
                                     {
                                         review.User.id === sessionUser.id && (
-                                            <OpenModalMenuItem
-                                                itemText="Delete"
+                                            <OpenModalButton
+                                                buttonText="Delete"
                                                 // onItemClick={closeMenu}
                                                 modalComponent={<DeleteReviewModal review={review} />}
                                             />
@@ -85,11 +91,16 @@ TypeError: Cannot read properties of null  */
                             ))
                         }
                     </div>
+                    </>
+                      )}
                 </div>
             </>
         )
     } else {
-        return null;
+        console.log("IN ELSEEEEEEEEEEEEE")
+        return (
+            <div>Loading....</div>
+        )
     }
 
 }
