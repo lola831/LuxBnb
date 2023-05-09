@@ -1,15 +1,11 @@
 import { useEffect, useState } from "react";
 import { useModal } from "../../../context/Modal";
-//import { useHistory } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { createReview } from "../../../store/reviews";
 import "./CreateReviewForm.css";
-//import SpotDetails from "../../Spots/SpotDetails";
-//import { getSpotReviews } from "../../../store/spots";
 
 function CreateReviewForm({spotId}) {
     const dispatch = useDispatch();
-   // const history = useHistory();
 
     const [review, setReview] = useState("");
     const [stars, setStars] = useState(0);
@@ -19,16 +15,10 @@ function CreateReviewForm({spotId}) {
     const { closeModal } = useModal();
 
     useEffect(() => {
-      console.log("IN USEEFFF=========")
         if(review.length > 9 && stars > 0) setDisabled(false)
-       // dispatch(getSpotReviews(spotId))
-    }, [
-      //dispatch,
-      //spotId,
-      review, stars])
+    }, [review, stars])
 
     const handleSubmit = (e) => {
-      console.log("IN SUBMIT=========")
         e.preventDefault();
         setErrors({});
         return dispatch(
@@ -38,17 +28,13 @@ function CreateReviewForm({spotId}) {
                 stars
             })
         )
-        //.then(dispatch(getSpotReviews(spotId)))
         .then(closeModal)
-        // .then(history.push(`/spots/${spotId}`))
-        //.then(SpotDetails)
         .catch(async (res) => {
             const data = await res.json();
             if(data && data.errors) {
                 setErrors(data.errors);
             }
         });
-
         // return setErrors({}).....?
 
     };

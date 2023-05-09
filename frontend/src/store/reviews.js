@@ -87,7 +87,8 @@ export const getUserReviews = () => async dispatch => {
            });
 
            if (response.ok){
-             const review = await response.json();
+             //const review = await response.json();
+             console.log("IN REMOVEREVIEW THUNK", review)
              dispatch(deleteReview(review));
              return review;
            }
@@ -99,21 +100,40 @@ const initialState = {
 };
 
   const reviewsReducer = (state = initialState, action) => {
-    let newState;
+    let newState = {...state}
     switch (action.type) {
       case GET_SPOT_REVIEWS:
         console.log("action.reviews =============", action.reviews)
-        newState = Object.assign({}, state);
+       // newState = Object.assign({}, state);
         newState.spotReviews = action.reviews.Reviews;
           return newState;
       case GET_USER_REVIEWS:
-        newState = Object.assign({}, state);
+       // newState = Object.assign({}, state);
         newState.userReviews = action.reviews.Reviews;
         return newState;
       case ADD_REVIEW:
-      newState.allReviews.push(action.review)
+       // newState = Object.assign({}, state);
+        console.log("action add review=========>", action.review)
+      newState.spotReviews.push(action.review)
       newState.userReviews.push(action.review)
+      return newState;
       case DELETE_REVIEW:
+        console.log("ACTION DELETE REVIEWWWWW====>", action.review)
+
+        let index;
+        for (let i = 0; i < newState.spotReviews.length; i++){
+          if (newState.spotReviews[i].User.id === action.review.User.id) {
+            index = i;
+          }
+        }
+
+        let arr = newState.spotReviews.splice(index, 1)
+        delete newState.spotReviews;
+        newState.spotReviews = arr;
+        return newState;
+
+
+
         //neeed to fix
       default:
         return state;
