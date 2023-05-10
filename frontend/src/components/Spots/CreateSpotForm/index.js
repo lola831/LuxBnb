@@ -20,27 +20,33 @@ const CreateSpotForm = () => {
     const [description, setDescription] = useState("");
     const [name, setName] = useState("");
     const [price, setPrice] = useState("");
-    const [images, setImages] = useState([]);
+    // const [images, setImages] = useState([]);
     const [errors, setErrors] = useState({});
+    const [image1, setImage1] = useState("");
+    const [image2, setImage2] = useState("");
+    const [image3, setImage3] = useState("");
+    const [image4, setImage4] = useState("");
+    const [image5, setImage5] = useState("");
 
 
-    const urlImages = [];
-    for (let i = 1; i < 5; i++) {
-        urlImages.push(
-            <input
-                type="text"
-                value={images[i]}
-                key={i}
-                placeholder="Image URL"
-                onChange={(e) => setImages([...images, e.target.value])}
-            />
-        )
-    }
+
+    // const urlImages = [];
+    // for (let i = 1; i < 5; i++) {
+    //     urlImages.push(
+    //         <input
+    //             type="text"
+    //             value={i}
+    //             key={i}
+    //             placeholder="Image URL"
+    //             onChange={(e) => setImages([...images, e.target.value])}
+    //         />
+    //     )
+    // }
 
     const handleSubmit = async (e) => {
         e.preventDefault();
         console.log("HERE IN HANDLESUBMIT1")
-        console.log("IMAGESSSSSSSSS", images) //array of urls
+       // console.log("IMAGESSSSSSSSS", images) //array of urls
         const payload = {
             country,
             address,
@@ -69,6 +75,9 @@ const CreateSpotForm = () => {
 
         if (createdSpot) {
             console.log("CREATED SPOT", createdSpot)
+            let imagesArr = [image1, image2, image3, image4, image5];
+            let images = imagesArr.filter(image => image !== "")
+            console.log("IMAGESSSSSSSSSSSSSSSSSSSS", images);
             images.push(createdSpot.id);
             /// createdSpot.id works!!!! its the spot.id -----------------------------------
 
@@ -221,12 +230,35 @@ return (
                 <p>Submit a link to at least one photo to publish your spot.</p>
                 <input
                     type="text"
-                    value={images}
+                    value={image1}
                     placeholder="Preview Image URL"
-                    onChange={(e) => setImages([...images, e.target.value])}
+                    onChange={(e) => setImage1( e.target.value)}
                     required
                 />
-                {urlImages}
+                 <input
+                    type="text"
+                    value={image2}
+                    placeholder="Preview Image URL"
+                    onChange={(e) => setImage2(e.target.value)}
+                />
+                 <input
+                    type="text"
+                    value={image3}
+                    placeholder="Preview Image URL"
+                    onChange={(e) => setImage3(e.target.value)}
+                />
+                <input
+                    type="text"
+                    value={image4}
+                    placeholder="Preview Image URL"
+                    onChange={(e) => setImage4(e.target.value)}
+                />
+                <input
+                    type="text"
+                    value={image5}
+                    placeholder="Preview Image URL"
+                    onChange={(e) => setImage5(e.target.value)}
+                />
             </div>
             <button type="submit">Create Spot</button>
         </form>
