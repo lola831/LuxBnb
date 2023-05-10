@@ -26,15 +26,15 @@ const CreateSpotForm = () => {
 
     const urlImages = [];
     for (let i = 1; i < 5; i++) {
-         urlImages.push(
-                <input
+        urlImages.push(
+            <input
                 type="text"
                 value={images[i]}
-                key= {i}
+                key={i}
                 placeholder="Image URL"
                 onChange={(e) => setImages([...images, e.target.value])}
-                />
-            )
+            />
+        )
     }
 
     const handleSubmit = async (e) => {
@@ -57,109 +57,91 @@ const CreateSpotForm = () => {
         setErrors({});
 
         createdSpot = await dispatch(createSpot(payload))
-            .catch( async (res) => {
+            .catch(async (res) => {
                 const data = await res.json();
                 console.log("DATA IN RESPONSE:", data)
                 if (data && data.errors) {
-                  setErrors(data.errors);
+                    setErrors(data.errors);
                 }
-        })
+            });
 
+        let imagesDone;
 
+        if (createdSpot) {
+            console.log("CREATED SPOT", createdSpot)
+            images.push(createdSpot.id);
+            /// createdSpot.id works!!!! its the spot.id -----------------------------------
 
-        console.log("HERE IN HANDLESUBMIT2")
+            // for (let i = 0; i < images.length; i++) {
+            //     let url = images[i];
+            //     let preview = false;
+            //     if (i === 0) {
+            //         preview = true;
+            //     }
+            //     let imagePayload = {
+            //         id: createdSpot.id,
+            //         url,
+            //         preview,
+            //     }
+            //     dispatch(createImage(imagePayload));
+            //     if (i === images.length - 1) imagesDone = true;
+            // }
 
-           // console.log("ERRRRRORRRRS," , errors)
-
-            let imagesDone = false;
-            if (createdSpot) {
-                console.log("in created spot done calling func")
-                console.log("CREATED SPOT", createdSpot)
-                /// createdSpot.id works!!!! its the spot.id
-               // imagesCall();
-            }
-
-            async function imagesCall() {
-                console.log("in images call==========")
-
-
-                for (let i = 0; i < 5; i++) {
-                    console.log("in looop number", i)
-                    let isPreview;
-                    if (i = 0) {
-                        isPreview = true;
-                    }else {
-                        isPreview = false;
-                    }
-                    let payload = {
-                        id: createdSpot.id,
-                        url: images[i],
-                        preview: isPreview
-
-                    }
-                    console.log("before disp")
-                    const result = await dispatch((createImage(payload)));
-                    console.log("after dispacth")
-                   if (i = 4) {
-                    imagesDone = true;
-                    console.log("exiting")
-                    return result;
-                   }
-
-                };
-
-            }
-
-
-
-
-        if(createdSpot & imagesDone) {
-            console.log("HERE IN HANDLESUBMIT3")
-            history.push(`/spots/${createdSpot.id}`);   // ????????
-            // clear form ?????
+            imagesDone = await(dispatch(createImage(images)))
+            .catch(async (res) => {
+                const data = await res.json();
+                console.log("DATA IN RESPONSE:", data)
+                if (data && data.errors) {
+                    setErrors(data.errors);
+                }
+            });
         }
 
-    }
+        if (createdSpot && imagesDone) {
+            console.log("HERE IN HANDLESUBMIT3")
+            history.push(`/spots/${createdSpot.id}`);   // ????????
+        }
 
+    } // end handle submit
 
-    return (
-        <>
-            <h2>Create a new Spot</h2>
-            <form onSubmit={handleSubmit}>
+return (
+    <>
+        <h2>Create a new Spot</h2>
+        <form onSubmit={handleSubmit}>
             <div>
-            <h3>Where's your place located?</h3>
-            <p>Guests will only get your exact address once they booked a reservation.</p>
+                <h3>Where's your place located?</h3>
+                <p>Guests will only get your exact address once they booked a reservation.</p>
 
                 <label>
                     Country
                     <input
-                    type="text"
-                    value={country}
-                    placeholder="Country"
-                    onChange={(e) => setCountry(e.target.value)}
-                    required
+                        type="text"
+                        value={country}
+                        placeholder="Country"
+                        onChange={(e) => setCountry(e.target.value)}
+                        required
                     />
                 </label>
                 {errors.country && <p>{errors.country}</p>}
                 <label>
                     Street Address
                     <input
-                    type="text"
-                    value={address}
-                    placeholder="Address"
-                    onChange={(e) => setAddress(e.target.value)}
-                    required
+                        type="text"
+                        value={address}
+                        placeholder="Address"
+                        onChange={(e) => setAddress(e.target.value)}
+                        required
                     />
                 </label>
                 {errors.address && <p>{errors.address}</p>}
                 <label>
                     City
                     <input
-                    type="text"
-                    value={city}
-                    placeholder="City"
-                    onChange={(e) => setCity(e.target.value)}
-                    required
+                        type="text"
+                        value={city}
+                        placeholder="City"
+                        onChange={(e) => setCity(e.target.value)}
+                        required
                     />
                 </label>
                 {errors.city && <p>{errors.city}</p>}
@@ -167,21 +149,21 @@ const CreateSpotForm = () => {
                 <label>
                     State
                     <input
-                    type="text"
-                    value={state}
-                    placeholder="STATE"
-                    onChange={(e) => setState(e.target.value)}
-                    required
+                        type="text"
+                        value={state}
+                        placeholder="STATE"
+                        onChange={(e) => setState(e.target.value)}
+                        required
                     />
                 </label>
                 {errors.state && <p>{errors.state}</p>}
                 <label>
                     Latitude
                     <input
-                    type="text"
-                    value={lat}
-                    placeholder="Latitude"
-                    onChange={(e) => setLat(e.target.value)}
+                        type="text"
+                        value={lat}
+                        placeholder="Latitude"
+                        onChange={(e) => setLat(e.target.value)}
                     />
                 </label>
                 {errors.lat && <p>{errors.lat}</p>}
@@ -189,10 +171,10 @@ const CreateSpotForm = () => {
                 <label>
                     Longitude
                     <input
-                    type="text"
-                    value={lng}
-                    placeholder="Longitude"
-                    onChange={(e) => setLng(e.target.value)}
+                        type="text"
+                        value={lng}
+                        placeholder="Longitude"
+                        onChange={(e) => setLng(e.target.value)}
                     />
                 </label>
                 {errors.lng && <p>{errors.lng}</p>}
@@ -201,26 +183,26 @@ const CreateSpotForm = () => {
                 <h3>Describe your place to your guests</h3>
                 <p>Mention the best features of your space, any special amentities like fast wifi or parking, and what you love about the neighborhood.</p>
                 <textarea
-                rows={4} cols={40}
-                minLength="30"
-                value={description}
-                placeholder="Please write at least 30 characters"
-                onChange={(e) => setDescription(e.target.value)}
-                required
+                    rows={4} cols={40}
+                    minLength="30"
+                    value={description}
+                    placeholder="Please write at least 30 characters"
+                    onChange={(e) => setDescription(e.target.value)}
+                    required
                 />
                 {errors.description && <p>{errors.description}</p>}
             </div>
             <div>
                 <h3>Create a title for your spot</h3>
                 <p>Catch guests' attention with a spot title that highlights what makes your place special.</p>
-                    <input
+                <input
                     type="text"
                     value={name}
                     placeholder="Name of your spot"
                     onChange={(e) => setName(e.target.value)}
                     required
-                    />
-                        {errors.name && <p>{errors.name}</p>}
+                />
+                {errors.name && <p>{errors.name}</p>}
             </div>
             <div>
                 <h3>Set a base price for your spot</h3>
@@ -232,7 +214,7 @@ const CreateSpotForm = () => {
                     onChange={(e) => setPrice(e.target.value)}
                     required
                 />
-                    {errors.price && <p>{errors.price}</p>}
+                {errors.price && <p>{errors.price}</p>}
             </div>
             <div>
                 <h3>Liven up your spot with photos</h3>
@@ -247,9 +229,9 @@ const CreateSpotForm = () => {
                 {urlImages}
             </div>
             <button type="submit">Create Spot</button>
-            </form>
-        </>
-    )
+        </form>
+    </>
+)
 
 };
 
