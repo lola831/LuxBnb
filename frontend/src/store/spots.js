@@ -168,8 +168,7 @@ export const createSpot = data => async dispatch => {
 
        export const createImage = images => async dispatch => {
         console.log("HERE", images)
-        let spotId = images[images.length-1];
-        images.pop();
+        let spotId = images.pop();
          for (let i = 0; i < images.length; i++) {
                 let url = images[i];
                 let preview = false;
@@ -192,7 +191,7 @@ export const createSpot = data => async dispatch => {
 
                 if(!response.ok) return response;
             }
-
+            dispatch(getAllSpots());
             dispatch(getSpotDetails(spotId));
             return images;
 

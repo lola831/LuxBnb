@@ -27,8 +27,6 @@ const AllSpots = () => {
                       <ToolTip text={`${spot.name}`}>
                          <img style={{width:'250px', height:'250px'}} src={`${spot.previewImage}`} />
                          </ToolTip>
-
-
                       <div className="location-star">
                       <div>{`${spot.city}, ${spot.state}`}</div>
                       {spot.avgRating ? (
