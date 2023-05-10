@@ -28,10 +28,17 @@ const SpotDetails = () => {
     }, [dispatch, id]);
 
     const checkReviews = () => {
-        if (sessionUser.id !== spot.Owner.id) {
-            if (spotReviews.some(r => r.User.id === sessionUser.id) === false) return true;
+        // check if owner
+        if (sessionUser.id === spot.Owner.id) {
+            return false;
         }
-        return false
+        //check if already posted review
+        spotReviews.forEach(review => {
+            if (review.User.id === sessionUser.id) {
+                return false;
+            }
+        })
+        return true;
     }
 
 
@@ -83,7 +90,7 @@ const SpotDetails = () => {
                             <i className="fa-sharp fa-solid fa-star"></i>
                             <span> New</span>
                             <div>
-                            {checkReviews() && (
+                            {sessionUser && sessionUser.id !== spot.Owner.id && (
                                 <>
                                     <OpenModalButton
                                         buttonText="Post Your Review"
@@ -99,10 +106,10 @@ const SpotDetails = () => {
                         <h2><i className="fa-sharp fa-solid fa-star"></i>
                             {`${spot.avgStarRating.toFixed(1)}
                             ${spot.numReviews} reviews`}</h2>
-                            
+
                         {spotReviews.length && (
                             <>
-                                {checkReviews() && (
+                                {sessionUser && checkReviews() && (
                                     <OpenModalButton
                                         buttonText="Post Your Review"
                                         modalComponent={<CreateReviewForm spotId={spot.id} />}
