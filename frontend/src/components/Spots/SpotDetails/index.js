@@ -41,6 +41,13 @@ const SpotDetails = () => {
         return true;
     }
 
+    const monthYear = (dateStr) => {
+        let date = new Date(dateStr);
+        const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+       return months[date.getMonth()] + " " + date.getFullYear();
+    }
+
+
 
     if (Object.keys(spot).length) {
         console.log("AFTERRRRRRRRRR")
@@ -65,7 +72,7 @@ const SpotDetails = () => {
                         <>
                             <div>
                                 <i className="fa-sharp fa-solid fa-star"></i>
-                                <span> {`${spot.avgStarRating.toFixed(1)}`} </span>
+                                {spot.avgStarRating.toFixed(1)}  ·
                             </div>
                             { spot.numReviews === 1 ? (
                                     <div>{`${spot.numReviews} review`}</div>
@@ -103,9 +110,16 @@ const SpotDetails = () => {
                         </>
                     ) : (
                         <>
-                        <h2><i className="fa-sharp fa-solid fa-star"></i>
-                            {`${spot.avgStarRating.toFixed(1)}
-                            ${spot.numReviews} reviews`}</h2>
+                        <h2>
+                            <i className="fa-sharp fa-solid fa-star"></i>
+                            {spot.avgStarRating.toFixed(1)}  ·
+                        </h2>
+                        { spot.numReviews === 1 ? (
+                                    <h2>{`${spot.numReviews} review`}</h2>
+                                ) : (
+                                <h2>{`${spot.numReviews} reviews`}</h2>
+                                )
+                            }
 
                         {spotReviews.length && (
                             <>
@@ -117,10 +131,11 @@ const SpotDetails = () => {
                                 )}
                                 <div>
                                     {
-                                        spotReviews.map(review => (
+                                        spotReviews.slice(0).reverse().map(review => (
                                             <>
                                                 <h3>{`${review.User.firstName}`}</h3>
-                                                <h3>{`${review.createdAt}`}</h3>
+                                                {/* {monthYear(review.createdAt)} */}
+                                                <h3> {monthYear(review.createdAt)}</h3>
                                                 <p>{`${review.review}`}</p>
                                                 {review.User.id === sessionUser.id && (
                                                         <OpenModalButton
