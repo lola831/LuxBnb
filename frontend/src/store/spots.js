@@ -7,8 +7,6 @@ const GET_USERSPOTS = 'spots/GET_USERSPOTS';
 
 const GET_DETAILS = 'spots/GET_DETAILS';
 
-// const GET_REVIEWS = 'spots/GET_REVIEWS';
-
 const ADD_SPOT = 'spots/ADD_SPOT';
 
 const EDIT_SPOT = 'spots/EDIT_SPOT';
@@ -43,13 +41,6 @@ const getDetails = spot => {
   };
 };
 
-// const getReviews = spotId => {
-//   return {
-//     type: GET_REVIEWS,
-//     spotId
-//   };
-// }; ///----------------------changing to (in reviews) getSpotReviews
-
 const addSpot = spot => {
   return {
     type: ADD_SPOT,
@@ -71,10 +62,10 @@ const deleteSpot = spot => {
   }
 }
 
-const addImage = spotId => {
+const addImage = payload => {
   return {
     type: ADD_IMAGE,
-    spotId
+    payload
   }
 }
 
@@ -123,19 +114,9 @@ export const getSpotDetails = (spotId) => async dispatch => {
   }
 }
 
-// export const getSpotReviews = (spotId) => async dispatch => {
-//   const response = await csrfFetch(`/api/spots/${spotId}/reviews`);
-//   if(response.ok) {
-//       const spotReviews = await response.json();
-//       dispatch(getReviews(spotReviews));
-//       return spotReviews;
-//   }else {
-//       return response; /// what should we return???
-//   }
-// }
 
 export const createSpot = data => async dispatch => {
- // console.log("HERE")
+ console.log("HERE============", data)
       const response = await csrfFetch(`/api/spots`, {
         method: 'post',
         headers: {
@@ -147,6 +128,7 @@ export const createSpot = data => async dispatch => {
 
       if (response.ok){
         const spot = await response.json();
+        console.log("spot''''''''''''''''",spot)
         dispatch(addSpot(spot));
         return spot;
       }
@@ -187,18 +169,16 @@ export const createSpot = data => async dispatch => {
        };
 
        export const createImage = (spot) => async dispatch => {
-        // console.log("HERE")
-             const response = await csrfFetch(`/api/spots/${spot.id}`, {
-               method: 'delete',
+        console.log("HERE", spot)
+             const response = await csrfFetch(`/api/spots/${spot.id}/images`, {
+               method: 'post',
                headers: {
                  'Content-Type': 'application/json'
                },
                body: JSON.stringify(spot)
              });
-
              if (response.ok){
-               const spot = await response.json();
-               dispatch(deleteSpot(spot));
+               dispatch(addImage(spot));
                return spot;
              }
          };
@@ -226,19 +206,22 @@ const spotsReducer = (state = initialState, action) => {
       console.log("ACTION.SPOTS", action)
           newState.spotDetails = action.spot;
           return newState;
-      // case GET_REVIEWS:
-      //     console.log("ACTION.SPOTS=================", action)
-      //     newState.spotReviews = action.spotId.Reviews;
-      //     return newState;
       case ADD_SPOT:
         console.log("ADD SPPPPPOOOTTTT, ACTION.SPOT===>", action.spot)
         newState.allSpots.push(action.spot);
         return newState;
 
+      case ADD_IMAGE:
+        
+
       // return null
       case EDIT_SPOT:
         console.log("in EDIT SPOT REDUCER", action.spot)
       case DELETE_SPOT:
+        //finish
+        return newState;
+
+
 
     default:
       return state;

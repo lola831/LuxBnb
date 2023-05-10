@@ -1,8 +1,10 @@
+
 import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import { createSpot } from '../../../store/spots';
 import "./CreateSpotForm.css";
+import { createImage } from '../../../store/spots';
 
 const CreateSpotForm = () => {
     const dispatch = useDispatch();
@@ -23,12 +25,12 @@ const CreateSpotForm = () => {
 
 
     const urlImages = [];
-    for (let i = 0; i < 5; i++) {
+    for (let i = 1; i < 5; i++) {
          urlImages.push(
                 <input
                 type="text"
-                value={images[i+1]}
-                key= {i +1}
+                value={images[i]}
+                key= {i}
                 placeholder="Image URL"
                 onChange={(e) => setImages([...images, e.target.value])}
                 />
@@ -38,6 +40,7 @@ const CreateSpotForm = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         console.log("HERE IN HANDLESUBMIT1")
+        console.log("IMAGESSSSSSSSS", images) //array of urls
         const payload = {
             country,
             address,
@@ -48,7 +51,6 @@ const CreateSpotForm = () => {
             description,
             name,
             price,
-            images
         }
 
         let createdSpot;
@@ -61,13 +63,57 @@ const CreateSpotForm = () => {
                 if (data && data.errors) {
                   setErrors(data.errors);
                 }
-            })
+        })
+
+
 
         console.log("HERE IN HANDLESUBMIT2")
-        console.log("IMAGGEESSSSS",images)
-            console.log("ERRRRRORRRRS," , errors)
 
-        if(createdSpot) {
+           // console.log("ERRRRRORRRRS," , errors)
+
+            let imagesDone = false;
+            if (createdSpot) {
+                console.log("in created spot done calling func")
+                console.log("CREATED SPOT", createdSpot)
+                /// createdSpot.id works!!!! its the spot.id
+               // imagesCall();
+            }
+
+            async function imagesCall() {
+                console.log("in images call==========")
+
+
+                for (let i = 0; i < 5; i++) {
+                    console.log("in looop number", i)
+                    let isPreview;
+                    if (i = 0) {
+                        isPreview = true;
+                    }else {
+                        isPreview = false;
+                    }
+                    let payload = {
+                        id: createdSpot.id,
+                        url: images[i],
+                        preview: isPreview
+
+                    }
+                    console.log("before disp")
+                    const result = await dispatch((createImage(payload)));
+                    console.log("after dispacth")
+                   if (i = 4) {
+                    imagesDone = true;
+                    console.log("exiting")
+                    return result;
+                   }
+
+                };
+
+            }
+
+
+
+
+        if(createdSpot & imagesDone) {
             console.log("HERE IN HANDLESUBMIT3")
             history.push(`/spots/${createdSpot.id}`);   // ????????
             // clear form ?????

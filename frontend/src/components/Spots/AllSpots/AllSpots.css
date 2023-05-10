@@ -1,0 +1,11 @@
+.spots-container {
+    display: flex;
+    flex-flow: row wrap;
+    gap: 20px;
+
+}
+
+.location-star {
+    display: flex;
+    justify-content: space-between;
+}

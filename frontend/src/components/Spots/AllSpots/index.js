@@ -19,35 +19,38 @@ const AllSpots = () => {
     if(allSpots) {
         return (
             <div className="spots-container">
-                <div className="spots-wrapper">
                 {
-                    allSpots.map(spot => (
-
-                        <>
-                        <div className="individual-spot">
-
-
-
-                      <NavLink key={`${spot.id}`} className="spot-links" to={`/spots/${spot.id}`} >
+                allSpots.map(spot => (
+                <>
+                <div className="individual-spot">
+                      <NavLink key={`${spot.id}`} to={`/spots/${spot.id}`} >
                       <ToolTip text={`${spot.name}`}>
                          <img style={{width:'250px', height:'250px'}} src={`${spot.previewImage}`} />
                          </ToolTip>
-                      </NavLink>
+
+
+                      <div className="location-star">
                       <div>{`${spot.city}, ${spot.state}`}</div>
-                      <div>
-                      <i className="fa-sharp fa-solid fa-star"></i>
-                        {` ${spot.avgRating}`}
+                      {spot.avgRating ? (
+                         <div>
+                         <i className="fa-sharp fa-solid fa-star"></i>
+                           {` ${spot.avgRating.toFixed(1)}`}
                         </div>
-                      <div>{`$${spot.price}/night`}</div>
+                      ) : (
+                        <div>
+                        <i className="fa-sharp fa-solid fa-star"></i>
+                         New
+                       </div>
+                      )}
 
+                     </div>
 
-
-
-                      </div>
-                      </>
-                    ))
-                }
+                      <div>{`$${spot.price} night`}</div>
+                      </NavLink>
                 </div>
+                </>
+                 ))
+                }
             </div>
         )
     } else {

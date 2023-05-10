@@ -58,7 +58,7 @@ const SpotDetails = () => {
                         <>
                             <div>
                                 <i className="fa-sharp fa-solid fa-star"></i>
-                                <span> {`${spot.avgStarRating}`} </span>
+                                <span> {`${spot.avgStarRating.toFixed(1)}`} </span>
                             </div>
                             { spot.numReviews === 1 ? (
                                     <div>{`${spot.numReviews} review`}</div>
@@ -96,7 +96,10 @@ const SpotDetails = () => {
                         </>
                     ) : (
                         <>
-                        <h2>{`${spot.avgStarRating} stars   ${spot.numReviews} reviews`}</h2>
+                        <h2><i className="fa-sharp fa-solid fa-star"></i>
+                            {`${spot.avgStarRating.toFixed(1)}
+                            ${spot.numReviews} reviews`}</h2>
+                            
                         {spotReviews.length && (
                             <>
                                 {checkReviews() && (
