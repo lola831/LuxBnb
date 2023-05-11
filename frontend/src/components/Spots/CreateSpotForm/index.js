@@ -128,7 +128,7 @@ return (
                         value={country}
                         placeholder="Country"
                         onChange={(e) => setCountry(e.target.value)}
-                        required
+                        // required
                     />
                 </label>
                 {errors.country && <p>{errors.country}</p>}
@@ -139,7 +139,7 @@ return (
                         value={address}
                         placeholder="Address"
                         onChange={(e) => setAddress(e.target.value)}
-                        required
+                        // required
                     />
                 </label>
                 {errors.address && <p>{errors.address}</p>}
@@ -150,7 +150,7 @@ return (
                         value={city}
                         placeholder="City"
                         onChange={(e) => setCity(e.target.value)}
-                        required
+                        // required
                     />
                 </label>
                 {errors.city && <p>{errors.city}</p>}
@@ -162,7 +162,7 @@ return (
                         value={state}
                         placeholder="STATE"
                         onChange={(e) => setState(e.target.value)}
-                        required
+                        // required
                     />
                 </label>
                 {errors.state && <p>{errors.state}</p>}
@@ -197,7 +197,7 @@ return (
                     value={description}
                     placeholder="Please write at least 30 characters"
                     onChange={(e) => setDescription(e.target.value)}
-                    required
+                    // required
                 />
                 {errors.description && <p>{errors.description}</p>}
             </div>
@@ -209,7 +209,7 @@ return (
                     value={name}
                     placeholder="Name of your spot"
                     onChange={(e) => setName(e.target.value)}
-                    required
+                    // required
                 />
                 {errors.name && <p>{errors.name}</p>}
             </div>
@@ -221,7 +221,7 @@ return (
                     placeholder="Price per night (USD)"
                     value={price}
                     onChange={(e) => setPrice(e.target.value)}
-                    required
+                    // required
                 />
                 {errors.price && <p>{errors.price}</p>}
             </div>
@@ -233,7 +233,7 @@ return (
                     value={image1}
                     placeholder="Preview Image URL"
                     onChange={(e) => setImage1( e.target.value)}
-                    required
+                    // required
                 />
                  <input
                     type="text"

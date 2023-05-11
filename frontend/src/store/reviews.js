@@ -1,4 +1,5 @@
 import { csrfFetch } from './csrf';
+import { getSpotDetails } from './spots';
 
 const GET_SPOT_REVIEWS = 'reviews/GET_SPOT_REVIEWS'
 
@@ -62,7 +63,7 @@ export const getUserReviews = () => async dispatch => {
   }
 
   export const createReview = payload => async dispatch => {
-    // console.log("HERE")
+     console.log("HERE IN CREATE REV THUNK")
          const response = await csrfFetch(`/api/spots/${payload.id}/reviews`, {
            method: 'post',
            headers: {
@@ -71,9 +72,10 @@ export const getUserReviews = () => async dispatch => {
            body: JSON.stringify(payload)
          });
          if (response.ok){
-           const review = await response.json();
-           dispatch(addReview(review));
-           return review;
+          dispatch(getSpotDetails(payload.id));
+          dispatch(getSpotReviews(payload.id))
+         }else {
+          return response;
          }
      };
      export const removeReview = (review) => async dispatch => {
@@ -89,8 +91,12 @@ export const getUserReviews = () => async dispatch => {
            if (response.ok){
              //const review = await response.json();
              console.log("IN REMOVEREVIEW THUNK", review)
-             dispatch(deleteReview(review));
+             //dispatch(deleteReview(review));
+             dispatch(getSpotDetails(review.spotId))
+             dispatch(getSpotReviews(review.spotId))
              return review;
+           }else {
+            return response;
            }
        };
 

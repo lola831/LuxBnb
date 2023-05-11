@@ -137,7 +137,8 @@ const SpotDetails = () => {
                                                 {/* {monthYear(review.createdAt)} */}
                                                 <h3> {monthYear(review.createdAt)}</h3>
                                                 <p>{`${review.review}`}</p>
-                                                {review.User.id === sessionUser.id && (
+                                                {sessionUser &&
+                                                review.User.id === sessionUser.id && (
                                                         <OpenModalButton
                                                             buttonText="Delete"
                                                             // onItemClick={closeMenu}

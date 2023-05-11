@@ -1,8 +1,9 @@
 import { useEffect, useState } from "react";
 import { useModal } from "../../../context/Modal";
 import { useDispatch } from "react-redux";
-import { createReview } from "../../../store/reviews";
+import { createReview, getSpotReviews } from "../../../store/reviews";
 import "./CreateReviewForm.css";
+import { getSpotDetails } from "../../../store/spots";
 
 function CreateReviewForm({spotId}) {
     const dispatch = useDispatch();
@@ -16,28 +17,32 @@ function CreateReviewForm({spotId}) {
 
     useEffect(() => {
         if(review.length > 9 && stars > 0) setDisabled(false)
+
     }, [review, stars])
 
     const handleSubmit = (e) => {
-        e.preventDefault();
-        setErrors({});
-        return dispatch(
-            createReview({
-                id: spotId,
-                review,
-                stars
-            })
-        )
-        .then(closeModal)
-        .catch(async (res) => {
-            const data = await res.json();
-            if(data && data.errors) {
-                setErrors(data.errors);
-            }
-        });
-        // return setErrors({}).....?
+      e.preventDefault();
+      setErrors({});
 
-    };
+      return dispatch(
+          createReview({
+              id: spotId,
+              review,
+              stars
+          })
+      )
+      .then(closeModal)
+      .catch(async (res) => {
+          const data = await res.json();
+          if(data && data.message) {
+              setErrors(data.message);
+          }
+      });
+      // return setErrors({}).....?
+
+  };
+
+
 
 
     return (
@@ -52,6 +57,7 @@ function CreateReviewForm({spotId}) {
                 onChange={(e) => setReview(e.target.value)}
                 required
         />
+         {errors.review && <p>{errors.review}</p>}
 
      <div className="star-rating">
       {[...Array(5)].map((star, index) => {
@@ -69,7 +75,12 @@ function CreateReviewForm({spotId}) {
           </button>
         );
       })}
+       {errors.stars && <p>{errors.stars}</p>}
+      <div>Stars</div>
     </div>
+    {errors && (
+          <p>{errors}</p>
+        )}
     <button disabled={disabled} type="submit">Submit Your Review</button>
     </form>
         </>
