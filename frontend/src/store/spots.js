@@ -83,12 +83,9 @@ export const getSpotsUser = () => async dispatch => {
   const response = await csrfFetch('/api/spots/current');
   console.log("AFTER FETCH IN SPUTS USER THUNK", response)
   if(response.ok) {
-      const spotsObj = await response.json();
-      console.log("spotsObj", spotsObj);
-      const spotsArr = spotsObj.Spots;
-      console.log("SPOTSSSSARRRRRRR", spotsArr)
-      dispatch(getUserSpots(spotsArr));
-      return spotsArr;
+      const spots = await response.json();
+      dispatch(getUserSpots(spots.Spots));
+      return spots;
   }else {
       return response;
   }
@@ -139,32 +136,28 @@ export const createSpot = data => async dispatch => {
          });
          console.log("MODIFY SPOT RESPONSE", response)
          if (response.ok){
-          // const spot = await response.json();
            dispatch(getSpotDetails(spot.id));
-           return spot;
+           dispatch(getAllSpots());
+           dispatch(getSpotsUser());
+           return response;
          } else {
           return response;
          }
      };
 
-     export const removeSpot = (spot) => async dispatch => {
+     export const removeSpot = (spotId) => async dispatch => {
       // console.log("HERE")
-           const response = await csrfFetch(`/api/spots/${spot.id}`, {
-             method: 'delete',
-             headers: {
-               'Content-Type': 'application/json'
-             },
-             body: JSON.stringify(spot)
-           });
+           const response = await csrfFetch(`/api/spots/${spotId}`);
            console.log("DELETE RESPONSE", response)
            if (response.ok){
             //  const spot = await response.json();
              dispatch(getAllSpots());
-             return spot;
+             dispatch(getSpotsUser());
+             return response;
            }else {
             return response;
            }
-       };
+      };
 
        export const createImage = images => async dispatch => {
         console.log("HERE", images)

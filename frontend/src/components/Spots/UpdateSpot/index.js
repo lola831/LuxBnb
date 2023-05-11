@@ -6,7 +6,6 @@ import { getSpotDetails, modifySpot } from "../../../store/spots";
 
 const UpdateSpot = () => {
     const { id } = useParams();
-     console.log("IDDDDDDDD", id)
     const dispatch = useDispatch();
     const history = useHistory();
     const spot = useSelector(state => state.spots.spotDetails);
@@ -16,6 +15,7 @@ const UpdateSpot = () => {
     useEffect(() => {
         dispatch(getSpotDetails(id));
         setCountry(spot.country)
+        console.log("here???")
         setAddress(spot.address)
         setCity(spot.city)
         setState(spot.state)
@@ -24,43 +24,45 @@ const UpdateSpot = () => {
         setDescription(spot.description)
         setName(spot.name)
         setPrice(spot.price)
-        setImages(spot.SpotImages)
+       // setImage1(spot.SpotImages[0].url)
 
-    }, [dispatch, spot.country]);
+        // setImage2()
 
-
-        const [country, setCountry] = useState(spot?spot.country : "");
-        const [address, setAddress] = useState(spot.address);
-        const [city, setCity] = useState(spot.city);
-        const [state, setState] = useState(spot.state);
-        const [lat, setLat] = useState(spot.lat);
-        const [lng, setLng] = useState(spot.lng);
-
-        const [description, setDescription] = useState(spot.description);
-        const [name, setName] = useState(spot.name);
-        const [price, setPrice] = useState(spot.price);
-        const [images, setImages] = useState([spot.SpotImages]);
+    }, [dispatch]);
 
 
-    const urlImages = [];
-    console.log("IMAGES: ", images)
-    if(spot.SpotImages){
-        console.log("in ifffff")
+    const [country, setCountry] = useState(spot?spot.country : "");
+    const [address, setAddress] = useState(spot? spot.address : "");
+    const [city, setCity] = useState(spot? spot.city : "");
+    const [state, setState] = useState(spot? spot.state : "");
+    const [lat, setLat] = useState(spot? spot.lat : "");
+    const [lng, setLng] = useState(spot? spot.lng : "");
+    const [description, setDescription] = useState(spot? spot.description : "");
+    const [name, setName] = useState(spot? spot.name : "");
+    const [price, setPrice] = useState(spot? spot.price : "");
 
-        for (let i = 0; i < spot?.SpotImages.length; i++) {
-             urlImages.push(
-                    <input
-                    type="text"
-                    value={spot?.SpotImages[i].url}
-                    key= {i}
-                    alt=""
-                    placeholder="Image URL"
-                    onChange={(e) => setImages([...images, e.target.value])}
-                    />
-                )
-        }
-    }
-    console.log("COUNTRY======", country)
+    //const [image1, setImage1] = useState(spot? spot.SpotImages[0].url : "");
+     const [image1, setImage1] = useState("");
+        const [image2, setImage2] = useState("");
+        const [image3, setImage3] = useState("");
+        const [image4, setImage4] = useState("");
+        const [image5, setImage5] = useState("");
+
+        console.log(">>>>>>>>>>>>>>>>>>>")
+    // const [image1, setImage1] = useState(spot? spot.SpotImages[0].url : "");
+    //     const [image2, setImage2] = useState(spot.SpotImages[1].url ? spot.SpotImages[1].url : "");
+    //     const [image3, setImage3] = useState(spot.SpotImages[2].url ? spot.SpotImages[2].url : "");
+    //     const [image4, setImage4] = useState(spot.SpotImages[3].url ? spot.SpotImages[3].url : "");
+    //     const [image5, setImage5] = useState(spot.SpotImages[4].url ? spot.SpotImages[4].url : "");
+        const [errors, setErrors] = useState({})
+
+
+        // let image2 =
+        // for(let i = 1; i < 5; i++) {
+        //     if ()
+        // }
+
+
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -76,19 +78,32 @@ const UpdateSpot = () => {
             description,
             name,
             price,
-            images
         }
 
-
-
         let updatedSpot;
-        updatedSpot = await dispatch(modifySpot(payload));
+        setErrors({});
+
+        updatedSpot = await dispatch(modifySpot(payload))
+        .catch(async (res) => {
+            const data = await res.json();
+            console.log("DATA IN RESPONSE:", data)
+            if (data && data.errors) {
+                setErrors(data.errors);
+            }
+        });
+
         console.log("HERE IN HANDLESUBMIT2")
+
+        // let imagesUpdated; //???????????? FIX FOR ALL IMAGES NOT JUST PREVIEW
+
+        // if(updatedSpot) {
+        //     let imagesArr = [image1];
+        //     imagesArr.push(spot.id);
+        // }
 
         if(updatedSpot) {
             console.log("HERE IN HANDLESUBMIT3")
-            history.push(`/spots/${updatedSpot.id}`);   // ????????
-            // clear form ?????
+            history.push(`/spots/${spot.id}`);   // ????????
         }
 
     }
@@ -202,12 +217,36 @@ const UpdateSpot = () => {
                 <p>Submit a link to at least one photo to publish your spot.</p>
                 <input
                     type="text"
-                    value={images}
-                    placeholder={`${spot.images}`}
-                    onChange={(e) => setImages([...images, e.target.value])}
-                    required
+                    value={image1}
+                    placeholder="Preview image"
+                    onChange={(e) => setImage1( e.target.value)}
+                    // required
                 />
-                {urlImages}
+                 <input
+                    type="text"
+                    value={image2}
+                    placeholder="Image URL"
+                    onChange={(e) => setImage2(e.target.value)}
+                />
+                 <input
+                    type="text"
+                    value={image3}
+                    placeholder="Image URL"
+                    onChange={(e) => setImage3(e.target.value)}
+                />
+                <input
+                    type="text"
+                    value={image4}
+                    placeholder="Image URL"
+                    onChange={(e) => setImage4(e.target.value)}
+                />
+                <input
+                    type="text"
+                    value={image5}
+                    placeholder="Image URL"
+                    onChange={(e) => setImage5(e.target.value)}
+                />
+
             </div>
             <button type="submit">Update</button>
             </form>

@@ -28,21 +28,6 @@ const CreateSpotForm = () => {
     const [image4, setImage4] = useState("");
     const [image5, setImage5] = useState("");
 
-
-
-    // const urlImages = [];
-    // for (let i = 1; i < 5; i++) {
-    //     urlImages.push(
-    //         <input
-    //             type="text"
-    //             value={i}
-    //             key={i}
-    //             placeholder="Image URL"
-    //             onChange={(e) => setImages([...images, e.target.value])}
-    //         />
-    //     )
-    // }
-
     const handleSubmit = async (e) => {
         e.preventDefault();
         console.log("HERE IN HANDLESUBMIT1")
@@ -79,22 +64,6 @@ const CreateSpotForm = () => {
             let images = imagesArr.filter(image => image !== "")
             console.log("IMAGESSSSSSSSSSSSSSSSSSSS", images);
             images.push(createdSpot.id);
-            /// createdSpot.id works!!!! its the spot.id -----------------------------------
-
-            // for (let i = 0; i < images.length; i++) {
-            //     let url = images[i];
-            //     let preview = false;
-            //     if (i === 0) {
-            //         preview = true;
-            //     }
-            //     let imagePayload = {
-            //         id: createdSpot.id,
-            //         url,
-            //         preview,
-            //     }
-            //     dispatch(createImage(imagePayload));
-            //     if (i === images.length - 1) imagesDone = true;
-            // }
 
             imagesDone = await(dispatch(createImage(images)))
             .catch(async (res) => {
@@ -238,25 +207,25 @@ return (
                  <input
                     type="text"
                     value={image2}
-                    placeholder="Preview Image URL"
+                    placeholder="Image URL"
                     onChange={(e) => setImage2(e.target.value)}
                 />
                  <input
                     type="text"
                     value={image3}
-                    placeholder="Preview Image URL"
+                    placeholder="Image URL"
                     onChange={(e) => setImage3(e.target.value)}
                 />
                 <input
                     type="text"
                     value={image4}
-                    placeholder="Preview Image URL"
+                    placeholder="Image URL"
                     onChange={(e) => setImage4(e.target.value)}
                 />
                 <input
                     type="text"
                     value={image5}
-                    placeholder="Preview Image URL"
+                    placeholder="Image URL"
                     onChange={(e) => setImage5(e.target.value)}
                 />
             </div>
