@@ -28,18 +28,15 @@ const SpotDetails = () => {
     }, [dispatch, id]);
 
     const checkReviews = () => {
-        // check if owner
-        if (sessionUser.id === spot.Owner.id) {
-            return false;
-        }
-        //check if already posted review
+        let check = true;
         spotReviews.forEach(review => {
-            if (review.User.id === sessionUser.id) {
-                return false;
+            if (review.userId === sessionUser.id) {
+                check = false;
             }
         })
-        return true;
+        return check;
     }
+
 
     const monthYear = (dateStr) => {
         let date = new Date(dateStr);
@@ -91,6 +88,7 @@ const SpotDetails = () => {
                     )}
                     <button onClick={() => alert("Feature Coming Soon...")}>Reserve</button>
                 </div>
+
                 <div>
                     {spot.numReviews === 0 ? (
                         <>
@@ -123,7 +121,7 @@ const SpotDetails = () => {
 
                         {spotReviews.length && (
                             <>
-                                {sessionUser && checkReviews() && (
+                                {sessionUser && sessionUser.id !== spot.Owner.id && checkReviews() && (
                                     <OpenModalButton
                                         buttonText="Post Your Review"
                                         modalComponent={<CreateReviewForm spotId={spot.id} />}
