@@ -23,7 +23,7 @@ const ManageSpots = () => {
     if(userSpots) {
         return (
             <>
-            <h2>Manage Your Spots</h2>
+            <h2>Manage Spots</h2>
 
             <NavLink to='/spots/new'>
                 <button>Create A New Spot</button>
