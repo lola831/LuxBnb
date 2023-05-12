@@ -3,7 +3,7 @@
   width: auto;
     display: grid;
     grid-template-columns: 35px 1fr 1fr 35px;
-    grid-template-rows: 0.1fr 0.1fr 5fr 4fr auto;
+    grid-template-rows: 0.3fr 0.3fr 3fr 3fr auto;
     gap: 2px 0px;
     grid-template-areas:
       ". details-name . ."
@@ -69,7 +69,7 @@
 
   .reserve-box {
     grid-area: reserve-box;
-    background-color: aqua;
+    /* background-color: aqua; */
     display: grid;
     grid-template-columns: 1fr;
     grid-template-rows: 1fr 1fr 3fr;
@@ -132,7 +132,7 @@
   height: 30px;
   grid-area: reserve;
   border: solid;
-  /* background: hotpink; */
+  background: rgba(255, 33, 52, 0.8);
   box-shadow: 3px 3px 3px black;
 
 }
