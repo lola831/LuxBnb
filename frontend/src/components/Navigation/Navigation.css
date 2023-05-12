@@ -9,6 +9,10 @@
 }
 .pawbnb {
   grid-area: pawbnb;
+  font-weight: bold;
+  font-size: 28px;
+  height: 55px;
+
 }
 .createspot {
   grid-area: createspot;

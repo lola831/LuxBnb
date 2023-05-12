@@ -1,5 +1,9 @@
 .outermost {
-  font: sans-serif;
+  /* width: 100%;
+  max-width: 860px;
+  margin: 0 auto;
+  height: 100vh; */
+  font-family: "montserrat", "sans-serif";
   display: grid;
   grid-template-columns: 1fr;
   grid-template-rows: 0.1fr 1.9fr;
