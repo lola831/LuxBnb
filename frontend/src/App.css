@@ -1,7 +1,8 @@
 .outermost {
+  font: sans-serif;
   display: grid;
   grid-template-columns: 1fr;
-  grid-template-rows: 0.2fr 1.8fr;
+  grid-template-rows: 0.1fr 1.9fr;
   gap: 0px 0px;
   grid-template-areas:
     "navcontainer"
@@ -11,4 +12,6 @@
   grid-area: navcontainer;
 }
 
-.maincontainer { grid-area: maincontainer; }
+.maincontainer {
+  grid-area: maincontainer;
+}

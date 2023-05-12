@@ -36,125 +36,133 @@ const SpotDetails = () => {
         })
         return check;
     }
-
-
     const monthYear = (dateStr) => {
         let date = new Date(dateStr);
         const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
-       return months[date.getMonth()] + " " + date.getFullYear();
+        return months[date.getMonth()] + " " + date.getFullYear();
     }
-
-
 
     if (Object.keys(spot).length) {
         console.log("AFTERRRRRRRRRR")
         return (
-            <>
-                <h2>{`${spot.name}`}</h2>
-                <h3>{`${spot.city}, ${spot.state}, ${spot.country}`}</h3>
-                <div className="images">
+            <div className="details-container">
+
+                <h2 className="details-name">{`${spot.name}`}</h2>
+                <h3 className="details-location">{`${spot.city}, ${spot.state}, ${spot.country}`}</h3>
+                <div className="details-image-container">
+
+
                     {
-                        spot.SpotImages.map(image => (
-                            <img style={{ width: '200px', height: '200px' }} src={`${image.url}`} alt="" />
+                        spot.SpotImages.map((image, i) => (
+
+                            i === 0 ? (
+                                <img className="preview-details" src={`${image.url}`} alt="" />
+                            ) : (
+                                <img className="small-details" src={`${image.url}`} alt="" />
+                            )
+
+
                         ))
                     }
                 </div>
-                <div className="description">
+
+                <div className="description-wrapper">
                     <h2>{`Hosted by ${spot.Owner.firstName} ${spot.Owner.lastName}`}</h2>
                     <p>{`${spot.description} `}</p>
                 </div>
                 <div className="reserve-box">
-                <div>{`$${spot.price}night `}</div>
-                {spot.numReviews > 0 ? (
+                    <div>{`$${spot.price}night `}</div>
+                    {spot.numReviews > 0 ? (
                         <>
                             <div>
                                 <i className="fa-sharp fa-solid fa-star"></i>
                                 {spot.avgStarRating.toFixed(1)}  ·
                             </div>
-                            { spot.numReviews === 1 ? (
-                                    <div>{`${spot.numReviews} review`}</div>
-                                ) : (
+                            {spot.numReviews === 1 ? (
+                                <div>{`${spot.numReviews} review`}</div>
+                            ) : (
                                 <div>{`${spot.numReviews} reviews`}</div>
-                                )
+                            )
                             }
                         </>
                     ) : (
                         <>
-                        <div>
-                            <i className="fa-sharp fa-solid fa-star"></i>
-                            <span> New</span>
-                        </div>
-                    </>
+                            <div>
+                                <i className="fa-sharp fa-solid fa-star"></i>
+                                <span> New</span>
+                            </div>
+                        </>
                     )}
                     <button onClick={() => alert("Feature Coming Soon...")}>Reserve</button>
                 </div>
 
-                <div>
+                <div className="reviews-details">
                     {spot.numReviews === 0 ? (
                         <>
                             <i className="fa-sharp fa-solid fa-star"></i>
                             <span> New</span>
                             <div>
-                            {sessionUser && sessionUser.id !== spot.Owner.id && (
-                                <>
-                                    <OpenModalButton
-                                        buttonText="Post Your Review"
-                                        modalComponent={<CreateReviewForm spotId={spot.id} />}
-                                    />
-                                    <p>Be the first to post a review!</p>
-                                </>
-                            )}
+                                {sessionUser && sessionUser.id !== spot.Owner.id && (
+                                    <>
+                                        <OpenModalButton
+                                            buttonText="Post Your Review"
+                                            modalComponent={<CreateReviewForm spotId={spot.id} />}
+                                        />
+                                        <p>Be the first to post a review!</p>
+                                    </>
+                                )}
                             </div>
                         </>
                     ) : (
                         <>
-                        <h2>
-                            <i className="fa-sharp fa-solid fa-star"></i>
-                            {spot.avgStarRating.toFixed(1)}  ·
-                        </h2>
-                        { spot.numReviews === 1 ? (
-                                    <h2>{`${spot.numReviews} review`}</h2>
-                                ) : (
+                            <h2>
+                                <i className="fa-sharp fa-solid fa-star"></i>
+                                {spot.avgStarRating.toFixed(1)}  ·
+                            </h2>
+                            {spot.numReviews === 1 ? (
+                                <h2>{`${spot.numReviews} review`}</h2>
+                            ) : (
                                 <h2>{`${spot.numReviews} reviews`}</h2>
-                                )
+                            )
                             }
 
-                        {spotReviews.length && (
-                            <>
-                                {sessionUser && sessionUser.id !== spot.Owner.id && checkReviews() && (
-                                    <OpenModalButton
-                                        buttonText="Post Your Review"
-                                        modalComponent={<CreateReviewForm spotId={spot.id} />}
-                                    />
-                                )}
-                                <div>
-                                    {
-                                        spotReviews.slice(0).reverse().map(review => (
-                                            <>
-                                                <h3>{`${review.User.firstName}`}</h3>
-                                                {/* {monthYear(review.createdAt)} */}
-                                                <h3> {monthYear(review.createdAt)}</h3>
-                                                <p>{`${review.review}`}</p>
-                                                {sessionUser &&
-                                                review.User.id === sessionUser.id && (
-                                                        <OpenModalButton
-                                                            buttonText="Delete"
-                                                            // onItemClick={closeMenu}
-                                                            modalComponent={<DeleteReviewModal review={review} />}
-                                                        />
-                                                )}
-                                            </>
-                                        ))
-                                    }
-                                </div>
-                            </>
-                        )}
-                    </>
+                            {spotReviews.length && (
+                                <>
+                                    {sessionUser && sessionUser.id !== spot.Owner.id && checkReviews() && (
+                                        <OpenModalButton
+                                            buttonText="Post Your Review"
+                                            modalComponent={<CreateReviewForm spotId={spot.id} />}
+                                        />
+                                    )}
+                                    <div>
+                                        {
+                                            spotReviews.slice(0).reverse().map(review => (
+                                                <>
+                                                    <h3>{`${review.User.firstName}`}</h3>
+                                                    {/* {monthYear(review.createdAt)} */}
+                                                    <h3> {monthYear(review.createdAt)}</h3>
+                                                    <p>{`${review.review}`}</p>
+                                                    {sessionUser &&
+                                                        review.User.id === sessionUser.id && (
+                                                            <OpenModalButton
+                                                                buttonText="Delete"
+                                                                // onItemClick={closeMenu}
+                                                                modalComponent={<DeleteReviewModal review={review} />}
+                                                            />
+                                                        )}
+                                                </>
+                                            ))
+                                        }
+                                    </div>
+                                </>
+                            )}
+                        </>
 
 
                     )}
+
                 </div>
-            </>
+            </div>
         )
     } else {
         console.log("IN ELSEEEEEEEEEEEEE")

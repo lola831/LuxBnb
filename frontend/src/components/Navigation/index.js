@@ -14,8 +14,9 @@ function Navigation({ isLoaded }) {
       <div className='pawbnb'>
         <li >
           <NavLink exact to="/" style={{ textDecoration: "none" }}>
-            <div style={{ color: "red", fontSize: "20px" }}>
-              <i className="fa-solid fa-paw"></i><span> pawbnb</span>
+            <div style={{ color: "red", fontSize: "30px" }}>
+              {/* <i className="fa-solid fa-paw"></i><span> pawbnb</span> */}
+              <i className="fa-brands fa-airbnb fa-rotate-180"></i><span> luxbnb</span>
             </div>
           </NavLink>
         </li>
@@ -25,7 +26,7 @@ function Navigation({ isLoaded }) {
           {sessionUser && (
             <div className='createspot'>
               <li>
-                <NavLink exact to="/spots/new" style={{ textDecoration: "none" }}>Create a New Spot</NavLink>
+                <NavLink exact to="/spots/new" style={{ textDecoration: "none", color: "teal" }}>Create a New Spot</NavLink>
               </li>
             </div>
           )}

@@ -1,0 +1,46 @@
+
+.details-container {  display: grid;
+    grid-template-columns: 0.3fr 1.7fr 1.7fr 0.3fr;
+    grid-template-rows: 0.1fr 0.1fr 0.9fr 0.5fr 0.4fr 2.2fr;
+    gap: 0px 0px;
+    grid-auto-flow: row;
+    grid-template-areas:
+      ". details-name . ."
+      ". details-location . ."
+      ". details-image-container details-image-container ."
+      ". description-wrapper reserve-box ."
+      ". description-wrapper . ."
+      ". reviews-details reviews-details .";
+  }
+
+  .details-name {
+    grid-area: details-name;
+    background-color: blue;
+ }
+
+  .details-location {
+    grid-area: details-location;
+    background-color: green;
+
+}
+
+  .details-image-container {
+    grid-area: details-image-container;
+    background-color: pink;
+
+}
+
+  .description-wrapper {
+    grid-area: description-wrapper;
+    background-color: purple;
+}
+
+  .reserve-box {
+    grid-area: reserve-box;
+    background-color: aqua;
+}
+
+  .reviews-details {
+    grid-area: reviews-details;
+    background-color: orange;
+}
