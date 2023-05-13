@@ -1,0 +1,189 @@
+.details-container {
+  max-width: 1000px;
+  width: auto;
+    display: grid;
+    grid-template-columns: 35px 1fr 1fr 35px;
+    grid-template-rows: 0.3fr 0.3fr 3fr auto auto;
+    gap: 2px 0px;
+    grid-template-areas:
+      ". details-name . ."
+      ". details-location . ."
+      ". details-image-container details-image-container ."
+      ". description-reserve description-reserve ."
+      ". reviews-details reviews-details .";
+  }
+
+  .details-name {
+    grid-area: details-name;
+    /* background-color: blue; */
+    font-size: 28px;
+    font-weight: bold;
+
+ }
+
+  .details-location {
+    grid-area: details-location;
+    /* background-color: green; */
+}
+
+  .details-image-container {
+    grid-area: details-image-container;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: 1fr;
+    grid-template-areas:
+    "preview-details small-details";
+    /* background-color: pink; */
+    gap: 3px;
+}
+
+.preview-details {
+  grid-area: preview-details;
+  /* background-color: brown; */
+}
+
+.small-details {
+  grid-area: small-details;
+  /* background-color: yellow; */
+  display: flex;
+  flex-flow: column wrap;
+  width: 440px;
+  height: 280px;
+  gap: 3px;
+}
+
+.description-reserve {
+  grid-area: description-reserve;
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  grid-template-rows: 1fr;
+  grid-template-areas:
+  "description-wrapper reserve-box";
+}
+
+  .description-wrapper {
+    grid-area: description-wrapper;
+    /* background-color: purple; */
+
+}
+
+  .reserve-box {
+    grid-area: reserve-box;
+    /* background-color: aqua; */
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-template-rows: 1fr 1fr 3fr;
+    grid-template-areas:
+    "first-row"
+    "reserve-button"
+    ". ";
+}
+
+.first-row {
+  grid-area: first-row;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: 1fr;
+  grid-template-areas:
+  "details-price details-star-review";
+}
+
+.details-price {
+  grid-area: details-price;
+  border-top: solid;
+  border-left: solid;
+  padding-top: 20px;
+  padding-left: 30px;
+
+}
+
+.details-star-review {
+  grid-area: details-star-review;
+  border-top: solid;
+  border-right: solid;
+  /* background-color: orange; */
+  padding-top: 20px;
+  padding-right: 30px;
+  display: flex;
+  justify-content: end;
+
+}
+
+.reserve-button {
+
+/* background-color: yellow; */
+  grid-area: reserve button;
+  display: grid;
+  justify-items: center;
+  grid-template-columns: 1fr;
+  grid-template-rows: 1fr;
+  grid-template-areas:
+  "reserve";
+  border-left: solid;
+  border-bottom: solid;
+  border-left:solid;
+  border-right: solid
+
+
+}
+
+.reserve {
+  width: 250px;
+  height: 30px;
+  grid-area: reserve;
+  border: solid;
+  background: rgba(255, 33, 52, 0.8);
+  box-shadow: 3px 3px 3px black;
+
+}
+
+  .reviews-details {
+    grid-area: reviews-details;
+    /* background-color: orange; */
+    min-height: 300px;
+    border-top: solid;
+
+}
+
+.first-line-details {
+  font-size: 25px;
+  font-weight: bold;
+  height: 50px;
+  /* background-color: blue; */
+
+}
+
+.post-your-review {
+  width: 120px;
+  border: solid black;
+  background-color: grey;
+  color: white;
+  box-shadow: 3px 3px 3px black;
+
+}
+
+
+.details-review-section {
+
+
+}
+
+.name-details {
+  font-size: 20px;
+  /* background-color: green; */
+  height: 20px;
+}
+
+.details-date {
+  /* background-color: pink; */
+  color: grey;
+  height: 10px;
+}
+
+.details-delete-button {
+  width: 60px;
+  border: solid black;
+  background-color: grey;
+  color: white;
+  box-shadow: 3px 3px 3px black;
+}

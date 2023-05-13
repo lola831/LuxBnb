@@ -1,9 +1,8 @@
-import React, { /*useEffect, useState */} from 'react';
+import React, { /*useEffect, useState */ } from 'react';
 import { NavLink } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import ProfileButton from './ProfileButton';
 import './Navigation.css';
-import logo from "./mybnb.png";
 
 function Navigation({ isLoaded }) {
 
@@ -11,36 +10,34 @@ function Navigation({ isLoaded }) {
 
   return (
 
-    <ul className='navcontainer'>
-      <div className='airbnb'>
-      <li>
-        <NavLink exact to="/">
-          <img
-          src={logo}
-          alt="logo image"
-          height="150px" width="150px"
-          />
-        </NavLink>
-      </li>
+    <ul className='nav'>
+      <div className='pawbnb'>
+        <li >
+          <NavLink exact to="/" style={{ textDecoration: "none" }}>
+            <div style={{ color: "red"}}>
+              {/* <i className="fa-solid fa-paw"></i><span> pawbnb</span> */}
+              <i className="fa-brands fa-airbnb fa-rotate-180"></i><span>luxbnb</span>
+            </div>
+          </NavLink>
+        </li>
       </div>
       {isLoaded && (
         <>
           {sessionUser && (
             <div className='createspot'>
-            <li>
-              <NavLink exact to="/spots/new">Create a New Spot</NavLink>
-            </li>
+              <li>
+                <NavLink exact to="/spots/new" style={{ textDecoration: "none", color: "teal" }}>Create a New Spot</NavLink>
+              </li>
             </div>
           )}
-          <div className='user-logo'>
-          <li>
-            <ProfileButton user={sessionUser} />
-          </li>
+          <div className='profilelogo'>
+            <li>
+              <ProfileButton user={sessionUser} />
+            </li>
           </div>
         </>
       )}
     </ul>
-
   );
 }
 

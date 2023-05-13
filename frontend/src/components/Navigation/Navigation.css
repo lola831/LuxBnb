@@ -1,31 +1,37 @@
-.navcontainer {
+.nav {
+  border-bottom: solid lightgray 2px;
   display: grid;
-  grid-template-columns: 1fr 50% 1fr;
+  grid-template-columns: 1fr 1fr 1fr;
   grid-template-rows: 1fr;
   gap: 0px 0px;
   grid-template-areas:
-    "airbnb create-spot user-logo";
+    "pawbnb createspot profilelogo";
+}
+.pawbnb {
+  grid-area: pawbnb;
+  font-weight: bold;
+  font-size: 28px;
+  height: 55px;
+
+}
+.createspot {
+  grid-area: createspot;
+  display: flex;
+  justify-content: end;
+
+}
+.profilelogo {
+  grid-area: profilelogo;
+  display: flex;
+  display: flex;
+  justify-content: end;
 
 }
 
-
-.airbnb {
-  display: flex;
+ul {
   list-style: none;
-  justify-content: left;
- }
-.createspot {
-  display: flex;
-  list-style: none;
-  justify-content: flex-end;
+}
 
-
- }
-.user-logo {
-  display: flex;
-  list-style: none;
-  justify-content: end;
- }
 
 .profile-dropdown {
     position: absolute;

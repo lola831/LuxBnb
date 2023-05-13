@@ -1,17 +1,27 @@
 import { csrfFetch } from './csrf';
+import { getSpotDetails } from './spots';
 
-const GET_REVIEWS = 'reviews/GET_REVIEWS'
+const GET_SPOT_REVIEWS = 'reviews/GET_SPOT_REVIEWS'
+
+const GET_USER_REVIEWS = 'reviews/GET_USER_REVIEWS'
 
 const ADD_REVIEW = 'reviews/ADD_REVIEW'
 
 const DELETE_REVIEW = 'reviews/DELETE_REVIEW'
 
-const getReviews = reviews => {
+const getReviewsSpot = reviews => {
     return {
-      type: GET_REVIEWS,
+      type: GET_SPOT_REVIEWS,
       reviews
     };
 };
+
+const getReviewsUser = reviews => {
+  return {
+    type: GET_USER_REVIEWS,
+    reviews
+  }
+}
 
 const addReview = review => {
   return {
@@ -34,15 +44,26 @@ export const getUserReviews = () => async dispatch => {
     if(response.ok) {
         const reviews = await response.json();
        // console.log("reviews", reviews)
-        dispatch(getReviews(reviews));
+        dispatch(getReviewsUser(reviews));
         return reviews;
     }else {
         return response; /// what should we return???
     }
   };
 
+  export const getSpotReviews = (spotId) => async dispatch => {
+    const response = await csrfFetch(`/api/spots/${spotId}/reviews`);
+    if(response.ok) {
+        const spotReviews = await response.json();
+        dispatch(getReviewsSpot(spotReviews));
+        return spotReviews;
+    }else {
+        return response; /// what should we return???
+    }
+  }
+
   export const createReview = payload => async dispatch => {
-    // console.log("HERE")
+     console.log("HERE IN CREATE REV THUNK")
          const response = await csrfFetch(`/api/spots/${payload.id}/reviews`, {
            method: 'post',
            headers: {
@@ -51,9 +72,10 @@ export const getUserReviews = () => async dispatch => {
            body: JSON.stringify(payload)
          });
          if (response.ok){
-           const review = await response.json();
-           dispatch(addReview(review));
-           return review;
+          dispatch(getSpotDetails(payload.id));
+          dispatch(getSpotReviews(payload.id))
+         }else {
+          return response;
          }
      };
      export const removeReview = (review) => async dispatch => {
@@ -67,27 +89,57 @@ export const getUserReviews = () => async dispatch => {
            });
 
            if (response.ok){
-             const review = await response.json();
-             dispatch(deleteReview(review));
+             //const review = await response.json();
+             console.log("IN REMOVEREVIEW THUNK", review)
+             //dispatch(deleteReview(review));
+             dispatch(getSpotDetails(review.spotId))
+             dispatch(getSpotReviews(review.spotId))
              return review;
+           }else {
+            return response;
            }
        };
 
 const initialState = {
-   userReviews: [],
-
-  };
+  spotReviews: [],
+  userReviews: [],
+};
 
   const reviewsReducer = (state = initialState, action) => {
-    let newState = {...state};
+    let newState = {...state}
     switch (action.type) {
-      case GET_REVIEWS:
-        // newState.allReviews = {...state, userReviews: action.reviews}
-        //nnneeeed to finish???
+      case GET_SPOT_REVIEWS:
+        console.log("action.reviews =============", action.reviews)
+       // newState = Object.assign({}, state);
+        newState.spotReviews = action.reviews.Reviews;
           return newState;
+      case GET_USER_REVIEWS:
+       // newState = Object.assign({}, state);
+        newState.userReviews = action.reviews.Reviews;
+        return newState;
       case ADD_REVIEW:
+       // newState = Object.assign({}, state);
+        console.log("action add review=========>", action.review)
+      newState.spotReviews.push(action.review)
       newState.userReviews.push(action.review)
+      return newState;
       case DELETE_REVIEW:
+        console.log("ACTION DELETE REVIEWWWWW====>", action.review)
+
+        let index;
+        for (let i = 0; i < newState.spotReviews.length; i++){
+          if (newState.spotReviews[i].User.id === action.review.User.id) {
+            index = i;
+          }
+        }
+
+        let arr = newState.spotReviews.splice(index, 1)
+        delete newState.spotReviews;
+        newState.spotReviews = arr;
+        return newState;
+
+
+
         //neeed to fix
       default:
         return state;

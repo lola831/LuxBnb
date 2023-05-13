@@ -47,7 +47,9 @@ function ProfileButton({ user }) {
   return (
     <>
       <button onClick={openMenu}>
+        <div style={{color: "grey", fontSize: "25px"}}>
         <i className="fas fa-user-circle" />
+        </div>
       </button>
       <ul className={ulClassName} ref={ulRef}>
         {user ? (
