@@ -73,12 +73,12 @@ function CreateReviewForm({ spotId }) {
             );
           })}
           {errors.stars && <p>{errors.stars}</p>}
-          <div>Stars</div>
+          <span>Stars</span>
         </div>
         {/* {errors && (
           <p>{errors}</p>
         )} */}
-        <button disabled={disabled} type="submit">Submit Your Review</button>
+        <button  className="submit-review-button" disabled={disabled} type="submit">Submit Your Review</button>
       </form>
     </>
 

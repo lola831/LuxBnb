@@ -3,7 +3,7 @@
   width: auto;
     display: grid;
     grid-template-columns: 35px 1fr 1fr 35px;
-    grid-template-rows: 0.3fr 0.3fr 3fr 3fr auto;
+    grid-template-rows: 0.3fr 0.3fr 3fr auto auto;
     gap: 2px 0px;
     grid-template-areas:
       ". details-name . ."

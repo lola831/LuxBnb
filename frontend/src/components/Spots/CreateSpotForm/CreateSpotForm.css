@@ -1,0 +1,56 @@
+.create-spot-container {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    grid-template-areas:
+    ". create-spot-wrapper .";
+}
+
+.create-spot-wrapper {
+    grid-area: create-spot-wrapper;
+}
+
+.create-spot-location {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+
+}
+
+.city-state {
+    display: flex;
+
+}
+
+.long-lat {
+    display: flex;
+    border-bottom: solid;
+    padding-bottom: 20px;
+}
+
+.create-spot-error {
+    color: red;
+    display: inline;
+
+}
+
+.create-spot-button {
+    margin-top: 15px;
+    margin-left: 150px;
+    width: 100px;
+    height: 20px;
+    grid-area: reserve;
+    border: solid;
+    background: rgba(255, 33, 52, 0.8);
+    box-shadow: 3px 3px 3px black;
+    display: flex;
+    justify-content: center;
+
+}
+
+.create-spot-images {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    border-bottom: solid;
+    padding-bottom: 20px;
+}

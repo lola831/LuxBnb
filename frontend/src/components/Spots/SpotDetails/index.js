@@ -98,7 +98,7 @@ const SpotDetails = () => {
                             </div>
                         </div>
                         <div className="reserve-button">
-                            <button className="reserve" onClick={() => alert("Feature Coming Soon...")}>Reserve</button>
+                            <button style={{color: "white"}}  className="reserve" onClick={() => alert("Feature Coming Soon...")}>Reserve</button>
                         </div>
                     </div>
                 </div>
