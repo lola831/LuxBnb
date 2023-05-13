@@ -18,8 +18,8 @@ module.exports = {
         hashedPassword: bcrypt.hashSync('password')
       },
       {
-        firstName: 'Spider',
-        lastName: 'Man',
+        firstName: 'James',
+        lastName: 'Mann',
         email: 'user1@user.io',
         username: 'FakeUser1',
         hashedPassword: bcrypt.hashSync('password2')
@@ -42,4 +42,3 @@ module.exports = {
     }, {});
   }
 };
-

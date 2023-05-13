@@ -98,6 +98,8 @@ router.get('/current', async (req, res, next) => {
         avgRating += rating[j].dataValues.stars;
       }
       Spots[i].dataValues.avgRating = avgRating / rating.length;
+
+
     } else {
       Spots[i].dataValues.avgRating = null;
     }
@@ -326,6 +328,7 @@ router.get('/:spotId', async (req, res) => {
       avg += spot.dataValues.Reviews[i].dataValues.stars
     }
 
+
     spot.dataValues.avgStarRating = avg / spot.dataValues.Reviews.length;
   } else {
     spot.dataValues.avgStarRating = null;
@@ -447,9 +450,8 @@ Spots.forEach(spot => {
         spot.Reviews.forEach(review => {
           avgRating += review.dataValues.stars;
         });
-        console.log("divide by ",spot.Reviews.length)
-        console.log("avg: ", avgRating)
       }
+
       spot.avgRating = avgRating / spot.Reviews.length;
     };
     delete spot.SpotImages;
