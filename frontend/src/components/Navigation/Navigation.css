@@ -42,6 +42,9 @@ ul {
   list-style: none;
 }
 
+.hover-options:hover {
+  background-color: lightgrey;
+}
 
 .profile-dropdown {
     position: absolute;
@@ -55,7 +58,7 @@ ul {
     display: flex;
     flex-direction: column;
     align-items: flex-begin;
-    width: 150px;
+    width: 140px;
     font-size: 18px;
     border-radius: 10px;
     gap: 8px;
@@ -63,7 +66,43 @@ ul {
     padding-bottom: 10px;
     cursor: pointer;
     padding: 10px;
+    z-index: 1;
 
+  }
+
+  .profile-list-button {
+    font-size: 18px;
+    padding: 5px;
+  }
+
+  .manage-spot-link {
+    text-decoration: none;
+    color: black;
+  }
+
+  .log-out-button {
+    margin: -8px;
+    font-family: amaranth;
+    font-size: 17px;
+    margin-left: -5px;
+
+  }
+
+  .create-spot-container-main {
+    /* background-color: orange; */
+    height: 20px;
+    padding-top: 20px;
+  }
+
+  .create-spot-container-main:hover {
+    border-bottom: solid thin teal;
+  }
+
+  .create-new-spot-main {
+    /* background-color: yellow; */
+    height: 20px;
+    color: teal;
+    text-decoration: none;
   }
 
   .hidden {

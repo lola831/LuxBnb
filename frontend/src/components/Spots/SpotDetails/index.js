@@ -120,7 +120,7 @@ const SpotDetails = () => {
                                 <div>
                                     {sessionUser && sessionUser.id !== spot.Owner.id && (
                                         <div>
-                                            <div className="post-review-button">
+                                            <div>
                                             <OpenModalButton
                                                 buttonText="Post Your Review"
                                                 modalComponent={<CreateReviewForm spotId={spot.id} />}
@@ -154,7 +154,7 @@ const SpotDetails = () => {
 
                             {spotReviews.length && (
                                 <>
-                                <div className="post-your-review">
+                                <div className={sessionUser && sessionUser.id !== spot.Owner.id && checkReviews() ? "post-your-review" : "hide-review-button"}>
                                     {sessionUser && sessionUser.id !== spot.Owner.id && checkReviews() && (
                                         <OpenModalButton
                                             buttonText="Post Your Review"

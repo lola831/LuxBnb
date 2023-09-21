@@ -25,8 +25,8 @@ function Navigation({ isLoaded }) {
         <>
           {sessionUser && (
             <div className='createspot'>
-              <li>
-                <NavLink exact to="/spots/new" style={{ textDecoration: "none", color: "teal" }}>Create a New Spot</NavLink>
+              <li className='create-spot-container-main'>
+                <NavLink exact to="/spots/new" className="create-new-spot-main">Create a New Spot</NavLink>
               </li>
             </div>
           )}

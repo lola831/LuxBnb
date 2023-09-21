@@ -53,16 +53,16 @@ function ProfileButton({ user }) {
       </button>
       <ul className={ulClassName} ref={ulRef}>
         {user ? (
-          <>
+          <div className="profile-list-button">
             <li>Hello, {user.firstName}</li>
-            <li>{user.email}</li>
-            <li>
-              <NavLink exact to="/spots/current">Manage Spots</NavLink>
+            <li className="hover-options">{user.email}</li>
+            <li className="hover-options">
+              <NavLink exact to="/spots/current" className={"manage-spot-link"}>Manage Spots</NavLink>
             </li>
-            <li>
-              <button onClick={logout}>Log Out</button>
+            <li className="hover-options">
+              <button className="log-out-button" onClick={logout}>Log Out</button>
             </li>
-          </>
+          </div>
         ) : (
           <>
           <div className="log-in-hover">
