@@ -339,12 +339,26 @@ router.get('/:spotId', async (req, res) => {
   return res.json(spot)
 });
 
-
+// GET ALL SPOTS
 router.get('/', async (req, res, next) => {
+
+  // let query = {
+  //   where: {},
+  //   include: [{ model: SpotImage, attributes: ['url'] },
+  // {model: Review, attributes: ['stars']}]
+  // }
 
   let query = {
     where: {},
-    include: [{ model: SpotImage, attributes: ['url'] },
+    include: [{
+       model: SpotImage,
+       attributes: ['url'],
+       where: {
+        preview: {
+          [Op.ne]: "true"
+        }
+       }
+    },
   {model: Review, attributes: ['stars']}]
   }
 
@@ -441,7 +455,7 @@ router.get('/', async (req, res, next) => {
 let avgRating = null;
 
 Spots.forEach(spot => {
-
+  console.log("==============================spot: ", spot.SpotImages[0])
     if(spot.SpotImages.length){
       spot.previewImage = spot.SpotImages[0].dataValues.url
 
