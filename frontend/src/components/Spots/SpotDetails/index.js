@@ -74,8 +74,8 @@ const SpotDetails = () => {
                 </div>
                 <div className="description-reserve">
                     <div className="description-wrapper">
-                        <h2>{`Hosted by ${spot.Owner.firstName} ${spot.Owner.lastName}`}</h2>
-                        <p>{`${spot.description} `}</p>
+                        <h2 className="hosted-by">{`Hosted by ${spot.Owner.firstName} ${spot.Owner.lastName}`}</h2>
+                        <p className="spot-description">{`${spot.description} `}</p>
                     </div>
                     <div className="reserve-box">
                         <div className="first-row">
@@ -119,13 +119,15 @@ const SpotDetails = () => {
                                 <span> New</span>
                                 <div>
                                     {sessionUser && sessionUser.id !== spot.Owner.id && (
-                                        <>
+                                        <div>
+                                            <div className="post-review-button">
                                             <OpenModalButton
                                                 buttonText="Post Your Review"
                                                 modalComponent={<CreateReviewForm spotId={spot.id} />}
                                             />
-                                            <p>Be the first to post a review!</p>
-                                        </>
+                                            </div>
+                                            <p className="be-first">Be the first to post a review!</p>
+                                        </div>
                                     )}
                                 </div>
                             </div>
