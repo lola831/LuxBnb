@@ -1,0 +1,107 @@
+.manage-container {
+    display: grid;
+    grid-template-columns: 0.1fr 2.8fr 0.1fr;
+    grid-template-rows:30px 50px auto;
+    grid-template-areas:
+    ". manage-title ."
+     " . manage-create ."
+    ". manage-wrapper .";
+}
+
+.manage-title {
+    grid-area: manage-title;
+    /* background-color: lightblue; */
+    align-self: center;
+}
+
+.manage-create {
+    grid-area: manage-create;
+    background-color: lightgrey;
+    border: solid black;
+    box-shadow: 2px 2px 2px black;
+    height: 20px;
+    width: 130px;
+    align-self: center;
+}
+
+.manage-wrapper {
+    grid-area: manage-wrapper;
+    /* background-color: lightgreen; */
+    display: flex;
+    flex-flow: row wrap;
+    gap: 20px;
+    max-width: 1000px;
+}
+
+
+ .manage-spot-info {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    grid-template-rows: 200px 20px 18px 30px;
+    grid-template-areas:
+    "manage-photo manage-photo"
+    "manage-location manage-rating"
+    "manage-price ."
+    "manage-update-delete .";
+    /* background-color: orange; */
+    width: 200px;
+    height: 300px;
+    gap: 5px;
+    margin-top: 20px;
+
+
+}
+
+.manage-photo {
+    grid-area: manage-photo;
+    /* background-color: green; */
+}
+
+.manage-image {
+    border-radius: 10px;
+}
+
+.manage-location {
+    grid-area: manage-location;
+    /* background-color: purple; */
+    display: flex;
+    align-items: center;
+}
+.manage-rating {
+    grid-area: manage-rating;
+    /* background-color: pink; */
+    display: flex;
+    justify-content: end;
+    align-items: center;
+
+}
+.manage-price {
+    grid-area: manage-price;
+    /* background-color: blue; */
+}
+.manage-update-delete {
+    grid-area: manage-update-delete;
+    /* background-color: yellow; */
+    display: grid;
+    grid-template-columns: 1 fr 1fr;
+    grid-template-rows: 1fr;
+    grid-template-areas: "manage-update manage-delete";
+    align-items: center;
+    padding-left: 5px;
+    gap: 10px;
+}
+
+.manage-update {
+    grid-area: manage-update;
+    border: solid black;
+    box-shadow: 2px 2px 2px black;
+    background-color: lightgrey;
+
+}
+
+.manage-delete {
+    grid-area: manage-delete;
+    border: solid black;
+    box-shadow: 2px 2px 2px black;
+    background-color: lightgrey;
+}

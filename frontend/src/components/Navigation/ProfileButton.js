@@ -5,7 +5,7 @@ import * as sessionActions from '../../store/session';
 import OpenModalMenuItem from './OpenModalMenuItem';
 import LoginFormModal from '../LoginFormModal';
 import SignupFormModal from '../SignupFormModal';
-
+import "./Navigation.css"
 
 function ProfileButton({ user }) {
   const dispatch = useDispatch();
@@ -47,7 +47,7 @@ function ProfileButton({ user }) {
   return (
     <>
       <button onClick={openMenu}>
-        <div style={{color: "grey", fontSize: "25px"}}>
+        <div style={{color: "grey", fontSize: "30px"}}>
         <i className="fas fa-user-circle" />
         </div>
       </button>
@@ -65,16 +65,20 @@ function ProfileButton({ user }) {
           </>
         ) : (
           <>
-            <OpenModalMenuItem
+          <div className="log-in-hover">
+          <OpenModalMenuItem
               itemText="Log In"
               onItemClick={closeMenu}
               modalComponent={<LoginFormModal />}
             />
-            <OpenModalMenuItem
+          </div>
+          <div className="sign-up-hover">
+          <OpenModalMenuItem
               itemText="Sign Up"
               onItemClick={closeMenu}
               modalComponent={<SignupFormModal />}
             />
+          </div>
           </>
         )}
       </ul>

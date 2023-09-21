@@ -40,16 +40,48 @@
 .preview-details {
   grid-area: preview-details;
   /* background-color: brown; */
+
+}
+
+.main-img{
+  /* height: 137px;
+  width: 225px; */
+  height: 350px;
+  width: 530px;
+  object-fit: cover;
+  border-radius: 10px 0px 0px 10px;
+  margin-right: 10px;
 }
 
 .small-details {
   grid-area: small-details;
-  /* background-color: yellow; */
   display: flex;
-  flex-flow: column wrap;
-  width: 440px;
-  height: 280px;
-  gap: 3px;
+  flex-wrap: wrap;
+  flex-direction: column;
+  width: 535px;
+  height: 350px;
+  gap: 10px;
+
+}
+
+.small-img{
+  height: 170px;
+  width: 255px;
+  object-fit: cover;
+}
+
+.small-img-2 {
+  height: 170px;
+  width: 255px;
+  object-fit: cover;
+  border-radius: 0px 10px 0px 0px;
+}
+
+.small-img-3 {
+  height: 170px;
+  width: 255px;
+  object-fit: cover;
+  border-radius: 0px 0px 10px 0px;
 }
 
 .description-reserve {

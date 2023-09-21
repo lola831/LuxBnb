@@ -45,9 +45,12 @@ const SpotDetails = () => {
 
     if (Object.keys(spot).length) {
         let previewImage = spot.SpotImages[0].url
-        let imageArr = spot.SpotImages.slice(1)
-        console.log("AFTERRRRRRRRRR")
-        console.log("IMAGE======>", imageArr)
+        console.log("IMAGEEEEEE ", spot)
+        let imageArr = []
+        if (spot.SpotImages.length > 1) {
+          imageArr = spot.SpotImages.slice(1);
+        }
+
         return (
             <div className="details-container">
 
@@ -55,14 +58,18 @@ const SpotDetails = () => {
                 <div className="details-location">{`${spot.city}, ${spot.state}, ${spot.country}`}</div>
                 <div className="details-image-container">
                     <div className="preview-details">
-                        <img style={{ height: "280px", width: "460px" }} src={`${previewImage}`} alt="" />
+                        <img className="main-img" src={`${previewImage}`} alt="" />
                     </div>
                     <div className="small-details">
-                        {imageArr.map(image => (
-                            <>
-                                <img style={{ height: "137px", width: "225px" }} src={`${image.url}`} alt="" />
-                            </>
-                        ))}
+                        {
+                            imageArr.length && (
+                                imageArr.map((image, i) => (
+
+                                        <img className={i === 2 ? "small-img-2": i=== 3 ? "small-img-3" : "small-img"} src={`${image.url}`} alt="" />
+
+                                ))
+                            )
+                        }
                     </div>
                 </div>
                 <div className="description-reserve">
@@ -178,12 +185,8 @@ const SpotDetails = () => {
                                 </>
                             )}
                         </>
-
-
                     )}
-
                 </div>
-
             </div>
         )
     } else {

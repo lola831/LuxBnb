@@ -14,9 +14,9 @@ function Navigation({ isLoaded }) {
       <div className='pawbnb'>
         <li >
           <NavLink exact to="/" style={{ textDecoration: "none" }}>
-            <div style={{ color: "red"}}>
-              {/* <i className="fa-solid fa-paw"></i><span> pawbnb</span> */}
-              <i className="fa-brands fa-airbnb fa-rotate-180"></i><span>luxbnb</span>
+            <div className='logo-name'>
+              <i className="fa-solid fa-paw"></i><span> pawbnb</span>
+              {/* <i className="fa-brands fa-airbnb fa-rotate-180"></i><span>luxbnb</span> */}
             </div>
           </NavLink>
         </li>
