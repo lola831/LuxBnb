@@ -359,7 +359,7 @@ router.get('/', async (req, res, next) => {
       //   }
       //  }
       where: {
-        preview: 1
+        preview: true
       }
     },
   {model: Review, attributes: ['stars']}]
