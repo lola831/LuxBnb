@@ -353,11 +353,14 @@ router.get('/', async (req, res, next) => {
     include: [{
        model: SpotImage,
        attributes: ['url'],
-       where: {
-        preview: {
-          [Op.ne]: "true"
-        }
-       }
+      //  where: {
+      //   preview: {
+      //     [Op.ne]: "true"
+      //   }
+      //  }
+      where: {
+        preview: 1
+      }
     },
   {model: Review, attributes: ['stars']}]
   }
