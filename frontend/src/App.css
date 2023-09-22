@@ -20,4 +20,6 @@
 
 .maincontainer {
   grid-area: maincontainer;
+  display: flex;
+  justify-content: center;
 }

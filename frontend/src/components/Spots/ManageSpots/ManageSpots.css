@@ -6,6 +6,10 @@
     ". manage-title ."
      " . manage-create ."
     ". manage-wrapper .";
+    /* background-color: yellow; */
+    width: 100%;
+    padding-left: 100px;
+    padding-right: 100px;
 }
 
 .manage-title {
@@ -15,13 +19,16 @@
 }
 
 .manage-create {
+    padding-top: 5px;
     grid-area: manage-create;
     background-color: lightgrey;
     border: solid black;
     box-shadow: 2px 2px 2px black;
-    height: 20px;
+    height: 30px;
     width: 130px;
     align-self: center;
+    display: flex;
+    justify-content: center;
 }
 
 .manage-wrapper {
@@ -54,12 +61,27 @@
 
 .manage-photo {
     grid-area: manage-photo;
+
     /* background-color: green; */
 }
 
 .manage-image {
     border-radius: 10px;
+
 }
+
+.loc {
+    margin-top: 30px;
+    /* background-color: orange; */
+    margin-bottom: 10px;
+}
+
+.pric, .manage-update-delete{
+    margin-top: 20px;
+    /* background-color: orange; */
+}
+
+
 
 .manage-location {
     grid-area: manage-location;

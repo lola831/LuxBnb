@@ -1,11 +1,14 @@
 .spots-container {
-    display: grid;
+    /* display: grid;
     grid-template-columns: 0.1fr 2.5fr 0.1fr;
     grid-template-rows: 1fr;
     gap: 0px 0px;
     grid-template-areas:
-      ". spots-wrapper .";
+      ". spots-wrapper ."; */
+      display: flex;
+      justify-content: center;
       margin-top: 40px;
+    /* background-color: yellow; */
   }
 
 .spots-wrapper {
@@ -17,8 +20,8 @@
 }
 
 .spot-images-main {
-    width: 218px;
-    height: 218px;
+    width: 235px;
+    height: 235px;
     border-radius: 10px;
     margin-bottom: 10px;
     object-fit: cover;

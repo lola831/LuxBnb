@@ -25,7 +25,7 @@
   display: flex;
   display: flex;
   justify-content: end;
-  margin-right: 60px;
+  margin-right: 100px;
   font-size: 30px;
   /* background-color: green; */
 
@@ -35,7 +35,7 @@
 .logo-name {
   color: red;
   font-family: "amaranth bold";
-  margin-left: 50px;
+  margin-left: 100px;
 }
 
 ul {
@@ -118,8 +118,4 @@ ul {
     background-color: lightgrey;
     /* padding-left: -5px; */
 
-  }
-
-  .log-in-hover, .sign-up-hover {
-    /* padding-left: 5px; */
   }

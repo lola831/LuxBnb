@@ -65,27 +65,27 @@
   display: flex;
   flex-wrap: wrap;
   flex-direction: column;
-  width: 450px;
+  width: 500px;
   height: 350px;
   gap: 10px;
 }
 
 .small-img{
   height: 170px;
-  width: 220px;
+  width: 243px;
   object-fit: cover;
 }
 
 .small-img-2 {
   height: 170px;
-  width: 220px;
+  width: 243px;
   object-fit: cover;
   border-radius: 0px 10px 0px 0px;
 }
 
 .small-img-3 {
   height: 170px;
-  width: 220px;
+  width: 243px;
   object-fit: cover;
   border-radius: 0px 0px 10px 0px;
 }
@@ -216,6 +216,15 @@
 
 }
 
+.post-rev {
+  border: solid black thin;
+  background-color: lightgrey;
+  width: 150px;
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
+  cursor: pointer;
+}
 
 .post-your-review {
   width: 150px;
