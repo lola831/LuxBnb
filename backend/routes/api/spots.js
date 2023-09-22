@@ -349,7 +349,7 @@ router.get('/', async (req, res, next) => {
   // }
 
   let query = {
-    where: {},
+    // where: {},
     include: [{
        model: SpotImage,
        attributes: ['url'],
