@@ -120,7 +120,7 @@ const SpotDetails = () => {
                                 <div>
                                     {sessionUser && sessionUser.id !== spot.Owner.id && (
                                         <div>
-                                            <div>
+                                            <div className="post-rev">
                                             <OpenModalButton
                                                 buttonText="Post Your Review"
                                                 modalComponent={<CreateReviewForm spotId={spot.id} />}

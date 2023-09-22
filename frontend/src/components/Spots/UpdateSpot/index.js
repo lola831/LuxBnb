@@ -2,6 +2,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useEffect, useState } from "react";
 import { useHistory, useParams } from "react-router-dom";
 import { getSpotDetails, modifySpot } from "../../../store/spots";
+import "./UpdateSpot.css"
 
 
 const UpdateSpot = () => {
@@ -110,7 +111,7 @@ const UpdateSpot = () => {
 
     if (spot) {
         return (
-            <>
+            <div className="update-box">
             <h2>Update your Spot</h2>
             <form onSubmit={handleSubmit}>
             <div>
@@ -248,9 +249,9 @@ const UpdateSpot = () => {
                 />
 
             </div>
-            <button type="submit">Update</button>
+            <button className="update-but" type="submit">Update</button>
             </form>
-        </>
+        </div>
         )
     }else{
         return (

@@ -15,7 +15,6 @@
     font-size: 12px;
     display: grid;
     justify-items: center;
-    font-family: "monaco";
 
 }
 
@@ -52,11 +51,13 @@
 }
 
 .log-in-button {
-    border: solid;
     width: 250px;
     height: 35px;
     box-shadow: 5px 5px 5px grey;
+    background-color: lightgray;
+    color: black;
 }
+
 
 .demo-user {
     grid-area: demo-user;

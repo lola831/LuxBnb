@@ -43,7 +43,7 @@ function CreateReviewForm({ spotId }) {
 
   }
   return (
-    <>
+    <div className="create-review-cont">
       <h1>How was your stay?</h1>
       <form onSubmit={handleSubmit}>
         <textarea
@@ -80,7 +80,7 @@ function CreateReviewForm({ spotId }) {
         )} */}
         <button  className="submit-review-button" disabled={disabled} type="submit">Submit Your Review</button>
       </form>
-    </>
+    </div>
 
   )
 }

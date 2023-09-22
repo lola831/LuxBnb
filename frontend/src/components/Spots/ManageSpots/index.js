@@ -46,14 +46,14 @@ const ManageSpots = () => {
                                             </div>
 
                                             <div className="manage-location">
-                                                <div>{`${spot.city}, ${spot.state}`}</div>
+                                                <div className="loc">{`${spot.city}, ${spot.state}`}</div>
                                             </div>
                                             <div className="manage-rating">
                                             <i className="fa-sharp fa-solid fa-star"></i>
                                                 {` ${spot.avgRating.toFixed(1)}`}
                                             </div>
                                             <div className="manage-price">
-                                                <div>{`$${spot.price}/night`}</div>
+                                                <div className="pric">{`$${spot.price}/night`}</div>
                                             </div>
                                             <div className="manage-update-delete">
                                                 <div className="manage-update">
