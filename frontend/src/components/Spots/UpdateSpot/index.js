@@ -25,7 +25,7 @@ const UpdateSpot = () => {
         setDescription(spot.description)
         setName(spot.name)
         setPrice(spot.price)
-       // setImage1(spot.SpotImages[0].url)
+       setImage1(spot.SpotImages[0].url)
 
         // setImage2()
 
@@ -42,8 +42,8 @@ const UpdateSpot = () => {
     const [name, setName] = useState(spot? spot.name : "");
     const [price, setPrice] = useState(spot? spot.price : "");
 
-    //const [image1, setImage1] = useState(spot? spot.SpotImages[0].url : "");
-     const [image1, setImage1] = useState("");
+    const [image1, setImage1] = useState(spot? spot.SpotImages[0].url : "");
+    //  const [image1, setImage1] = useState("");
         const [image2, setImage2] = useState("");
         const [image3, setImage3] = useState("");
         const [image4, setImage4] = useState("");
@@ -166,6 +166,7 @@ const UpdateSpot = () => {
                     value={lat}
                     placeholder={`${spot.lat}`}
                     onChange={(e) => setLat(e.target.value)}
+                    // required
                     />
                 </label>
                 <p>,</p>
@@ -176,6 +177,7 @@ const UpdateSpot = () => {
                     value={lng}
                     placeholder={`${spot.lng}`}
                     onChange={(e) => setLng(e.target.value)}
+                    // required
                     />
                 </label>
             </div>
@@ -221,7 +223,7 @@ const UpdateSpot = () => {
                     value={image1}
                     placeholder="Preview image"
                     onChange={(e) => setImage1( e.target.value)}
-                    // required
+                    required
                 />
                  <input
                     type="text"

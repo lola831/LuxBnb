@@ -50,6 +50,7 @@ const SpotDetails = () => {
         if (spot.SpotImages.length > 1) {
           imageArr = spot.SpotImages.slice(1);
         }
+        console.log("IMAGE ARRRRARRRRR: ", imageArr)
 
         return (
             <div className="details-container">
@@ -62,12 +63,14 @@ const SpotDetails = () => {
                     </div>
                     <div className="small-details">
                         {
-                            imageArr.length && (
+                            imageArr.length ? (
                                 imageArr.map((image, i) => (
 
                                         <img className={i === 2 ? "small-img-2": i=== 3 ? "small-img-3" : "small-img"} src={`${image.url}`} alt="" />
 
                                 ))
+                            ) : (
+                                <div></div>
                             )
                         }
                     </div>

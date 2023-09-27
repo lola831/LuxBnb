@@ -98,7 +98,7 @@ const CreateSpotForm = () => {
                                     value={country}
                                     placeholder="Country"
                                     onChange={(e) => setCountry(e.target.value)}
-                                // required
+                                required
                                 />
 
                             {/* {errors.country && <p className='create-spot-error'>{errors.country}</p>} */}
@@ -108,7 +108,7 @@ const CreateSpotForm = () => {
                                     value={address}
                                     placeholder="Address"
                                     onChange={(e) => setAddress(e.target.value)}
-                                // required
+                                required
                                 />
                              <span>{errors.city && <p className='create-spot-error'>{errors.city}</p>}</span>
                             <div className='city-state'>
@@ -118,7 +118,7 @@ const CreateSpotForm = () => {
                                     value={city}
                                     placeholder="City"
                                     onChange={(e) => setCity(e.target.value)}
-                                // required
+                                required
                                 />
                            <span> , </span>
 
@@ -128,7 +128,7 @@ const CreateSpotForm = () => {
                                     value={state}
                                     placeholder="STATE"
                                     onChange={(e) => setState(e.target.value)}
-                                // required
+                                required
                                 />
                             </div>
                             <span className='create-spot-error' id="state-error">{errors.state && <p>{errors.state}</p>}</span>
@@ -159,7 +159,7 @@ const CreateSpotForm = () => {
                                 value={description}
                                 placeholder="Please write at least 30 characters"
                                 onChange={(e) => setDescription(e.target.value)}
-                            // required
+                            required
                             />
                             <div>{errors.description && <p className='create-spot-error'>{errors.description}</p>}</div>
 
@@ -183,7 +183,7 @@ const CreateSpotForm = () => {
                                 placeholder="Price per night (USD)"
                                 value={price}
                                 onChange={(e) => setPrice(e.target.value)}
-                            // required
+                            required
                             />
                             {errors.price && <p className='create-spot-error'>{errors.price}</p>}
                         </div>
@@ -196,7 +196,7 @@ const CreateSpotForm = () => {
                                 value={image1}
                                 placeholder="Preview Image URL"
                                 onChange={(e) => setImage1(e.target.value)}
-                            // required
+                            required
                             />
                             <input
                                 type="text"

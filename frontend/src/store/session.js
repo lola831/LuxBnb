@@ -64,6 +64,7 @@ export const signup = (user) => async (dispatch) => {
   };
 
   export const logout = () => async (dispatch) => {
+    console.log("in lg out")
     const response = await csrfFetch('/api/session', {
       method: 'DELETE',
     });
