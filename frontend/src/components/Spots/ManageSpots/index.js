@@ -50,7 +50,14 @@ const ManageSpots = () => {
                                             </div>
                                             <div className="manage-rating">
                                             <i className="fa-sharp fa-solid fa-star"></i>
-                                                {` ${spot.avgRating.toFixed(1)}`}
+                                            {
+                                                spot.avgRating ? (
+                                                    <div>{` ${spot.avgRating.toFixed(1)}`}</div>
+                                                ) : (
+                                                    <div>New</div>
+                                                )
+                                            }
+
                                             </div>
                                             <div className="manage-price">
                                                 <div className="pric">{`$${spot.price}/night`}</div>
