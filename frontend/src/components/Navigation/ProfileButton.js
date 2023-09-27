@@ -55,7 +55,7 @@ function ProfileButton({ user }) {
         {user ? (
           <div className="profile-list-button">
             <li>Hello, {user.firstName}</li>
-            <li className="hover-options">{user.email}</li>
+            <li>{user.email}</li>
             <li className="hover-options">
               <NavLink exact to="/spots/current" className={"manage-spot-link"}>Manage Spots</NavLink>
             </li>
