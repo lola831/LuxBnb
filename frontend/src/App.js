@@ -8,6 +8,7 @@ import SpotDetails from "./components/Spots/SpotDetails";
 import CreateSpotForm from "./components/Spots/CreateSpotForm";
 import ManageSpots from "./components/Spots/ManageSpots";
 import UpdateSpot from "./components/Spots/UpdateSpot";
+import Footer from "./components/Footer";
 import "./App.css";
 
 function App() {
@@ -46,6 +47,9 @@ function App() {
         }
 
       </div>
+      <footer className="app-footer">
+        <Footer />
+      </footer>
     </>
   );
 }
