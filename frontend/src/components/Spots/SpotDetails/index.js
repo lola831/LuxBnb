@@ -15,16 +15,13 @@ const SpotDetails = () => {
     const dispatch = useDispatch();
     const spot = useSelector(state => state.spots.spotDetails);
     const spotReviews = useSelector(state => state.reviews.spotReviews);
-    //const userReviews = useSelector(state => state.reviews.userReviews);
 
-    console.log("SPOOOOOOTTTTT: ", spot)
-    console.log("spot reviews: ", spotReviews)
-    console.log("SESSSION USER", sessionUser);
+
     useEffect(() => {
-        console.log("IN SUBMIT2222=========")
+
         dispatch(getSpotDetails(id));
         dispatch(getSpotReviews(id));
-        // dispatch(getUserReviews())
+
     }, [dispatch, id]);
 
     const checkReviews = () => {
@@ -45,12 +42,12 @@ const SpotDetails = () => {
 
     if (Object.keys(spot).length) {
         let previewImage = spot.SpotImages[0].url
-        console.log("IMAGEEEEEE ", spot)
+
         let imageArr = []
         if (spot.SpotImages.length > 1) {
           imageArr = spot.SpotImages.slice(1);
         }
-        console.log("IMAGE ARRRRARRRRR: ", imageArr)
+
 
         return (
             <div className="details-container">
@@ -195,7 +192,7 @@ const SpotDetails = () => {
             </div>
         )
     } else {
-        console.log("IN ELSEEEEEEEEEEEEE")
+     
         return (
             <div>Loading....</div>
         )

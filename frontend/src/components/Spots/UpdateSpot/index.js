@@ -11,12 +11,11 @@ const UpdateSpot = () => {
     const history = useHistory();
     const spot = useSelector(state => state.spots.spotDetails);
 
-    console.log("SPOOOOOOTTTTT: ", spot)
+
 
     useEffect(() => {
         dispatch(getSpotDetails(id));
         setCountry(spot.country)
-        console.log("here???")
         setAddress(spot.address)
         setCity(spot.city)
         setState(spot.state)
@@ -27,7 +26,6 @@ const UpdateSpot = () => {
         setPrice(spot.price)
        setImage1(spot.SpotImages[0].url)
 
-        // setImage2()
 
     }, [dispatch]);
 
@@ -49,7 +47,7 @@ const UpdateSpot = () => {
         const [image4, setImage4] = useState("");
         const [image5, setImage5] = useState("");
 
-        console.log(">>>>>>>>>>>>>>>>>>>")
+
     // const [image1, setImage1] = useState(spot? spot.SpotImages[0].url : "");
     //     const [image2, setImage2] = useState(spot.SpotImages[1].url ? spot.SpotImages[1].url : "");
     //     const [image3, setImage3] = useState(spot.SpotImages[2].url ? spot.SpotImages[2].url : "");
@@ -58,16 +56,9 @@ const UpdateSpot = () => {
         const [errors, setErrors] = useState({})
 
 
-        // let image2 =
-        // for(let i = 1; i < 5; i++) {
-        //     if ()
-        // }
-
-
-
     const handleSubmit = async (e) => {
         e.preventDefault();
-        console.log("HERE IN HANDLESUBMIT1")
+
         const payload = {
             ...spot,
             country,
@@ -87,24 +78,16 @@ const UpdateSpot = () => {
         updatedSpot = await dispatch(modifySpot(payload))
         .catch(async (res) => {
             const data = await res.json();
-            console.log("DATA IN RESPONSE:", data)
+
             if (data && data.errors) {
                 setErrors(data.errors);
             }
         });
 
-        console.log("HERE IN HANDLESUBMIT2")
 
-        // let imagesUpdated; //???????????? FIX FOR ALL IMAGES NOT JUST PREVIEW
-
-        // if(updatedSpot) {
-        //     let imagesArr = [image1];
-        //     imagesArr.push(spot.id);
-        // }
 
         if(updatedSpot) {
-            console.log("HERE IN HANDLESUBMIT3")
-            history.push(`/spots/${spot.id}`);   // ????????
+            history.push(`/spots/${spot.id}`);
         }
 
     }

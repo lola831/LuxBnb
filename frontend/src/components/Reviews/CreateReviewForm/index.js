@@ -19,7 +19,6 @@ function CreateReviewForm({ spotId }) {
     if (review.length > 9 && stars > 0) setDisabled(false)
 
   }, [review, stars])
-  console.log("IN REVIEW FORM")
 
   const handleSubmit = (e) => {
     e.preventDefault();

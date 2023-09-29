@@ -9,8 +9,6 @@ function DeleteReviewModal({review}) {
 
 const handleClick = (e) => {
     e.preventDefault();
-    console.log("REVIEEEEW", review)
-    console.log("SPOOOOTTTT ID   ",review.spotId)
     return dispatch(removeReview(review))
     .then(closeModal)
 }

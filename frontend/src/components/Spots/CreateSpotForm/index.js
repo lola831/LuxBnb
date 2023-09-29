@@ -30,8 +30,7 @@ const CreateSpotForm = () => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        console.log("HERE IN HANDLESUBMIT1")
-        // console.log("IMAGESSSSSSSSS", images) //array of urls
+
         const payload = {
             country,
             address,
@@ -50,7 +49,6 @@ const CreateSpotForm = () => {
         createdSpot = await dispatch(createSpot(payload))
             .catch(async (res) => {
                 const data = await res.json();
-                console.log("DATA IN RESPONSE:", data)
                 if (data && data.errors) {
                     setErrors(data.errors);
                 }
@@ -59,16 +57,15 @@ const CreateSpotForm = () => {
         let imagesDone;
 
         if (createdSpot) {
-            console.log("CREATED SPOT", createdSpot)
             let imagesArr = [image1, image2, image3, image4, image5];
             let images = imagesArr.filter(image => image !== "")
-            console.log("IMAGESSSSSSSSSSSSSSSSSSSS", images);
+
             images.push(createdSpot.id);
 
             imagesDone = await (dispatch(createImage(images)))
                 .catch(async (res) => {
                     const data = await res.json();
-                    console.log("DATA IN RESPONSE:", data)
+
                     if (data && data.errors) {
                         setErrors(data.errors);
                     }
@@ -76,7 +73,7 @@ const CreateSpotForm = () => {
         }
 
         if (createdSpot && imagesDone) {
-            console.log("HERE IN HANDLESUBMIT3")
+     
             history.push(`/spots/${createdSpot.id}`);   // ????????
         }
 

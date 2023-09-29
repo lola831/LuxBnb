@@ -109,7 +109,6 @@ router.put('/:bookingId', validateBooking, async (req, res, next) => {
 
 router.delete('/:bookingId', async (req, res, next) => {
   const booking = await Booking.findOne({where: {id: req.params.bookingId}});
-  //console.log(booking)
 
 
   if(!booking) {
@@ -134,11 +133,7 @@ if(startDate <= date) {
 const bookingUser = booking.dataValues.userId;
 const spot = await Spot.findOne({where: {id: booking.dataValues.spotId }});
 const owner = spot.dataValues.ownerId;
-console.log("owner: ",owner)
-console.log("req user: ",req.user.id)
-console.log("booking user: ", bookingUser)
 
-console.log(bookingUser)
 if(req.user.id === owner || req.user.id === bookingUser) {
 
 await booking.destroy();

@@ -15,7 +15,7 @@ router.delete('/:imageId', async (req, res, next) => {
     const reviewImage = await ReviewImage.findOne({
         where: {id: req.params.imageId}
     });
-    console.log("here", reviewImage)
+
 
     if(!reviewImage) {
         return res.json(404, {
@@ -26,9 +26,7 @@ router.delete('/:imageId', async (req, res, next) => {
 
     const review = await Review.findOne({where: {id: reviewImage.dataValues.reviewId}});
     const userId = review.dataValues.userId;
-    console.log("reviewId: ", reviewImage.dataValues.reviewId)
-    console.log("userId: ", userId)
-    console.log("User: ", req.user.id)
+
 
     if(!(req.user.id === userId)) {
         const err = new Error('spot must belong to user');

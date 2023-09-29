@@ -93,7 +93,6 @@ router.get('/current', async (req, res, next) => {
     const rating = Spots[i].dataValues.Reviews;
     if (rating.length) {
       avgRating = 0;
-      console.log("rating: ", rating[0].dataValues.stars)
       for (let j = 0; j < rating.length; j++) {
         avgRating += rating[j].dataValues.stars;
       }
@@ -119,7 +118,6 @@ router.post('/:spotId/bookings', validateBooking, async (req, res, next) => {
     })
   }
 
-  console.log(spot.dataValues.ownerId, req.user.id)
   if (spot.dataValues.ownerId === req.user.id) {
     const err = new Error("Owner cannot book spot")
     return res.json(403, {
@@ -163,9 +161,9 @@ router.post('/:spotId/bookings', validateBooking, async (req, res, next) => {
 //create review for spot with spot id
 router.post('/:spotId/reviews', validateReview, async (req, res, next) => {
   const spotId = req.params.spotId;
-  console.log("spot id: ", spotId)
+
   const spot = await Spot.findOne({ where: { id: req.params.spotId } });
-  console.log("Spot: ", spot)
+
   if (!spot) {
     const err = new Error("Spot couldn't be found");
     return res.json(404, {
@@ -178,7 +176,7 @@ router.post('/:spotId/reviews', validateReview, async (req, res, next) => {
     where:
       { spotId: req.params.spotId, userId: req.user.id }
   });
-  console.log("checkReview: ", checkReview)
+
   if (checkReview.length) {
     const err = new Error('User already has a review for this spot');
     return res.json(403, {
@@ -445,9 +443,9 @@ router.get('/', async (req, res, next) => {
     return res.json(400, err);
   }
 
-  //let returnedSpots = await Spot.findAndCountAll(query);
+
   let returnedSpots = await Spot.findAll(query)
-  console.log("HEEEREEEEE", returnedSpots)
+
 
   let Spots = [];
  if (returnedSpots.length) {
@@ -458,7 +456,7 @@ router.get('/', async (req, res, next) => {
 let avgRating = null;
 
 Spots.forEach(spot => {
-  console.log("==============================spot: ", spot.SpotImages[0])
+
     if(spot.SpotImages.length){
       spot.previewImage = spot.SpotImages[0].dataValues.url
 
@@ -521,7 +519,6 @@ router.delete('/:spotId', async (req, res, next) => {
       statusCode: 403
     })
   }
-  console.log(req.user.id)
 
   await spot.destroy();
 
