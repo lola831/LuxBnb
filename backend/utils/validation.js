@@ -3,16 +3,12 @@ const { validationResult } = require('express-validator');
 // middleware for formatting errors from express-validator middleware
 // (to customize, see express-validator's documentation)
 const handleValidationErrors = (req, _res, next) => {
-  console.log("HEEEEEEREEEE3", req)
 
   let validationErrors = validationResult(req);
-  console.log("VALERRORS===== ", validationErrors)
-
 
   let errObj = {};
 
   if (!validationErrors.isEmpty()) {
-    console.log("IN VAL.JS IF NOT EMPTY")
 
     //checks if errors array is empty
   //   const errors = {};
@@ -28,7 +24,6 @@ const handleValidationErrors = (req, _res, next) => {
   // }
   // next();
   validationErrors.errors.forEach(e => {
-    console.log("E.MESSSSSAGGEEEEEEE: ", e)
     let nameKey = e.param
     let message = e.msg
     errObj[nameKey] = message

@@ -34,13 +34,12 @@ router.get('/current', async(req,res,next) => {
             {model: ReviewImage, attributes: ['id', 'url']}
         ]
     });
-    //console.log(Reviews)
+
 
     if(Reviews.length) {
 
         for (let i = 0; i < Reviews.length; i++) {
             if(Reviews[i].dataValues.Spot.dataValues.SpotImages.length) {
-                console.log(Reviews[0].dataValues.Spot.dataValues.SpotImages)
                 let url = Reviews[i].dataValues.Spot.dataValues.SpotImages[0].dataValues.url;
                 Reviews[i].dataValues.Spot.dataValues.previewImage = url;
             }
@@ -65,11 +64,11 @@ router.post('/:reviewId/images', async(req, res, next) => {
         })
     }
 
-    console.log("REVIEW USERID: ", review.userId)
+
 
 
     const imagesOfReviews = await ReviewImage.findAll({ where: { reviewId: req.params.reviewId}});
-    console.log(imagesOfReviews)
+
     if (imagesOfReviews.length > 9) {
         const err = new Error("Review couldn't be found");
         err.statusCode = 403;
@@ -88,7 +87,7 @@ router.post('/:reviewId/images', async(req, res, next) => {
         reviewId: req.params.reviewId,
         url: req.body.url
     }});
-   // console.log(newReviewImage)
+
     delete newReviewImage.dataValues.createdAt;
     delete newReviewImage.dataValues.updatedAt;
     delete newReviewImage.dataValues.reviewId;
@@ -121,7 +120,7 @@ router.put('/:reviewId', validateReview, async (req, res, next) => {
    });
 
    await review.save();
-   
+
 
    return res.json(review);
 

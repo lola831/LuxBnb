@@ -24,9 +24,7 @@ router.delete('/:imageId', async (req, res, next) => {
 
     const spot= await Spot.findOne({where: {id: spotImage.dataValues.spotId}});
     const ownerId = spot.dataValues.ownerId;
-    console.log("spotId: ", spotImage.dataValues.spotId)
-    console.log("OwnerId: ", ownerId)
-    console.log("UserID: ", req.user.id)
+
 
     if(!(req.user.id === ownerId)) {
         const err = new Error('spot must belong to user');

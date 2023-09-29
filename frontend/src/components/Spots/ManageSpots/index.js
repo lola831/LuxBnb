@@ -7,15 +7,13 @@ import OpenModalButton from "../../OpenModalButton";
 import UpdateSpot from "../UpdateSpot";
 import "./ManageSpots.css"
 const ManageSpots = () => {
-    console.log("HEEEERE IN USER")
+
     const dispatch = useDispatch();
 
     const userSpots = useSelector(state => state.spots.userSpots)
-    //hereee continue
-    console.log("IN  user SPOTS COMPONENT", userSpots);
+
 
     useEffect(() => {
-        console.log("IN USEEFFECT BEFORE DISPACTH MANAGESPOTS")
         dispatch(getSpotsUser());
     }, [dispatch]);
 

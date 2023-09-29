@@ -76,11 +76,6 @@ router.post(
 
       const token = await setTokenCookie(res, user);
 
-      // const returnUser = user.toJSON();
-      // delete returnUser.createdAt;
-      // delete returnUser.updatedAt;
-      // returnUser.token = token;
-      console.log(user)
       user.dataValues.token = token;
       delete user.dataValues.createdAt;
       delete user.dataValues.updatedAt;

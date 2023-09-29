@@ -59,7 +59,7 @@ app.use((_req, _res, next) => { //underscores before req/res just mean we dont u
 // Process sequelize errors
 //catches sequelize  database validation errors
 app.use((err, req, res, next) => {
-  (console.log("IN APP.JS PROCESS SEQUELIZE ERRORS MIDDLEARE"))
+
   // check if error is a Sequelize error:
   if (err instanceof ValidationError) {
 

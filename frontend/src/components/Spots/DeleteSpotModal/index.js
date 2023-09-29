@@ -4,13 +4,13 @@ import { useModal } from "../../../context/Modal";
 import { removeSpot } from "../../../store/spots";
 
 const DeleteSpotModal = ({spotId}) => {
-    console.log("SPOT ID", spotId)
+
 const dispatch = useDispatch();
 const { closeModal } = useModal();
 
 const handleClick = (e) => {
     e.preventDefault();
-    console.log("before delete spot dispatch in component")
+
     return dispatch(removeSpot(spotId))
     .then(closeModal)
 }

@@ -10,8 +10,6 @@ const AllSpots = () => {
 
     const allSpots = useSelector(state => state.spots.allSpots)
 
-    console.log("IN SPOTS COMPONENT", allSpots);
-
     useEffect(() => {
         dispatch(getAllSpots());
     }, [dispatch]);
